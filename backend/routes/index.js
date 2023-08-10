@@ -2,6 +2,7 @@ const express = require("express");
 const serverResponses = require("../utils/helpers/responses");
 const messages = require("../config/messages");
 const { Todo } = require("../models/todos/todo");
+var authHandlers = require('../controllers/authController.js');
 
 const routes = (app) => {
   const router = express.Router();
@@ -31,6 +32,13 @@ const routes = (app) => {
         serverResponses.sendError(res, messages.BAD_REQUEST, e);
       });
   });
+
+  app.route('/tasks')
+        .post(authHandlers.loginRequired, authHandlers.profile);
+    app.route('/auth/register')
+        .post(authHandlers.register);
+   app.route('/auth/sign_in')
+        .post(authHandlers.sign_in);
 
   //it's a prefix before api it is useful when you have many modules and you want to
   //differentiate b/w each module you can use this technique
