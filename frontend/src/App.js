@@ -3,6 +3,9 @@ import axios from "axios";
 import "./App.scss";
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -37,19 +40,31 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div className="App container">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-xs-12 col-sm-8 col-md-8 offset-md-2">
-              <h1>Todos</h1>
-              <div className="todo-app">
-                <AddTodo handleAddTodo={this.handleAddTodo} />
-                <TodoList todos={this.state.todos} />
+      <Router>
+        <Switch>
+          <Route path="/auth/login">
+            <Login />
+          </Route>
+          <Route path="/auth/register">
+            <Register />
+          </Route>
+          <Route path="/">
+            <div className="App container">
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-xs-12 col-sm-8 col-md-8 offset-md-2">
+                    <h1 className="text-red-500">Todos</h1>
+                    <div className="todo-app">
+                      <AddTodo handleAddTodo={this.handleAddTodo} />
+                      <TodoList todos={this.state.todos} />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
+          </Route>
+        </Switch>
+      </Router>
     );
   }
 }
