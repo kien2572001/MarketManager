@@ -1,34 +1,42 @@
-var mongoose = require('mongoose'),
-  bcrypt = require('bcrypt'),
-  Schema = mongoose.Schema;
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+
+const { Schema } = mongoose;
 
 /**
  * User Schema
  */
-var UserSchema = new Schema({
-  fullName: {
-    type: String,
-    trim: true,
-    required: true
+const UserSchema = new Schema(
+  {
+    firstName: {
+      type: String,
+      trim: true,
+      required: true,
+      maxlength: 32,
+    },
+    lastName: {
+      type: String,
+      trim: true,
+      required: true,
+      maxlength: 32,
+    },
+    email: {
+      type: String,
+      unique: true,
+      lowercase: true,
+      trim: true,
+      required: true,
+    },
+    hash_password: {
+      type: String,
+    },
   },
-  email: {
-    type: String,
-    unique: true,
-    lowercase: true,
-    trim: true,
-    required: true
-  },
-  hash_password: {
-    type: String
-  },
-  created: {
-    type: Date,
-    default: Date.now
-  }
-});
+  { timestamps: true }
+);
 
-UserSchema.methods.comparePassword = function(password) {
+UserSchema.methods.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.hash_password);
 };
 
-mongoose.model('User', UserSchema);
+const User = mongoose.model("User", UserSchema);
+export default User;
