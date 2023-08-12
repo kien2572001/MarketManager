@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import { ROLES } from "../enum/enum";
 
 const { Schema } = mongoose;
 
@@ -29,6 +30,15 @@ const UserSchema = new Schema(
     },
     hash_password: {
       type: String,
+    },
+    avatar: {
+      type: String,
+      default: "https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg",
+    },
+    role: {
+      type: Number,
+      enum: Object.values(ROLES),
+      default: ROLES.CUSTOMER,
     },
   },
   { timestamps: true }
