@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 import User from "../../models/userModel.js";
 import ShopBoat from "../../models/shopBoatModel.js";
 import Category from "../../models/categoryModel.js";
+import Product from "../../models/productModel.js";
 import {ROLES} from "../../enum/enum.js"
 const { faker } = require('@faker-js/faker');
 
@@ -28,6 +29,7 @@ for (let i = 0; i < 10; i++) {
 const deleteAllData = async () => {
   try {
     await User.deleteMany({});
+    await Product.deleteMany({});
     await ShopBoat.deleteMany({});
     await Category.deleteMany({});
     console.log("Users are deleted");
@@ -54,8 +56,6 @@ const insertShopBoat = async () => {
     }
     await ShopBoat.insertMany(shopBoats);
     console.log("ShopBoats are inserted");
-    await insertProduct();
-
   }
   catch (err) {
     console.log(err);
@@ -115,20 +115,59 @@ const insertCategory = async () => {
   console.log("Categories are inserted");
 }
 
+const randomCategory = (idArray) => {
+  let l = idArray.length;
+  let n = faker.number.int({ min: 0, max: l - 1 });
+  return idArray[n];
+}
+
 const insertProduct = async () => {
   try {
+    let products = [];
     let listShopBoatId = await ShopBoat.find({}).select('_id');
+    let listCategory = await Category.find({}).select('_id');
     for (let i = 0; i < listShopBoatId.length; i++) {
-      let products = [];
       for (let j = 0; j < 10; j++) {
         products.push({
           name: faker.commerce.productName(),
           description: faker.commerce.productDescription(),
           price: faker.commerce.price(),
-          images: [faker.image.url(),faker.image.url(),faker.image.url(),faker.image.url(),faker.image.url()]
+          images: [faker.image.url(),faker.image.url(),faker.image.url(),faker.image.url(),faker.image.url()],
+          categories: [randomCategory(listCategory)],
+          shopBoat: listShopBoatId[i]._id,
+          information: [
+            {
+              key: "Xuất xứ",
+              value: faker.location.city(),
+            },
+            {
+              key: "Thương hiệu",
+              value: faker.company.name(),
+            },
+            {
+              key: "Trọng lượng",
+              value: faker.number.int({ min: 1, max: 10 }) + " kg",
+            },
+            {
+              key: "Kích thước",
+              value: faker.number.int({ min: 1, max: 10 }) + " cm",
+            },
+            {
+              key: "Màu sắc",
+              value: faker.color.human(),
+            },
+            {
+              key: "Chất liệu",
+              value: faker.commerce.productMaterial(),
+            }
+          ],
         });
       }
-      await ShopBoat.findByIdAndUpdate(listShopBoatId[i]._id, { products: products });
+    }
+    await Product.insertMany(products);
+    for (let i = 0; i < listShopBoatId.length; i++) {
+      let listProductId = await Product.find({ shopBoat: listShopBoatId[i]._id }).select('_id');
+      await ShopBoat.findByIdAndUpdate(listShopBoatId[i]._id, { products: listProductId });
     }
     console.log("Products are inserted");
   }
@@ -139,15 +178,13 @@ const insertProduct = async () => {
 
 
 
-
-
-
 const insertData = async () => {
   try {
     await User.insertMany(users);
     console.log("Users are inserted");
     await insertCategory();
     await insertShopBoat();
+    await insertProduct();
 
   }
   catch (err) {
