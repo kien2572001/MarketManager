@@ -59,4 +59,16 @@ module.exports = {
     message: "Required parameter missing",
     success: false,
   },
+  PRODUCT: {
+    NOT_FOUND: {
+      code: 404,
+      message: "Product not found",
+      success: false,
+    },
+    ALREADY_EXIST: {
+      code: 200,
+      message: "Product already exists",
+      success: false,
+    },
+  }
 };

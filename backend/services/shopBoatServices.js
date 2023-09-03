@@ -35,3 +35,20 @@ exports.getShopBoatById = (id) => {
       });
   });
 }
+
+
+exports.getShopBoatProducts = (id) => {
+  return new Promise((resolve, reject) => {
+    ShopBoat.findById(id)
+      .populate('products')
+      .exec((err, shopBoat) => {
+        if (err) {
+          // Xử lý lỗi nếu có
+          reject(err);
+        } else {
+          // Khi truy vấn thành công, bạn có thể truy cập thông tin owner thông qua shopBoat.owner
+          resolve(shopBoat);
+        }
+      });
+  });
+}

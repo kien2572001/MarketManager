@@ -26,6 +26,14 @@ const ProductSchema = new Schema(
           required: true,
           maxlength: 100,
       },
+      slug: {
+          type: String,
+          trim: true,
+          required: true,
+          maxlength: 100,
+          unique: true,
+          index: true,
+      },
       description: {
           type: String,
           trim: true,
@@ -35,6 +43,17 @@ const ProductSchema = new Schema(
       price: {
           type: Number,
           required: true,
+      },
+      sale: {
+          type: Number,
+          trim: true,
+          maxlength: 32,
+          default: 0,
+      },
+      countInStock: {
+          type: Number,
+          required: true,
+          default: 0,
       },
       information: [InformationSchema],
       images: Array,

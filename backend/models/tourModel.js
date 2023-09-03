@@ -8,6 +8,17 @@ const { Schema } = mongoose;
  * Tour Schema
  */
 
+const InformationSchema = new Schema({
+    key: {
+        type: String,
+        required: true,
+    },
+    value: {
+        type: String,
+        required: true,
+    },
+});
+
 const TourSchema = new Schema(
     {
         name: {
@@ -15,6 +26,14 @@ const TourSchema = new Schema(
             trim: true,
             required: true,
             maxlength: 100,
+        },
+        slug: {
+            type: String,
+            trim: true,
+            required: true,
+            maxlength: 100,
+            unique: true,
+            index: true,
         },
         description: {
             type: String,
@@ -28,9 +47,12 @@ const TourSchema = new Schema(
             required: true,
             maxlength: 32,
         },
-        touSchedule: Array,
-        includes: Array,
-        albums: Array,
+        sale: {
+            type: Number,
+            trim: true,
+            maxlength: 32,
+        },
+        tourInformation: [InformationSchema],
         reviews: Array,
     },
     { timestamps: true }

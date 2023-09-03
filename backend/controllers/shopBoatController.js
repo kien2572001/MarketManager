@@ -27,3 +27,15 @@ exports.getShopBoatById = async function (req, res, next) {
         return serverResponse.sendError(res, err);
     }
 }
+
+
+exports.getShopBoatProducts = async function (req, res, next) {
+    let shopBoatID = req.params.id;
+    try {
+        let shopBoat = await shopBoatServices.getShopBoatProducts(shopBoatID);
+        return serverResponse.sendSuccess(res, SUCCESSFUL, shopBoat);
+    }
+    catch (err) {
+        return serverResponse.sendError(res, err);
+    }
+}
