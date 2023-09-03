@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { ROLES } from "../enum/enum";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const { Schema } = mongoose;
 
@@ -43,6 +44,8 @@ const UserSchema = new Schema(
   },
   { timestamps: true }
 );
+
+UserSchema.plugin(mongoosePaginate);
 
 UserSchema.methods.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.hash_password);

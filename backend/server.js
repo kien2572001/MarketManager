@@ -12,10 +12,13 @@ const db = require("./db");
 const swaggerJsdoc = require("swagger-jsdoc"),
   swaggerUi = require("swagger-ui-express");
 const app = express();
+const seeder = require('./db/seeds/db_seed')
 
 
 //connection from db here
 db.connect(app);
+//seeder.seedData();
+
 require("./models/userModel");
 
 app.use(cors());

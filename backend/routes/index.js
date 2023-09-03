@@ -3,6 +3,8 @@ const serverResponses = require("../utils/helpers/responses");
 const messages = require("../config/messages");
 var authHandlers = require("../controllers/authController.js");
 var userHandlers = require("../controllers/userController.js");
+var shopBoatHandlers = require("../controllers/shopBoatController.js");
+var categoryHandlers = require("../controllers/categoryController.js");
 import jwt from "jsonwebtoken";
 
 const authorization = (req, res, next) => {
@@ -28,11 +30,21 @@ const routes = (app) => {
 
   router.post("/auth/register", authHandlers.register);
   router.post("/auth/login", authHandlers.login);
-  router.get('/auth/logout', authorization ,authHandlers.logout);
+  router.get("/auth/logout", authorization ,authHandlers.logout);
 
-  router.get('/users/{id}', authorization ,userHandlers.getUserById);
+  router.get("/users", authorization ,userHandlers.getAllUsers);
+  router.get("/users/:id", authorization ,userHandlers.getUserById);
 
-  //it's a prefix before api it is useful when you have many modules and you want to
+  router.get("/shopBoats", authorization ,shopBoatHandlers.getAllShopBoats);
+  router.get("/shopBoats/:id", authorization ,shopBoatHandlers.getShopBoatById);
+
+  router.get("/categories", authorization ,categoryHandlers.getAllCategories);
+  router.get("/categories/:slug", authorization ,categoryHandlers.getCategoryBySlug);
+  router.post("/categories", authorization ,categoryHandlers.createCategory);
+  
+  
+
+  //it"s a prefix before api it is useful when you have many modules and you want to
   //differentiate b/w each module you can use this technique
   app.use("/api", router);
 };

@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
-import { ROLES } from "../enum/enum";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const { Schema } = mongoose;
 
@@ -27,6 +26,13 @@ const ProductSchema = new Schema(
             required: true,
         },
         images: Array,
+        categories: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Category",
+                required: true,
+            },
+        ],
     },
     { timestamps: true }
 );
@@ -65,6 +71,8 @@ const ShopBoatSchema = new Schema(
     },
     { timestamps: true }
 );
+
+ShopBoatSchema.plugin(mongoosePaginate);
 
 const ShopBoat = mongoose.model("ShopBoat", ShopBoatSchema);
 
