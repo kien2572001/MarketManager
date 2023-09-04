@@ -45,6 +45,7 @@ import createCache from "@emotion/cache";
 
 // Material Dashboard 2 PRO React routes
 import routes from "routes";
+import marketRoutes from "routes/customerRoutes";
 
 // Material Dashboard 2 PRO React contexts
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
@@ -121,6 +122,12 @@ export default function App() {
 
       return null;
     });
+  
+  const getMarketRoutes = (allRoutes) =>
+    allRoutes.map((route) => {
+      return <Route exact path={route.route} element={route.component} key={route.key} />;
+    });
+
 
   const configsButton = (
     <MDBox
@@ -146,32 +153,7 @@ export default function App() {
     </MDBox>
   );
 
-  return direction === "rtl" ? (
-    <CacheProvider value={rtlCache}>
-      <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
-        <CssBaseline />
-        {layout === "dashboard" && (
-          <>
-            <Sidenav
-              color={sidenavColor}
-              brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-              brandName="Material Dashboard PRO"
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-            />
-            <Configurator />
-            {configsButton}
-          </>
-        )}
-        {layout === "vr" && <Configurator />}
-        <Routes>
-          {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/dashboards/analytics" />} />
-        </Routes>
-      </ThemeProvider>
-    </CacheProvider>
-  ) : (
+  return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
       {layout === "dashboard" && (
@@ -188,9 +170,10 @@ export default function App() {
           {configsButton}
         </>
       )}
-      {layout === "vr" && <Configurator />}
+      {/* {layout === "vr" && <Configurator />} */}
       <Routes>
         {getRoutes(routes)}
+        {getMarketRoutes(marketRoutes)}
         <Route path="*" element={<Navigate to="/dashboards/analytics" />} />
       </Routes>
     </ThemeProvider>
