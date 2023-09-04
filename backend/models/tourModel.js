@@ -35,6 +35,22 @@ const TourSchema = new Schema(
             unique: true,
             index: true,
         },
+        startTime: {
+            type: Date,
+            required: true,
+        },
+        startLocation: {
+            type: String,
+            trim: true,
+            required: true,
+            maxlength: 100,
+        },
+        transportation: {
+            type: String,
+            trim: true,
+            required: true,
+            maxlength: 100,
+        },
         description: {
             type: String,
             trim: true,
