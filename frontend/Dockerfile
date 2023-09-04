@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.4
 
 # Create image based on the official Node image from dockerhub
-FROM node:lts-buster AS development
+FROM node:16.11.1-alpine3.14 as development
 
 # Create app directory
 WORKDIR /usr/src/app
