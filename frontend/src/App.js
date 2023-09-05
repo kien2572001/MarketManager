@@ -57,6 +57,13 @@ import brandDark from "assets/images/logo-ct-dark.png";
 //Import App CSS
 import "./App.css";
 
+import SignIn from "components/Signin";
+import SignUp from "components/Signup";
+
+//Import toastify
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -174,9 +181,12 @@ export default function App() {
         </>
       )}
       {/* {layout === "vr" && <Configurator />} */}
+      <ToastContainer />
       <Routes>
         {getRoutes(routes)}
         {getMarketRoutes(marketRoutes)}
+        <Route exact path="/signin" element={<SignIn />} />
+        <Route exact path="/signup" element={<SignUp />} />
         <Route path="*" element={<Navigate to="/dashboards/analytics" />} />
       </Routes>
     </ThemeProvider>

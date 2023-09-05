@@ -5,6 +5,7 @@ import Category from "../../models/categoryModel.js";
 import Product from "../../models/productModel.js";
 import {ROLES} from "../../enum/enum.js"
 const { faker } = require('@faker-js/faker');
+import slugify from "slugify";
 
 // Kết nối tới MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
@@ -128,8 +129,11 @@ const insertProduct = async () => {
     let listCategory = await Category.find({}).select('_id');
     for (let i = 0; i < listShopBoatId.length; i++) {
       for (let j = 0; j < 10; j++) {
+        let name = faker.commerce.productName();
+        let slug = slugify(name, { lower: true });
         products.push({
-          name: faker.commerce.productName(),
+          name: name,
+          slug: slug,
           description: faker.commerce.productDescription(),
           price: faker.commerce.price(),
           images: [faker.image.url(),faker.image.url(),faker.image.url(),faker.image.url(),faker.image.url()],

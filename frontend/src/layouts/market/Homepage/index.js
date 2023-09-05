@@ -1,4 +1,3 @@
-
 import MarketplaceLayout from "examples/LayoutContainers/MarketplaceLayout"
 
 const Homepage = () => {

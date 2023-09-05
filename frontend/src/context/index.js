@@ -62,6 +62,15 @@ function reducer(state, action) {
     case "DARKMODE": {
       return { ...state, darkMode: action.value };
     }
+    case "LOGGED_IN": {
+      return { ...state, loggedIn: action.value };
+    }
+    case "ROLE": {
+      return { ...state, role: action.value };
+    }
+    case "USER": {
+      return { ...state, user: action.value };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -71,6 +80,7 @@ function reducer(state, action) {
 // Material Dashboard 2 PRO React context provider
 function MaterialUIControllerProvider({ children }) {
   const initialState = {
+    //ui global
     miniSidenav: false,
     transparentSidenav: false,
     whiteSidenav: false,
@@ -81,6 +91,10 @@ function MaterialUIControllerProvider({ children }) {
     direction: "ltr",
     layout: "dashboard",
     darkMode: false,
+    //auth
+    loggedIn: false,
+    role: "",
+    user: {},
   };
 
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -119,6 +133,9 @@ const setOpenConfigurator = (dispatch, value) => dispatch({ type: "OPEN_CONFIGUR
 const setDirection = (dispatch, value) => dispatch({ type: "DIRECTION", value });
 const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
 const setDarkMode = (dispatch, value) => dispatch({ type: "DARKMODE", value });
+const setLoggedIn = (dispatch, value) => dispatch({ type: "LOGGED_IN", value });
+const setRole = (dispatch, value) => dispatch({ type: "ROLE", value });
+const setUser = (dispatch, value) => dispatch({ type: "USER", value });
 
 export {
   MaterialUIControllerProvider,
@@ -133,4 +150,7 @@ export {
   setDirection,
   setLayout,
   setDarkMode,
+  setLoggedIn,
+  setRole,
+  setUser,
 };
