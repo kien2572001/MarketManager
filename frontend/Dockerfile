@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.4
 
 # Create image based on the official Node image from dockerhub
-FROM node:16.11.1-alpine3.14 as development
+FROM node:lts-buster AS development
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -13,7 +13,7 @@ COPY package-lock.json /usr/src/app
 # Install dependecies
 RUN npm set progress=false \
    && npm config set depth 0 \
-   && npm i install --force
+   && npm install --force
 RUN npm ci --force
 
 # Get all the code needed to run the app

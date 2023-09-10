@@ -48,7 +48,11 @@ import routes from "routes";
 import marketRoutes from "routes/customerRoutes";
 
 // Material Dashboard 2 PRO React contexts
-import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import {
+  useMaterialUIController,
+  setMiniSidenav,
+  setOpenConfigurator,
+} from "context";
 
 // Images
 import brandWhite from "assets/images/logo-ct.png";
@@ -59,12 +63,23 @@ import "./App.css";
 
 import SignIn from "components/Signin";
 import SignUp from "components/Signup";
+import Error from "layouts/pages/404";
+import Unauthorized from "layouts/pages/401";
+import Auth from "utilities/auth";
 
 //Import toastify
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+//Import Admin
+import AdminDashboard from "layouts/admin/Dashbroad";
+import adminRoutes from "routes/adminRoutes";
+import merchantRoutes from "routes/merchantRoutes";
+import { ROLES } from "enum/index";
+import { useAuth } from "context/authContext";
 
 export default function App() {
+  const { getUser } = useAuth();
   const [controller, dispatch] = useMaterialUIController();
   const {
     miniSidenav,
@@ -107,7 +122,8 @@ export default function App() {
   };
 
   // Change the openConfigurator state
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+  const handleConfiguratorOpen = () =>
+    setOpenConfigurator(dispatch, !openConfigurator);
 
   // Setting the dir attribute for the body element
   useEffect(() => {
@@ -127,17 +143,30 @@ export default function App() {
       }
 
       if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
+        return (
+          <Route
+            exact
+            path={route.route}
+            element={route.component}
+            key={route.key}
+          />
+        );
       }
 
       return null;
     });
-  
+
   const getMarketRoutes = (allRoutes) =>
     allRoutes.map((route) => {
-      return <Route exact path={route.route} element={route.component} key={route.key} />;
+      return (
+        <Route
+          exact
+          path={route.route}
+          element={route.component}
+          key={route.key}
+        />
+      );
     });
-
 
   const configsButton = (
     <MDBox
@@ -162,7 +191,6 @@ export default function App() {
       </Icon>
     </MDBox>
   );
-
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
@@ -170,9 +198,15 @@ export default function App() {
         <>
           <Sidenav
             color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+            brand={
+              (transparentSidenav && !darkMode) || whiteSidenav
+                ? brandDark
+                : brandWhite
+            }
             brandName="Material Dashboard PRO"
-            routes={routes}
+            routes={
+              getUser()?.role === ROLES.ADMIN ? adminRoutes : merchantRoutes
+            }
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
@@ -185,9 +219,19 @@ export default function App() {
       <Routes>
         {getRoutes(routes)}
         {getMarketRoutes(marketRoutes)}
+        <Route element={<Auth allowedRoles={[ROLES.ADMIN]} />}>
+          {getRoutes(adminRoutes)}
+        </Route>
+        <Route element={<Auth allowedRoles={[ROLES.MERCHANT]} />}>
+          {getRoutes(merchantRoutes)}
+        </Route>
         <Route exact path="/signin" element={<SignIn />} />
         <Route exact path="/signup" element={<SignUp />} />
-        <Route path="*" element={<Navigate to="/dashboards/analytics" />} />
+        <Route exact path="/unauthorized" element={<Unauthorized />} />
+        <Route exact path="/error" element={<Error />} />
+        {/* <Route path="*" element={<Navigate to="/dashboards/analytics" />} /> */}
+
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>
     </ThemeProvider>
   );

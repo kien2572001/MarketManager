@@ -71,6 +71,9 @@ function reducer(state, action) {
     case "USER": {
       return { ...state, user: action.value };
     }
+    case "ACCESS_TOKEN": {
+      return { ...state, accessToken: action.value };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -95,6 +98,7 @@ function MaterialUIControllerProvider({ children }) {
     loggedIn: false,
     role: "",
     user: {},
+    accessToken: "",
   };
 
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -136,6 +140,8 @@ const setDarkMode = (dispatch, value) => dispatch({ type: "DARKMODE", value });
 const setLoggedIn = (dispatch, value) => dispatch({ type: "LOGGED_IN", value });
 const setRole = (dispatch, value) => dispatch({ type: "ROLE", value });
 const setUser = (dispatch, value) => dispatch({ type: "USER", value });
+const setAccessToken = (dispatch, value) => dispatch({ type: "ACCESS_TOKEN", value });
+
 
 export {
   MaterialUIControllerProvider,
@@ -153,4 +159,5 @@ export {
   setLoggedIn,
   setRole,
   setUser,
+  setAccessToken,
 };

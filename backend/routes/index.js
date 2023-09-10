@@ -9,12 +9,12 @@ var productHandlers = require("../controllers/productController.js");
 import jwt from "jsonwebtoken";
 
 const authorization = (req, res, next) => {
-  const token = req.cookies.access_token;
-  if (!token) {
+  const accessToken = req.headers["x-access-token"];
+  if (!accessToken) {
     return serverResponses.sendError(res, messages.UNAUTHORIZED);
   }
   try {
-    const data = jwt.verify(token, "RESTFULAPIs");
+    const data = jwt.verify((accessToken, "ACCESS_TOKEN_PRIVATE_KEY"));
     req.userId = data.id;
     req.userRole = data.role;
     return next();
@@ -22,9 +22,6 @@ const authorization = (req, res, next) => {
     return serverResponses.sendError(res, messages.UNAUTHORIZED);
   }
 };
-
-
-
 
 const routes = (app) => {
   const router = express.Router();

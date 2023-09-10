@@ -1,33 +1,39 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useMaterialUIController, setLayout } from "context";
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import { signinService } from 'api/auth';
-import { successToast, errorToast } from 'utilities/toast';
-
-
+import { useEffect, useLayoutEffect } from "react";
+import { signinService } from "api/auth";
+import { successToast, errorToast, warningToast } from "utilities/toast";
+import { ROLES } from "enum";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "context/authContext";
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         Your Website
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
@@ -39,35 +45,74 @@ const defaultTheme = createTheme();
 export default function SignIn() {
   const { pathname } = useLocation();
   const [, dispatch] = useMaterialUIController();
+  const navigate = useNavigate();
+  const {
+    user,
+    accessToken,
+    login,
+    logout,
+    isLoggedIn,
+    showAll,
+    getUser,
+    getAccessToken,
+  } = useAuth();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setLayout(dispatch, "plain");
   }, [pathname]);
 
-  const saveAfterLogin = () => {
-    
-  };
-   
+  useEffect(() => {
+    if (isLoggedIn()) {
+      redirectAfterLogin(getUser().role);
+    }
+  }, []);
+
   const handleLogin = async (email, password) => {
     try {
       const res = await signinService(email, password);
       if (res.status === 200) {
-        successToast('Login successful');
-        console.log(res.data);
+        successToast("Login successful");
+        //console.log(res.data);
+        saveAfterLogin(res.data.accessToken, res.data.data);
       }
     } catch (error) {
       console.log(error);
       if (error?.response?.status === 401) {
-        errorToast(error.response.data.message || 'Login failed');
+        errorToast(error.response.data.message || "Login failed");
       }
+    }
+  };
+
+  const saveAfterLogin = (accessToken, user) => {
+    const role = user.role;
+    login(user, accessToken);
+    showAll();
+    // Sử dụng useHistory để điều hướng
+    redirectAfterLogin(role);
+  };
+
+  const redirectAfterLogin = (role) => {
+    switch (role) {
+      case ROLES.ADMIN:
+        navigate("/admin/dashboards/analytics"); // Sử dụng history.push để điều hướng
+        break;
+      case ROLES.MERCHANT:
+        navigate("/merchant/dashboards/analytics"); // Sử dụng history.push để điều hướng
+        break;
+      case ROLES.CUSTOMER:
+        navigate("/marketplace"); // Sử dụng history.push để điều hướng
+        break;
+      default:
+        warningToast("You are not authorized to access this page");
+        navigate("/marketplace"); // Sử dụng history.push để điều hướng
     }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get('email');
-    const password = data.get('password');
+    const email = data.get("email");
+    const password = data.get("password");
     handleLogin(email, password);
   };
 
@@ -78,18 +123,23 @@ export default function SignIn() {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required

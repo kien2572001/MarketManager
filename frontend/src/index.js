@@ -16,16 +16,23 @@ Coded by www.creative-tim.com
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
+import { CookiesProvider } from "react-cookie";
+import { AuthProvider } from "context/authContext";
 import App from "App";
 
 // Material Dashboard 2 PRO React Context Provider
 import { MaterialUIControllerProvider } from "context";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <MaterialUIControllerProvider>
-      <App />
-    </MaterialUIControllerProvider>
-  </BrowserRouter>,
+  <CookiesProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <MaterialUIControllerProvider>
+          <App />
+        </MaterialUIControllerProvider>
+      </AuthProvider>
+    </BrowserRouter>
+    ,
+  </CookiesProvider>,
   document.getElementById("root")
 );

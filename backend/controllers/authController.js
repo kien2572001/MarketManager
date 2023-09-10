@@ -3,6 +3,9 @@ var mongoose = require("mongoose"),
   bcrypt = require("bcrypt"),
   User = mongoose.model("User");
 
+import generateTokens from "../utils/helpers/generateTokens";
+import Token from "../models/tokenModel";
+
 exports.register = function (req, res) {
   var newUser = new User(req.body);
   newUser.hash_password = bcrypt.hashSync(req.body.password, 10);
@@ -18,40 +21,46 @@ exports.register = function (req, res) {
   });
 };
 
-exports.login = function (req, res) {
+exports.login = async (req, res) =>{
   User.findOne(
     {
       email: req.body.email,
     },
-    function (err, user) {
+    async function (err, user) {
       if (err) throw err;
       if (!user || !user.comparePassword(req.body.password)) {
         return res
           .status(401)
           .json({
-            message: "Authentication failed. Invalid user or password.",
+            message: "Email or password is incorrect 😢 😢"
           });
       }
-      const token = jwt.sign(
-        {
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          _id: user._id,
-        },
-        "RESTFULAPIs"
-      );
+      const { accessToken, refreshToken } = await generateTokens(user);
+      user.hash_password = undefined;
       return res
-        .cookie("access_token", token, { httpOnly: true, secure: false })
+        .cookie("refresh_token", refreshToken, { httpOnly: true, secure: false })
         .status(200)
-        .json({ message: "Logged in successfully 😊 👌" });
+        .json({ message: "Logged in successfully 😊 👌", data: user,  accessToken });
     }
   );
 };
 
 exports.logout = function (req, res) {
+
+  let refresh_token = req.cookies.refresh_token;
+  if (refresh_token){
+    Token.deleteOne({ token: refresh_token }, (err, doc) => {
+      if (err) {
+        return res.status(400).json({
+          message: "Something went wrong 😢 😢",
+        });
+      }
+    }
+    );
+  }
+
   return res
-    .clearCookie("access_token")
+    .clearCookie("refresh_token")
     .status(200)
     .json({ message: "Logged out successfully 😊 👌" });
 };
@@ -63,6 +72,7 @@ exports.loginRequired = function (req, res, next) {
     return res.status(401).json({ message: "Unauthorized user!!" });
   }
 };
+
 exports.profile = function (req, res, next) {
   if (req.user) {
     res.send(req.user);
