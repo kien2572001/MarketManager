@@ -194,7 +194,7 @@ export default function App() {
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
-      {layout === "dashboard" && (
+      {layout === "dashboard" && getUser()?.role !== ROLES.CUSTOMER && (
         <>
           <Sidenav
             color={sidenavColor}
@@ -229,8 +229,7 @@ export default function App() {
         <Route exact path="/signup" element={<SignUp />} />
         <Route exact path="/unauthorized" element={<Unauthorized />} />
         <Route exact path="/error" element={<Error />} />
-        {/* <Route path="*" element={<Navigate to="/dashboards/analytics" />} /> */}
-
+        <Route path="*" element={<Navigate to="/marketplace" />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>
     </ThemeProvider>

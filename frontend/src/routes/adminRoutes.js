@@ -58,13 +58,13 @@ const routes = [
       {
         name: "My Profile",
         key: "my-profile",
-        route: "/pages/profile/profile-overview",
+        route: "/admin/account/profile-overview",
         component: <ProfileOverview />,
       },
       {
         name: "Settings",
         key: "profile-settings",
-        route: "/pages/account/settings",
+        route: "/admin/account/settings",
         component: <Settings />,
       },
       {
