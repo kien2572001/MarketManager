@@ -1,11 +1,9 @@
 .container-nav {
     display: block;
 
-
     .content-nav {
         display: flex;
         max-width: 1060px;
-        // height: 100px;
         margin-left: auto;
         margin-right: auto;
 
@@ -29,12 +27,13 @@
 
             .phone-number {
                 display: flex;
-                justify-content: space-between;
+                justify-content: space-around;
                 align-items: center;
                 width: 160px;
 
                 span {
                     font-size: 15px !important;
+                    font-weight: 500 !important;
                 }
             }
         }
@@ -55,7 +54,8 @@
                 justify-content: space-between;
                 align-items: center;
                 width: fit-content;
-                padding: 10px;
+                padding-left: 10px;
+                padding-right: 10px;
                 color: whitesmoke;
                 background-color: #7DB249;
                 border-radius: 0.35rem;

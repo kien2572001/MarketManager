@@ -1,4 +1,4 @@
-import "./style.scss"
+import "./style.scss";
 import * as React from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -8,6 +8,40 @@ import { Facebook, Instagram, Twitter } from "@mui/icons-material";
 import { Box } from "@mui/material";
 import TopSales from "./TopSales";
 
+const listContact = [
+  {
+    name: "Liên hệ",
+    link: "https://www.facebook.com/",
+  },
+  {
+    name: "Điều khoản sử dụng",
+    link: "https://www.facebook.com/",
+  },
+  {
+    name: "Chính sách bảo mật",
+    link: "https://www.facebook.com/",
+  },
+  {
+    name: "Giới thiệu dự án",
+    link: "https://www.facebook.com/",
+  },
+  {
+    name: "Chợ nổi Cái Răng",
+    link: "https://www.facebook.com/",
+  },
+  {
+    name: "Cai Rang Floating Market",
+    link: "https://www.facebook.com/",
+  },
+  {
+    name: "Nụ Cười Mê Kông",
+    link: "https://www.facebook.com/",
+  },
+  {
+    name: "Mekong Smile Tour",
+    link: "https://www.facebook.com/",
+  },
+];
 
 const MarketFooter = () => {
   return (
@@ -24,10 +58,14 @@ const MarketFooter = () => {
             <Grid container spacing={5}>
               <Grid item xs={12} sm={3}>
                 <Typography variant="h6" color="#f5f5f5" gutterBottom>
-                  CHỢ NỔI CÁI RĂNG ONLINE
+                  <Box fontWeight="bold">CHỢ NỔI CÁI RĂNG</Box> ONLINE
                 </Typography>
                 <Typography variant="body2" color="#f5f5f5">
-                  <img src="https://chonoicairang.net/wp-content/uploads/2020/04/chonoicairang.net_.png" alt="logo" style={{ maxHeight: "90px" }} />
+                  <img
+                    src="https://chonoicairang.net/wp-content/uploads/2020/04/chonoicairang.net_.png"
+                    alt="logo"
+                    style={{ maxHeight: "90px" }}
+                  />
                   Chợ nổi Cái Răng Online - một dự án của Nụ Cười Mê Kông
                 </Typography>
               </Grid>
@@ -40,34 +78,31 @@ const MarketFooter = () => {
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={3}>
-                <Typography variant="h6" color="#f5f5f5" gutterBottom>
+                <Typography
+                  variant="h6"
+                  color="#f5f5f5"
+                  gutterBottom
+                  fontWeight={700}
+                >
                   LIÊN KẾT HỮU ÍCH
                 </Typography>
-                <Typography variant="body2" color="#f5f5f5" style={{ borderBottom: '1px solid #ebebeb', height: '30px' }}>
-                  Liên hệ
-                </Typography>
-                <Typography variant="body2" color="#f5f5f5" style={{ borderBottom: '1px solid #ebebeb', height: '30px' }}>
-                  Điều khoản sử dụng
-                </Typography>
-                <Typography variant="body2" color="#f5f5f5" style={{ borderBottom: '1px solid #ebebeb', height: '30px' }}>
-                  Chính sách bảo mật
-                </Typography>
-                <Typography variant="body2" color="#f5f5f5" style={{ borderBottom: '1px solid #ebebeb', height: '30px' }}>
-                  Giới thiệu dự án
-                </Typography>
-                <Typography variant="body2" color="#f5f5f5" style={{ borderBottom: '1px solid #ebebeb', height: '30px' }}>
-                  Chợ nổi Cái Răng
-                </Typography>
-                <Typography variant="body2" color="#f5f5f5" style={{ borderBottom: '1px solid #ebebeb', height: '30px' }}>
-                  Cai Rang Floating Market
-                </Typography>
-                <Typography variant="body2" color="#f5f5f5" style={{ borderBottom: '1px solid #ebebeb', height: '30px' }}>
-                  Nụ Cười Mê Kông
-                </Typography>
-                <Typography variant="body2" color="#f5f5f5" style={{ borderBottom: '1px solid #ebebeb', height: '30px' }}>
-                  Mekong Smile Tour
-                </Typography>
-
+                {listContact.map((item, index) => {
+                  return (
+                    <Typography
+                      variant="body2"
+                      color="#f5f5f5"
+                      style={{
+                        borderBottom: "0.5px solid #ebebeb",
+                        cursor: "pointer",
+                      }}
+                      fontWeight={600}
+                      paddingTop={0.75}
+                      paddingBottom={0.75}
+                    >
+                      {item.name}
+                    </Typography>
+                  );
+                })}
               </Grid>
               <Grid item xs={12} sm={3}>
                 <Typography variant="h6" color="#f5f5f5" gutterBottom>
@@ -109,7 +144,7 @@ const MarketFooter = () => {
           </Container>
         </Box>
       </div>
-    </div >
+    </div>
   );
 };
 

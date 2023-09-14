@@ -1,10 +1,10 @@
-import "./style.scss"
+import "./style.scss";
 import { Container, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import { FaPhoneAlt } from "react-icons/fa"
-import { BsCart4 } from "react-icons/bs"
-import ResponsiveAppBar from "./MarketHeader"
+import { FaPhoneAlt } from "react-icons/fa";
+import { BsCart4 } from "react-icons/bs";
+import ResponsiveAppBar from "./MarketHeader";
 import { useNavigate } from "react-router-dom";
 
 const MarketNavbar = () => {
@@ -17,14 +17,17 @@ const MarketNavbar = () => {
   };
 
   const handleLogin = () => {
-    navigate("/authentication/sign-in/basic")
-  }
+    navigate("/signin");
+  };
 
   return (
     <div className="container-nav">
       <div className="content-nav">
         <div className="logo">
-          <img src="https://chonoicairang.net/wp-content/uploads/2020/04/chonoicairang.net_.png" alt="logo" />
+          <img
+            src="https://chonoicairang.net/wp-content/uploads/2020/04/chonoicairang.net_.png"
+            alt="logo"
+          />
         </div>
         <div className="search-bar">
           <Container maxWidth="md" sx={{ mt: 20 }} className="fix-margintop">
@@ -46,16 +49,23 @@ const MarketNavbar = () => {
             />
           </Container>
           <div className="phone-number">
-            <FaPhoneAlt />
-            <span style={{ color: "red" }}> 0939 39 39 39</span>
+            <FaPhoneAlt size={15} />
+            <span className="tracking-tight text-red-500"> 0939.39.39.39</span>
           </div>
         </div>
         <div className="login-item">
           <div className="login" onClick={() => handleLogin()}>
-            <span>Đăng nhập</span>
+            <span className="tracking-tight font-medium text-black">
+              Đăng nhập
+            </span>
           </div>
           <div className="item-cart">
-            <span className="cost-cart">0₫ </span>
+            <span className=" font-medium relative mr-2">
+              <span className="text-base">0</span>
+              <span className="text-xs relative top-[-0.2em] font-medium underline">
+                đ
+              </span>
+            </span>
             <span>
               <BsCart4 />
             </span>
@@ -67,7 +77,7 @@ const MarketNavbar = () => {
           <ResponsiveAppBar />
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

@@ -18,7 +18,7 @@ const seeder = require('./db/seeds/fake_seed')
 
 //connection from db here
 db.connect(app);
-//seeder.seedData();
+seeder.seedData();
 
 require("./models/userModel");
 
