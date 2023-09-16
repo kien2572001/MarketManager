@@ -46,3 +46,19 @@ exports.deleteProductById = async function (req, res, next) {
         return serverResponse.sendError(res, err);
     }
 }
+
+exports.updateProductById = async function (req, res, next) {
+    let productID = req.params.id;
+    console.log(req.body);
+    try {
+        let product = await productServices.getProductById(productID);
+        if (!product) {
+            return serverResponse.sendError(res, PRODUCT.NOT_FOUND);
+        }
+        product = await productServices.updateProductById(productID, req.body);
+        return serverResponse.sendSuccess(res, SUCCESSFUL, product);
+    }
+    catch (err) {
+        return serverResponse.sendError(res, err);
+    }
+}

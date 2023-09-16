@@ -1,4 +1,6 @@
+import Category from "../models/categoryModel";
 import Product from "../models/productModel";
+import slugify from "slugify";
 
 exports.getAllProducts = (pageOptions) => {
   let options = pageOptions;
@@ -41,4 +43,40 @@ exports.deleteProductById = (id) => {
       }
     });
   });
+}
+
+exports.updateProductById = async (id, data) => {
+  let update_data = await product_params(data);
+  try {
+    const product = Product.findOneAndUpdate({ _id: id }, update_data, {
+      new: true,
+    }).populate("categories").exec();
+    return product;
+  } catch (err) {
+    throw err;
+  }
+}
+
+const product_params = async (body) => {
+  let categories_slug = body.categories.split(",");
+  let categories = categories_slug.map((slug) => {
+    return slug.trim();
+  });
+  
+  categories= await Category.find({ slug: { $in: categories } }).select("_id").exec();
+  categories = categories.map((category) => category._id);
+  let slug = slugify(body.name, { lower: true });
+  let information = JSON.parse(body.information)
+  console.log(information);
+  return {
+    name: body.name,
+    price: body.price,
+    sale: body.sale,
+    unit: body.unit,
+    countInStock: body.countInStock,
+    description: body.description,
+    categories: categories,
+    slug: slug,
+    information: information,
+  };
 }

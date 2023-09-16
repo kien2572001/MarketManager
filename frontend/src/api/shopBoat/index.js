@@ -11,4 +11,13 @@ const getShopBoatProducts = async (id, page = 1, limit = 10) => {
   }
 };
 
-export { getShopBoatProducts };
+const updateProduct = async (id, data) => {
+  try {
+    const response = await instance.put(`/products/${id}`, data);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { getShopBoatProducts, updateProduct };

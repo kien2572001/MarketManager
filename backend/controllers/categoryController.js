@@ -17,6 +17,17 @@ exports.getAllCategories = async function (req, res, next) {
     }
 }
 
+exports.getListCategories = async function (req, res, next) {
+    try {
+        let categories = await categoryServices.getListCategories();
+        return serverResponse.sendSuccess(res, SUCCESSFUL, categories);
+    }
+    catch (err) {
+        return serverResponse.sendError(res, err);
+    }
+}
+
+
 exports.getCategoryBySlug = async function (req, res, next) {
     let slug = req.params.slug;
     try {
@@ -45,3 +56,4 @@ exports.createCategory = async function (req, res, next) {
         return serverResponse.sendError(res, err);
     }
 }
+

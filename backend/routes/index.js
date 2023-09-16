@@ -45,7 +45,9 @@ const routes = (app) => {
   router.get("/products",productHandlers.getAllProducts);
   router.get("/products/:id", productHandlers.getProductById);
   router.delete("/products/:id", productHandlers.deleteProductById);
+  router.put("/products/:id", productHandlers.updateProductById);
 
+  router.get("/categories/list", categoryHandlers.getListCategories);
   router.get("/categories", categoryHandlers.getAllCategories);
   router.get("/categories/:slug", categoryHandlers.getCategoryBySlug);
   router.post("/categories", categoryHandlers.createCategory);

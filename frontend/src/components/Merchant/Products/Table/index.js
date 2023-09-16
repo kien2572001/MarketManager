@@ -8,38 +8,27 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import PropTypes from "prop-types";
-import { Chip } from "@mui/material";
+import Badge from "react-bootstrap/Badge";
+import Button from "react-bootstrap/Button";
+import EditModal from "./EditModal";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
+    fontSize: 18,
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
+    fontSize: 16,
   },
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
   // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
 }));
-
-function createData(name, image, price, sale, unit, countInStock) {
-  return { name, image, price, sale, unit, countInStock };
-}
-
-const rows = [
-  createData("Product 1", "image1.jpg", 10.99, 8.99, "pcs", 50),
-  createData("Product 2", "image2.jpg", 15.99, 12.99, "pcs", 30),
-  createData("Product 3", "image3.jpg", 12.49, 9.99, "pcs", 20),
-  // Add more products as needed
-];
 
 ProductsTable.propTypes = {
   products: PropTypes.arrayOf(
@@ -52,9 +41,10 @@ ProductsTable.propTypes = {
       countInStock: PropTypes.number.isRequired,
     })
   ),
+  updateData: PropTypes.func.isRequired,
 };
 
-export default function ProductsTable({ products }) {
+export default function ProductsTable({ products, updateData }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -63,17 +53,33 @@ export default function ProductsTable({ products }) {
             <StyledTableCell>
               <span className="font-bold">Image</span>
             </StyledTableCell>
-            <StyledTableCell>Product</StyledTableCell>
-            <StyledTableCell align="right">Price</StyledTableCell>
-            <StyledTableCell align="right">Sale Price</StyledTableCell>
-            <StyledTableCell align="right">Stock</StyledTableCell>
-            <StyledTableCell align="right">Unit</StyledTableCell>
+            <StyledTableCell>
+              <span className="font-bold">Product</span>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <span className="font-bold">Price</span>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <span className="font-bold">Sale</span>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <span className="font-bold">Stock</span>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <span className="font-bold">Unit</span>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <span className="font-bold">Categories</span>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <span className="font-bold">Actions</span>
+            </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {products.map((product, index) => (
             <StyledTableRow key={index}>
-              <StyledTableCell align="right">
+              <StyledTableCell align="center">
                 <img
                   src={product.image}
                   alt={product.name}
@@ -81,27 +87,43 @@ export default function ProductsTable({ products }) {
                 />
               </StyledTableCell>
               <StyledTableCell component="th" scope="row">
-                {product.name}
+                <span className="font-semibold">{product.name}</span>
               </StyledTableCell>
-              <StyledTableCell align="right">
+              <StyledTableCell align="center">
                 ${product.price.toFixed(2)}
               </StyledTableCell>
-              <StyledTableCell align="right">
-                ${product.sale.toFixed(2)}
+              <StyledTableCell align="center">
                 {product.sale > 0 ? (
-                  <Chip label="primary" color="primary" variant="outlined" />
+                  <Badge pill bg="danger">
+                    -{product.sale.toFixed(2)}%
+                  </Badge>
                 ) : (
-                  <Chip
-                    label="secondary"
-                    color="secondary"
-                    variant="outlined"
-                  />
+                  <Badge pill bg="warning" text="dark">
+                    No Sale
+                  </Badge>
                 )}
               </StyledTableCell>
-              <StyledTableCell align="right">
-                {product.countInStock}
+              <StyledTableCell align="center">
+                {product.countInStock > 0 ? (
+                  product.countInStock
+                ) : (
+                  <Badge pill bg="danger">
+                    Out of Stock
+                  </Badge>
+                )}
               </StyledTableCell>
-              <StyledTableCell align="right">{product.unit}</StyledTableCell>
+              <StyledTableCell align="center">{product.unit}</StyledTableCell>
+              <StyledTableCell align="center">
+                {product.categories.map((category, index) => (
+                  <Badge key={index} pill bg="primary" className="me-1">
+                    {category.name}
+                  </Badge>
+                ))}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <EditModal product={product} updateData={updateData} />{" "}
+                <Button variant="danger">Delete</Button>
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

@@ -41,3 +41,4 @@ exports.getShopBoatProducts = async function (req, res, next) {
         return serverResponse.sendError(res, err);
     }
 }
+

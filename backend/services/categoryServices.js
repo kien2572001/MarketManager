@@ -12,6 +12,19 @@ exports.getAllCategories = (pageOptions) => {
   });
 }
 
+exports.getListCategories = () => {
+  return new Promise((resolve, reject) => {
+    Category.find({}, (err, categories) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(categories);
+      }
+    });
+  });
+}
+
+
 exports.getCategoryBySlug = (slug) => {
   return new Promise((resolve, reject) => {
     Category.findOne({ slug: slug })

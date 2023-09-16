@@ -59,18 +59,17 @@ exports.getShopBoatProducts = async (id, page, limit) => {
     const options = {
       page: page || 1,
       limit: limit || 10, // Số sản phẩm trên mỗi trang
+      populate: "categories",
     };
 
-    const shopBoat = await ShopBoat.findById(id).populate('products');
+    // Tạo một đối tượng filter để chỉ định điều kiện tìm kiếm
+    const filter = { shopBoat: id };
 
-    if (!shopBoat) {
-      return null; // Hoặc xử lý lỗi nếu cần
-    }
+    // Lấy danh sách sản phẩm và populate categories
+    // const products = await Product.find(filter).populate("categories");
 
-    const productIds = shopBoat.products.map(product => product._id);
-
-    // Sử dụng paginate() để truy vấn sản phẩm phân trang
-    const result = await Product.paginate({ _id: { $in: productIds } }, options);
+    // Sử dụng paginate() trên danh sách sản phẩm đã được populate
+    const result = await Product.paginate(filter, options);
 
     return result;
   } catch (error) {
