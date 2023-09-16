@@ -31,8 +31,10 @@ exports.getShopBoatById = async function (req, res, next) {
 
 exports.getShopBoatProducts = async function (req, res, next) {
     let shopBoatID = req.params.id;
+    let page = req.query.page;
+    let limit = req.query.limit;
     try {
-        let shopBoat = await shopBoatServices.getShopBoatProducts(shopBoatID);
+        let shopBoat = await shopBoatServices.getShopBoatProducts(shopBoatID, page, limit);
         return serverResponse.sendSuccess(res, SUCCESSFUL, shopBoat);
     }
     catch (err) {

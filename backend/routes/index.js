@@ -9,16 +9,21 @@ var productHandlers = require("../controllers/productController.js");
 import jwt from "jsonwebtoken";
 
 const authorization = (req, res, next) => {
-  const accessToken = req.headers["x-access-token"];
+  console.log("authorization");
+  const accessToken = req.cookies["access_token"];
   if (!accessToken) {
     return serverResponses.sendError(res, messages.UNAUTHORIZED);
   }
   try {
+    console.log("try");
     const data = jwt.verify((accessToken, "ACCESS_TOKEN_PRIVATE_KEY"));
+    console.log(data);
     req.userId = data.id;
     req.userRole = data.role;
     return next();
-  } catch {
+  } catch (error){
+    console.log("catch");
+    console.log("Error:", error);
     return serverResponses.sendError(res, messages.UNAUTHORIZED);
   }
 };
@@ -30,20 +35,20 @@ const routes = (app) => {
   router.post("/auth/login", authHandlers.login);
   router.get("/auth/logout", authorization ,authHandlers.logout);
 
-  router.get("/users", authorization ,userHandlers.getAllUsers);
-  router.get("/users/:id", authorization ,userHandlers.getUserById);
+  router.get("/users", userHandlers.getAllUsers);
+  router.get("/users/:id", userHandlers.getUserById);
 
-  router.get("/shopBoats", authorization ,shopBoatHandlers.getAllShopBoats);
-  router.get("/shopBoats/:id", authorization ,shopBoatHandlers.getShopBoatById);
-  router.get("/shopBoats/:id/products", authorization ,shopBoatHandlers.getShopBoatProducts);
+  router.get("/shopBoats", shopBoatHandlers.getAllShopBoats);
+  router.get("/shopBoats/:id", shopBoatHandlers.getShopBoatById);
+  router.get("/shopBoats/:id/products", shopBoatHandlers.getShopBoatProducts);
 
-  router.get("/products", authorization ,productHandlers.getAllProducts);
-  router.get("/products/:id", authorization ,productHandlers.getProductById);
-  router.delete("/products/:id", authorization ,productHandlers.deleteProductById);
+  router.get("/products",productHandlers.getAllProducts);
+  router.get("/products/:id", productHandlers.getProductById);
+  router.delete("/products/:id", productHandlers.deleteProductById);
 
-  router.get("/categories", authorization ,categoryHandlers.getAllCategories);
-  router.get("/categories/:slug", authorization ,categoryHandlers.getCategoryBySlug);
-  router.post("/categories", authorization ,categoryHandlers.createCategory);
+  router.get("/categories", categoryHandlers.getAllCategories);
+  router.get("/categories/:slug", categoryHandlers.getCategoryBySlug);
+  router.post("/categories", categoryHandlers.createCategory);
 
 
   //it"s a prefix before api it is useful when you have many modules and you want to

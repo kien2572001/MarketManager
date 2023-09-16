@@ -1,4 +1,5 @@
 import ShopBoat from "../models/shopBoatModel";
+import Product from "../models/productModel";
 
 exports.getAllShopBoats = (pageOptions, includeProducts = false) => {
   let options = pageOptions;
@@ -37,18 +38,43 @@ exports.getShopBoatById = (id) => {
 }
 
 
-exports.getShopBoatProducts = (id) => {
-  return new Promise((resolve, reject) => {
-    ShopBoat.findById(id)
-      .populate('products')
-      .exec((err, shopBoat) => {
-        if (err) {
-          // Xử lý lỗi nếu có
-          reject(err);
-        } else {
-          // Khi truy vấn thành công, bạn có thể truy cập thông tin owner thông qua shopBoat.owner
-          resolve(shopBoat);
-        }
-      });
-  });
+// exports.getShopBoatProducts = (id) => {
+//   return new Promise((resolve, reject) => {
+//     ShopBoat.findById(id)
+//       .populate('products')
+//       .exec((err, shopBoat) => {
+//         if (err) {
+//           // Xử lý lỗi nếu có
+//           reject(err);
+//         } else {
+//           // Khi truy vấn thành công, bạn có thể truy cập thông tin owner thông qua shopBoat.owner
+//           resolve(shopBoat);
+//         }
+//       });
+//   });
+// }
+
+exports.getShopBoatProducts = async (id, page, limit) => {
+  try {
+    const options = {
+      page: page || 1,
+      limit: limit || 10, // Số sản phẩm trên mỗi trang
+    };
+
+    const shopBoat = await ShopBoat.findById(id).populate('products');
+
+    if (!shopBoat) {
+      return null; // Hoặc xử lý lỗi nếu cần
+    }
+
+    const productIds = shopBoat.products.map(product => product._id);
+
+    // Sử dụng paginate() để truy vấn sản phẩm phân trang
+    const result = await Product.paginate({ _id: { $in: productIds } }, options);
+
+    return result;
+  } catch (error) {
+    // Xử lý lỗi nếu có
+    throw error;
+  }
 }

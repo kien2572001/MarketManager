@@ -56,7 +56,13 @@ const ProductSchema = new Schema(
           default: 0,
       },
       information: [InformationSchema],
-      images: Array,
+      image: String,
+      unit: {
+            type: String,
+            required: true,
+            enum: ["kg", "g", "l", "ml", "unit"],
+            default: "unit",
+        },
       categories: [
           {
               type: mongoose.Schema.Types.ObjectId,

@@ -16,6 +16,7 @@ exports.getAllProducts = async function (req, res, next) {
     }
 }
 
+
 exports.getProductById = async function (req, res, next) {
     let productID = req.params.id;
     try {

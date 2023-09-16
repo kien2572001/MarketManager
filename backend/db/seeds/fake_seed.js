@@ -141,9 +141,10 @@ const insertProduct = async () => {
           slug: slug,
           description: faker.commerce.productDescription(),
           price: faker.commerce.price(),
-          images: [faker.image.url(),faker.image.url(),faker.image.url(),faker.image.url(),faker.image.url()],
+          image: "https://chonoicairang.net/wp-content/uploads/2020/04/cam-xoan-1.jpg",
           categories: [randomCategory(listCategory)],
           shopBoat: listShopBoatId[i]._id,
+          unit: faker.helpers.arrayElement(["kg", "g", "l", "ml", "unit"]),
           information: [
             {
               key: "Xuất xứ",
