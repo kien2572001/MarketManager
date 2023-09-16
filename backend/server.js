@@ -15,14 +15,25 @@ const app = express();
 const seeder = require('./db/seeds/fake_seed')
 //const seeder = require("./db/seeds/real_seed");
 
-
 //connection from db here
 db.connect(app);
-seeder.seedData();
+//seeder.seedData();
 
 require("./models/userModel");
 
-app.use(cors());
+const allowedOrigins = ['http://localhost:3000']
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // Đảm bảo có withCredentials ở đây
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

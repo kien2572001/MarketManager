@@ -12,14 +12,12 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useMaterialUIController, setLayout } from "context";
-import { useLocation } from "react-router-dom";
-import { useEffect, useLayoutEffect } from "react";
-import { signinService } from "api/auth";
 import { successToast, errorToast, warningToast } from "utilities/toast";
-import { ROLES } from "enum";
+import { ROLES } from "../../enum";
+import { signinService } from "api/auth";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "context/authContext";
+import { useCookies } from "react-cookie";
+import jwt_decode from "jwt-decode";
 function Copyright(props) {
   return (
     <Typography
@@ -43,37 +41,16 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const { pathname } = useLocation();
-  const [, dispatch] = useMaterialUIController();
   const navigate = useNavigate();
-  const {
-    user,
-    accessToken,
-    login,
-    logout,
-    isLoggedIn,
-    showAll,
-    getUser,
-    getAccessToken,
-  } = useAuth();
-
-  useLayoutEffect(() => {
-    setLayout(dispatch, "plain");
-  }, [pathname]);
-
-  useEffect(() => {
-    if (isLoggedIn()) {
-      redirectAfterLogin(getUser().role);
-    }
-  }, []);
+  const [cookies] = useCookies(["access_token"]);
 
   const handleLogin = async (email, password) => {
     try {
       const res = await signinService(email, password);
       if (res.status === 200) {
         successToast("Login successful");
-        //console.log(res.data);
-        saveAfterLogin(res.data.accessToken, res.data.data);
+        const { role } = jwt_decode(cookies.access_token);
+        redirectAfterLogin(role);
       }
     } catch (error) {
       console.log(error);
@@ -83,21 +60,13 @@ export default function SignIn() {
     }
   };
 
-  const saveAfterLogin = (accessToken, user) => {
-    const role = user.role;
-    login(user, accessToken);
-    showAll();
-    // Sử dụng useHistory để điều hướng
-    redirectAfterLogin(role);
-  };
-
   const redirectAfterLogin = (role) => {
     switch (role) {
       case ROLES.ADMIN:
-        navigate("/admin/dashboards/analytics"); // Sử dụng history.push để điều hướng
+        navigate("/admin/dashboard"); // Sử dụng history.push để điều hướng
         break;
       case ROLES.MERCHANT:
-        navigate("/merchant/dashboards/analytics"); // Sử dụng history.push để điều hướng
+        navigate("/merchant/dashboard"); // Sử dụng history.push để điều hướng
         break;
       case ROLES.CUSTOMER:
         navigate("/marketplace"); // Sử dụng history.push để điều hướng

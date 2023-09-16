@@ -39,8 +39,9 @@ exports.login = async (req, res) =>{
       user.hash_password = undefined;
       return res
         .cookie("refresh_token", refreshToken, { httpOnly: true, secure: false })
+        .cookie("access_token", accessToken, { httpOnly: false, secure: false })
         .status(200)
-        .json({ message: "Logged in successfully 😊 👌", data: user,  accessToken });
+        .json({ message: "Logged in successfully 😊 👌" });
     }
   );
 };

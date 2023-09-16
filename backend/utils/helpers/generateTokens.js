@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import Token from "../../models/tokenModel";
 const generateTokens = async (user) => {
     try {
-        const payload = { id: user._id, role: user.role };
+        const payload = { id: user._id, role: user.role ,user: user};
         const accessToken = jwt.sign(
             payload,
             process.env.ACCESS_TOKEN_PRIVATE_KEY || "ACCESS_TOKEN_PRIVATE_KEY",
