@@ -14,6 +14,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import * as React from "react";
+import { v4 as uuidv4 } from "uuid";
+import { uploadImage, deleteImage } from "api/image";
 
 const animatedComponents = makeAnimated();
 EditModal.propTypes = {
@@ -132,6 +134,7 @@ function EditModal({ product, updateData }) {
   const [countInStock, setCountInStock] = useState(product.countInStock);
   const [description, setDescription] = useState(product.description);
   const [information, setInformation] = useState(product.information);
+  const [image, setImage] = useState(product.image);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -182,6 +185,7 @@ function EditModal({ product, updateData }) {
       })
     );
     setInformation(updatedProduct.information);
+    setImage(updatedProduct.image);
   };
 
   const handleSave = async () => {
@@ -197,9 +201,16 @@ function EditModal({ product, updateData }) {
       selectedCategories.map((category) => category.value)
     );
     data.append("information", JSON.stringify(information));
+
+    if (image !== product.image) {
+      data.append("image", image);
+    }
     try {
       const response = await updateProduct(product._id, data);
       if (response.status === 200) {
+        if (image !== product.image) {
+          await deleteImage(product.image);
+        }
         updateData(response.data.data);
         resetForm(response.data.data);
         handleClose();
@@ -216,6 +227,31 @@ function EditModal({ product, updateData }) {
 
   const handleAddInformation = (information) => {
     setInformation((newInformation) => [...newInformation, information]);
+  };
+
+  const handleImageUpload = async (event) => {
+    const selectedFile = event.target.files[0]; // Lấy tệp được chọn (chỉ lấy tệp đầu tiên nếu người dùng chọn nhiều tệp)
+
+    if (selectedFile) {
+      // Kiểm tra xem người dùng đã chọn một tệp hợp lệ hay không
+      const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+      if (allowedTypes.includes(selectedFile.type)) {
+        // Tệp hợp lệ, bạn có thể tiếp tục xử lý tệp ở đây
+        let data = new FormData();
+        //append image to files
+        data.append("image", selectedFile);
+        data.append("model", "Product");
+        const res = await uploadImage(data);
+        if (res?.status === 200) {
+          setImage(res.data.url);
+        }
+
+        // Trong trường hợp bạn muốn gửi tệp lên máy chủ, bạn có thể sử dụng XMLHttpRequest, Fetch API, hoặc các thư viện khác để thực hiện tải lên.
+      } else {
+        // Tệp không hợp lệ, hiển thị thông báo hoặc thực hiện xử lý khác theo nhu cầu của bạn.
+        console.error("Invalid file type. Please select a valid image file.");
+      }
+    }
   };
 
   return (
@@ -246,11 +282,7 @@ function EditModal({ product, updateData }) {
           <Form>
             <div className="grid grid-cols-2 gap-4 mt-4">
               <div className="col-span-1">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="max-w-[320px]"
-                />
+                <img src={image} alt={product.name} className="max-w-[320px]" />
               </div>
               <div className="flex col-span-1 flex-col">
                 <Form.Group className="mb-3 w-full" controlId="name">
@@ -304,7 +336,12 @@ function EditModal({ product, updateData }) {
                 </div>
                 <Form.Group className="mb-3" controlId="image">
                   <Form.Label>Image URL</Form.Label>
-                  <Form.Control type="file" placeholder="Enter image URL" />
+                  <Form.Control
+                    type="file"
+                    placeholder="Enter image URL"
+                    accept=".png, .jpg, .jpeg"
+                    onChange={handleImageUpload}
+                  />
                 </Form.Group>
               </div>
             </div>
@@ -330,7 +367,10 @@ function EditModal({ product, updateData }) {
 
               <div className="flex flex-col">
                 {information.map((info, index) => (
-                  <div className="flex gap-4 border border-gray-300 p-2 border-b-0 mt-[-1px] relative">
+                  <div
+                    className="flex gap-4 border border-gray-300 p-2 border-b-0 mt-[-1px] relative"
+                    key={uuidv4()}
+                  >
                     <span className="min-w-[200px] font-semibold">
                       {info.key}
                     </span>

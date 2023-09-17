@@ -2,9 +2,8 @@ import DashboardLayout from "layouts/DashboardLayout";
 import { Grid, Paper } from "@mui/material";
 import ProductsTable from "./Table";
 import { useEffect, useState } from "react";
-import { getShopBoatProducts } from "api/shopBoat";
+import { getShopBoatProducts, deleteProduct } from "api/shopBoat";
 import Pagination from "@mui/material/Pagination";
-import TablePagination from "@mui/material/TablePagination";
 
 const MerchantProducts = () => {
   const [products, setProducts] = useState([]);
@@ -56,11 +55,27 @@ const MerchantProducts = () => {
     setProducts(newProducts);
   };
 
+  const handleDeleteProduct = async (id) => {
+    try {
+      const response = await deleteProduct(id);
+      if (response) {
+        let newProducts = products.filter((product) => product._id !== id);
+        setProducts(newProducts);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <DashboardLayout>
       <Grid item xs={12}></Grid>
       <Grid item xs={12}>
-        <ProductsTable products={products} updateData={updateData} />
+        <ProductsTable
+          products={products}
+          updateData={updateData}
+          handleDeleteProduct={handleDeleteProduct}
+        />
       </Grid>
       <Grid
         item

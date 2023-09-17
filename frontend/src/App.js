@@ -25,7 +25,10 @@ function App() {
           <Route path="/merchant/products" element={<MerchantProducts />} />
           <Route path="/marketplace" element={<Homepage />} />
 
-          <Route path="/marketplace/detailProduct" element={<DetailProduct />} />
+          <Route
+            path="/marketplace/product/:slug"
+            element={<DetailProduct />}
+          />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>

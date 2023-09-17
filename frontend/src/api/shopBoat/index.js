@@ -20,4 +20,13 @@ const updateProduct = async (id, data) => {
   }
 };
 
-export { getShopBoatProducts, updateProduct };
+const deleteProduct = async (id) => {
+  try {
+    const response = await instance.delete(`/products/${id}`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { getShopBoatProducts, updateProduct, deleteProduct };

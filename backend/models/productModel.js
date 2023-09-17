@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
+import { SoftDeleteModel } from "mongoose-delete";
+import MongooseDelete from "mongoose-delete";
+
 
 const { Schema } = mongoose;
 
@@ -79,6 +82,11 @@ const ProductSchema = new Schema(
 );
 
 ProductSchema.plugin(mongoosePaginate);
+ProductSchema.plugin(MongooseDelete, {
+    deletedByType: String,
+    deletedAt: true,
+    overrideMethods: true,
+});
 
 const Product = mongoose.model("Product", ProductSchema);
 

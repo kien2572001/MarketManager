@@ -17,10 +17,10 @@ exports.getAllProducts = async function (req, res, next) {
 }
 
 
-exports.getProductById = async function (req, res, next) {
-    let productID = req.params.id;
+exports.getProductBySlug = async function (req, res, next) {
+    let slug = req.params.slug;
     try {
-        let product = await productServices.getProductById(productID);
+        let product = await productServices.getProductBySlug(slug);
         if (!product) {
             return serverResponse.sendError(res, PRODUCT.NOT_FOUND);
         }
@@ -62,3 +62,24 @@ exports.updateProductById = async function (req, res, next) {
         return serverResponse.sendError(res, err);
     }
 }
+
+exports.getTop4Products = async function (req, res, next) {
+    try {
+        let products = await productServices.getTop4Products();
+        return serverResponse.sendSuccess(res, SUCCESSFUL, products);
+    }
+    catch (err) {
+        return serverResponse.sendError(res, err);
+    }
+}
+
+exports.getListProductsInHomePage = async function (req, res, next) {
+    try {
+        let products = await productServices.getListProductsInHomePage();
+        return serverResponse.sendSuccess(res, SUCCESSFUL, products);
+    }
+    catch (err) {
+        return serverResponse.sendError(res, err);
+    }
+}
+

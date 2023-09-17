@@ -1,25 +1,38 @@
 import "./style.scss";
+import { Link } from "react-router-dom";
 
-const CardProduct = (props) => {
-  const { item } = props;
+const CardProduct = ({ item }) => {
+  const { sale, image, name, price, slug } = item;
+
   return (
-    <div className="container-smallproductss">
+    <div className="container-smallproductss cursor-pointer">
       <div className="smallproduct">
-        <div className="decrease">
-          <span>-</span>
-          <span>5%</span>
-        </div>
-        <div className="smallproduct-infor">
-          <div className="smallproduct__img">
-            <img src={item.img} alt="" />
+        {sale > 0 && (
+          <div className="decrease">
+            <span>-</span>
+            <span>{sale}%</span>
           </div>
+        )}
+        <div className="smallproduct-infor">
+          <Link
+            className="smallproduct__img"
+            to={`/marketplace/product/${slug}`}
+          >
+            <img src={image} alt="" />
+          </Link>
           <div className="smallproduct__content">
             <div className="smallproduct__content--name">
-              <p>{item.name}</p>
+              <p>{name}</p>
             </div>
             <div className="smallproduct__content--price">
-              <p className="price">{item.price}đ</p>
-              <p className="price-sale">{item.sale}đ</p>
+              {sale > 0 ? (
+                <>
+                  <p className="price">{price}đ</p>
+                  <p className="price-sale">{price - (price * sale) / 100}đ</p>
+                </>
+              ) : (
+                <p className="font-bold text-black">{price}đ</p>
+              )}
             </div>
             <div className="add-to-cart">
               <button>THÊM VÀO GIỎ HÀNG</button>

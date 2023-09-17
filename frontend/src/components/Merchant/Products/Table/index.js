@@ -42,9 +42,14 @@ ProductsTable.propTypes = {
     })
   ),
   updateData: PropTypes.func.isRequired,
+  handleDeleteProduct: PropTypes.func.isRequired,
 };
 
-export default function ProductsTable({ products, updateData }) {
+export default function ProductsTable({
+  products,
+  updateData,
+  handleDeleteProduct,
+}) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -122,7 +127,12 @@ export default function ProductsTable({ products, updateData }) {
               </StyledTableCell>
               <StyledTableCell align="center">
                 <EditModal product={product} updateData={updateData} />{" "}
-                <Button variant="danger">Delete</Button>
+                <Button
+                  variant="danger"
+                  onClick={() => handleDeleteProduct(product._id)}
+                >
+                  Delete
+                </Button>
               </StyledTableCell>
             </StyledTableRow>
           ))}

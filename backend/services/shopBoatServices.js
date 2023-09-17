@@ -61,14 +61,7 @@ exports.getShopBoatProducts = async (id, page, limit) => {
       limit: limit || 10, // Số sản phẩm trên mỗi trang
       populate: "categories",
     };
-
-    // Tạo một đối tượng filter để chỉ định điều kiện tìm kiếm
     const filter = { shopBoat: id };
-
-    // Lấy danh sách sản phẩm và populate categories
-    // const products = await Product.find(filter).populate("categories");
-
-    // Sử dụng paginate() trên danh sách sản phẩm đã được populate
     const result = await Product.paginate(filter, options);
 
     return result;

@@ -16,9 +16,9 @@ exports.getAllProducts = (pageOptions) => {
   });
 }
 
-exports.getProductById = (id) => {
+exports.getProductBySlug = (slug) => {
   return new Promise((resolve, reject) => {
-    Product.findById(id)
+    Product.findOne({ slug: slug })
       .populate('shopBoat', '-products') // Chọn các trường bạn muốn hiển thị từ bảng User
       .populate('categories') 
       .exec((err, product) => {
@@ -30,12 +30,13 @@ exports.getProductById = (id) => {
           resolve(product);
         }
       });
+      
   });
 }
 
 exports.deleteProductById = (id) => {
   return new Promise((resolve, reject) => {
-    Product.findByIdAndDelete(id, (err, product) => {
+    Product.deleteById(id, (err, product) => {
       if (err) {
         reject(err);
       } else {
@@ -44,6 +45,7 @@ exports.deleteProductById = (id) => {
     });
   });
 }
+
 
 exports.updateProductById = async (id, data) => {
   let update_data = await product_params(data);
@@ -78,5 +80,70 @@ const product_params = async (body) => {
     categories: categories,
     slug: slug,
     information: information,
+    image: body.image,
   };
+}
+
+
+exports.getTop4Products = () => {
+  return new Promise((resolve, reject) => {
+    Product.find({})
+      .limit(4)
+      .select("_id name price sale unit countInStock slug image")
+      .exec((err, products) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(products);
+        }
+      });
+  });
+}
+
+exports.getListProductsInHomePage = async () => {
+  let top_3_categories = await Category.find({}).limit(3).select("_id name slug").exec();
+  let listId = top_3_categories.map((category) => category._id);
+  //Xu li logic sau
+  let top_1 = {
+    name: top_3_categories[0].name,
+    slug: top_3_categories[0].slug,
+    id: top_3_categories[0]._id,
+  }
+  let top_2 = {
+    name: top_3_categories[1].name,
+    slug: top_3_categories[1].slug,
+    id: top_3_categories[1]._id,
+  }
+  let top_3 = {
+    name: top_3_categories[2].name,
+    slug: top_3_categories[2].slug,
+    id: top_3_categories[2]._id,
+  }
+  let top_1_products = await Product.find({ categories: top_3_categories[0]._id }).limit(10).select("_id name price sale unit countInStock slug image").exec();
+  let top_2_products = await Product.find({ categories: top_3_categories[1]._id }).limit(10).select("_id name price sale unit countInStock slug image").exec();
+  let top_3_products = await Product.find({ categories: top_3_categories[2]._id }).limit(10).select("_id name price sale unit countInStock slug image").exec();
+  let orther_products = await Product.find({ categories: { $nin: listId } }).limit(10).select("_id name price sale unit countInStock slug image").exec();
+    
+  return [
+    {
+      category: top_1,
+      products: top_1_products,
+    },
+    {
+      category: top_2,
+      products: top_2_products,
+    },
+    {
+      category: top_3,
+      products: top_3_products,
+    },
+    {
+      category: {
+        name: "Sản phẩm khác",
+        slug: "san-pham-khac",
+        id: "san-pham-khac",
+      },
+      products: orther_products,
+    },
+  ]
 }

@@ -1,18 +1,24 @@
 import "./style.scss";
+import { Link } from "react-router-dom";
 
 const SmallProduct = (props) => {
   const { item } = props;
 
   return (
-    <div className="container-smallproduct">
+    <Link
+      className="container-smallproduct cursor-pointer no-underline text-black"
+      to={`/marketplace/product/${item.slug}`}
+    >
       <div className="smallproduct">
-        <div className="decrease">
-          <span>-</span>
-          <span>5%</span>
-        </div>
+        {item.sale > 0 && (
+          <div className="decrease">
+            <span>-</span>
+            <span>{item.sale}%</span>
+          </div>
+        )}
         <div className="smallproduct-infor">
           <div className="smallproduct__img">
-            <img src={item.img} alt="" />
+            <img src={item.image} alt="" />
           </div>
           <div className="smallproduct__content">
             <div className="smallproduct__content--name">
@@ -20,7 +26,9 @@ const SmallProduct = (props) => {
             </div>
             <div className="smallproduct__content--price">
               <p className="price">{item.price}đ</p>
-              <p className="price-sale">{item.sale}đ</p>
+              <p className="price-sale">
+                {(item.price * (100 - item.sale)) / 100}đ
+              </p>
             </div>
             <div className="add-to-cart">
               <button>THÊM VÀO GIỎ HÀNG</button>
@@ -28,7 +36,7 @@ const SmallProduct = (props) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -7,6 +7,7 @@ import Grid from "@mui/material/Grid";
 import { Facebook, Instagram, Twitter } from "@mui/icons-material";
 import { Box } from "@mui/material";
 import TopSales from "./TopSales";
+import { v4 as uuidv4 } from "uuid";
 
 const listContact = [
   {
@@ -98,6 +99,7 @@ const MarketFooter = () => {
                       fontWeight={600}
                       paddingTop={0.75}
                       paddingBottom={0.75}
+                      key={uuidv4()}
                     >
                       {item.name}
                     </Typography>

@@ -7,6 +7,7 @@ import { BsCart4 } from "react-icons/bs";
 import ResponsiveAppBar from "./MarketHeader";
 import { useNavigate } from "react-router-dom";
 import "react-slideshow-image/dist/styles.css";
+import { Link } from "react-router-dom";
 
 const MarketNavbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,12 +25,12 @@ const MarketNavbar = () => {
   return (
     <div className="container-nav">
       <div className="content-nav">
-        <div className="logo">
+        <Link className="logo" to="/marketplace">
           <img
             src="https://chonoicairang.net/wp-content/uploads/2020/04/chonoicairang.net_.png"
             alt="logo"
           />
-        </div>
+        </Link>
         <div className="search-bar">
           <Container maxWidth="md" sx={{ mt: 20 }} className="fix-margintop">
             <TextField
@@ -39,7 +40,7 @@ const MarketNavbar = () => {
               value={searchTerm}
               onChange={handleChange}
               style={{ boxShadow: "0px 5px 15px ", borderRadius: "10px" }}
-              sx={{ width: 500 }}
+              sx={{ width: 300 }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -74,9 +75,7 @@ const MarketNavbar = () => {
         </div>
       </div>
       <div className="menu-header">
-        <div className="ResponsiveAppBar">
-          <ResponsiveAppBar />
-        </div>
+        <div className="ResponsiveAppBar">{/* <ResponsiveAppBar /> */}</div>
       </div>
     </div>
   );

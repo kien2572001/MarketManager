@@ -1,6 +1,8 @@
 import "./style.scss";
 import SmallProduct from "./SmallProduct";
 import { useEffect, useState } from "react";
+import { getTop4Products } from "api/product";
+import { v4 as uuidv4 } from "uuid";
 
 const HotSales = () => {
   const [hotSales, setHotSales] = useState([
@@ -34,6 +36,19 @@ const HotSales = () => {
     },
   ]);
 
+  useEffect(() => {
+    const fetchHotSales = async () => {
+      try {
+        const response = await getTop4Products();
+        //console.log(response);
+        setHotSales(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchHotSales();
+  }, []);
+
   return (
     <div className="container-hotsales">
       <div className="hotsales">
@@ -47,7 +62,7 @@ const HotSales = () => {
         </div>
         <div className="hotsales__content">
           {hotSales.map((item, index) => {
-            return <SmallProduct key={index} item={item} />;
+            return <SmallProduct item={item} key={uuidv4()} />;
           })}
         </div>
       </div>
