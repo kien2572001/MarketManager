@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 const pages = [
   "VỀ CHÚNG TÔI",
@@ -37,7 +39,13 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar
+      position="static"
+      sx={{
+        backgroundColor: "transparent",
+        boxShadow: "none",
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box
@@ -85,7 +93,7 @@ function ResponsiveAppBar() {
                   //check index
                   onClick={handleCloseNavMenu}
                   onMouseEnter={
-                    index === 0 ? handleOpenUserMenu : handleCloseUserMenu
+                    index === 0 ? handleOpenUserMenu : ""
                   }
                   sx={{ py: 2, color: "white", display: "block" }}
                   style={{
@@ -96,7 +104,7 @@ function ResponsiveAppBar() {
                 >
                   <span className="tracking-normal	">{page}</span>
                 </Button>
-                {/* <Menu
+                <Menu
                   sx={{ mt: "45px" }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
@@ -117,7 +125,7 @@ function ResponsiveAppBar() {
                       <Typography textAlign="center">{setting}</Typography>
                     </MenuItem>
                   ))}
-                </Menu> */}
+                </Menu>
               </>
             ))}
           </Box>
