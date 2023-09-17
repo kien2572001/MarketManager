@@ -62,6 +62,7 @@ exports.logout = function (req, res) {
 
   return res
     .clearCookie("refresh_token")
+    .clearCookie("access_token")
     .status(200)
     .json({ message: "Logged out successfully 😊 👌" });
 };

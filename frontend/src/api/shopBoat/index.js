@@ -29,4 +29,18 @@ const deleteProduct = async (id) => {
   }
 };
 
-export { getShopBoatProducts, updateProduct, deleteProduct };
+const getShopBoatByOwnerId = async (id) => {
+  try {
+    const response = await instance.get("/users/" + id + "/shopBoat");
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export {
+  getShopBoatProducts,
+  updateProduct,
+  deleteProduct,
+  getShopBoatByOwnerId,
+};

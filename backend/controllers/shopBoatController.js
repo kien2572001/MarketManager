@@ -42,3 +42,15 @@ exports.getShopBoatProducts = async function (req, res, next) {
     }
 }
 
+
+
+exports.getShopBoadByOwnerId = async function (req, res, next) {
+    let ownerID = req.params.id;
+    try {
+        let shopBoat = await shopBoatServices.getShopBoadByOwnerId(ownerID);
+        return serverResponse.sendSuccess(res, SUCCESSFUL, shopBoat);
+    }
+    catch (err) {
+        return serverResponse.sendError(res, err);
+    }
+}

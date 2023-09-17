@@ -70,3 +70,15 @@ exports.getShopBoatProducts = async (id, page, limit) => {
     throw error;
   }
 }
+
+exports.getShopBoadByOwnerId = (ownerId) => {
+  return new Promise((resolve, reject) => {
+    ShopBoat.findOne({ owner: ownerId }, (err, shopBoat) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(shopBoat);
+      }
+    });
+  });
+}

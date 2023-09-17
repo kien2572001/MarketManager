@@ -16,6 +16,21 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems, secondaryListItems } from "./listItems";
+import { Link as RouterLink } from "react-router-dom";
+
+//temp
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import ListSubheader from "@mui/material/ListSubheader";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PeopleIcon from "@mui/icons-material/People";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import LayersIcon from "@mui/icons-material/Layers";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
 
 function Copyright(props) {
   return (
@@ -84,11 +99,91 @@ const Drawer = styled(MuiDrawer, {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function DashboardLayout({ children }) {
+const AdminListItems = () => {
+  return (
+    <React.Fragment>
+      <ListItemButton component={RouterLink} to="/admin">
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
+        <ListItemText primary="Dashboard" />
+      </ListItemButton>
+      <ListItemButton>
+        <ListItemIcon>
+          <ShoppingCartIcon />
+        </ListItemIcon>
+        <ListItemText primary="Orders" />
+      </ListItemButton>
+      <ListItemButton>
+        <ListItemIcon>
+          <PeopleIcon />
+        </ListItemIcon>
+        <ListItemText primary="Customers" />
+      </ListItemButton>
+      <ListItemButton>
+        <ListItemIcon>
+          <BarChartIcon />
+        </ListItemIcon>
+        <ListItemText primary="Reports" />
+      </ListItemButton>
+      <ListItemButton>
+        <ListItemIcon>
+          <ExitToAppIcon />
+        </ListItemIcon>
+        <ListItemText primary="Logout" />
+      </ListItemButton>
+    </React.Fragment>
+  );
+};
+
+const MerchantListItems = () => {
+  return (
+    <React.Fragment>
+      <ListItemButton component={RouterLink} to="/merchant">
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
+        <ListItemText primary="Dashboard" />
+      </ListItemButton>
+      <ListItemButton component={RouterLink} to="/merchant/products">
+        <ListItemIcon>
+          <LocalMallIcon />
+        </ListItemIcon>
+        <ListItemText primary="Products" />
+      </ListItemButton>
+      <ListItemButton>
+        <ListItemIcon>
+          <ShoppingCartIcon />
+        </ListItemIcon>
+        <ListItemText primary="Orders" />
+      </ListItemButton>
+      <ListItemButton>
+        <ListItemIcon>
+          <BarChartIcon />
+        </ListItemIcon>
+        <ListItemText primary="Reports" />
+      </ListItemButton>
+      <ListItemButton>
+        <ListItemIcon>
+          <ExitToAppIcon />
+        </ListItemIcon>
+        <ListItemText primary="Logout" />
+      </ListItemButton>
+    </React.Fragment>
+  );
+};
+
+export default function DashboardLayout({ children, role }) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  if (role === "merchant") {
+    console.log("merchant");
+  } else if (role === "admin") {
+    console.log("admin");
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -143,7 +238,7 @@ export default function DashboardLayout({ children }) {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
+            {role === "admin" ? <AdminListItems /> : <MerchantListItems />}
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
           </List>

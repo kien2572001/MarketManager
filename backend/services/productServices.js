@@ -34,6 +34,23 @@ exports.getProductBySlug = (slug) => {
   });
 }
 
+exports.getProductById = (id) => {
+  return new Promise((resolve, reject) => {
+    Product.findById(id)
+      .populate('shopBoat', '-products') // Chọn các trường bạn muốn hiển thị từ bảng User
+      .populate('categories')
+      .exec((err, product) => {
+        if (err) {
+          // Xử lý lỗi nếu có
+          reject(err);
+        } else {
+          // Khi truy vấn thành công, bạn có thể truy cập thông tin owner thông qua product.owner
+          resolve(product);
+        }
+      });
+  });
+}
+
 exports.deleteProductById = (id) => {
   return new Promise((resolve, reject) => {
     Product.deleteById(id, (err, product) => {

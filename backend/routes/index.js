@@ -7,6 +7,7 @@ var shopBoatHandlers = require("../controllers/shopBoatController.js");
 var categoryHandlers = require("../controllers/categoryController.js");
 var productHandlers = require("../controllers/productController.js");
 import jwt from "jsonwebtoken";
+import ShopBoat from "../models/shopBoatModel";
 
 const authorization = (req, res, next) => {
   console.log("authorization");
@@ -15,11 +16,33 @@ const authorization = (req, res, next) => {
     return serverResponses.sendError(res, messages.UNAUTHORIZED);
   }
   try {
-    console.log("try");
-    const data = jwt.verify((accessToken, "ACCESS_TOKEN_PRIVATE_KEY"));
-    console.log(data);
+    const data = jwt.verify(accessToken, "ACCESS_TOKEN_PRIVATE_KEY");
     req.userId = data.id;
     req.userRole = data.role;
+    return next();
+  } catch (error){
+    console.log("catch");
+    console.log("Error:", error);
+    return serverResponses.sendError(res, messages.UNAUTHORIZED);
+  }
+};
+
+const merchantAuthorization = (req, res, next) => {
+  const accessToken = req.cookies["access_token"];
+  if (!accessToken) {
+    return serverResponses.sendError(res, messages.UNAUTHORIZED);
+  }
+  try {
+    const data = jwt.verify(accessToken, "ACCESS_TOKEN_PRIVATE_KEY");
+    req.userId = data.id;
+    req.userRole = data.role;
+    if (req.userRole !== 1) {
+      return serverResponses.sendError(res, messages.UNAUTHORIZED);
+    }
+    else {
+      const shopBoat = ShopBoat.findOne({ owner: req.userId });
+      req.shopBoatId = shopBoat._id;
+    }
     return next();
   } catch (error){
     console.log("catch");
@@ -37,12 +60,13 @@ const routes = (app) => {
 
   router.get("/users", userHandlers.getAllUsers);
   router.get("/users/:id", userHandlers.getUserById);
+  router.get("/users/:id/shopBoat", shopBoatHandlers.getShopBoadByOwnerId);
 
   router.get("/shopBoats", shopBoatHandlers.getAllShopBoats);
   router.get("/shopBoats/:id", shopBoatHandlers.getShopBoatById);
-  router.get("/shopBoats/:id/products", shopBoatHandlers.getShopBoatProducts);
+  router.get("/shopBoats/:id/products",shopBoatHandlers.getShopBoatProducts);
 
-  router.get("/products",productHandlers.getAllProducts);
+  router.get("/products",authorization ,productHandlers.getAllProducts);
   router.get("/products/top4", productHandlers.getTop4Products);
   router.get("/products/homepage", productHandlers.getListProductsInHomePage);
   router.get("/products/:slug", productHandlers.getProductBySlug);

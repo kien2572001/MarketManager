@@ -47,9 +47,10 @@ export default function SignIn() {
   const handleLogin = async (email, password) => {
     try {
       const res = await signinService(email, password);
-      if (res.status === 200) {
+      if (res?.status === 200) {
         successToast("Login successful");
         const { role } = jwt_decode(cookies.access_token);
+        console.log("cookies", role);
         redirectAfterLogin(role);
       }
     } catch (error) {
@@ -63,10 +64,10 @@ export default function SignIn() {
   const redirectAfterLogin = (role) => {
     switch (role) {
       case ROLES.ADMIN:
-        navigate("/admin/dashboard"); // Sử dụng history.push để điều hướng
+        navigate("/admin"); // Sử dụng history.push để điều hướng
         break;
       case ROLES.MERCHANT:
-        navigate("/merchant/dashboard"); // Sử dụng history.push để điều hướng
+        navigate("/merchant"); // Sử dụng history.push để điều hướng
         break;
       case ROLES.CUSTOMER:
         navigate("/marketplace"); // Sử dụng history.push để điều hướng
