@@ -16,6 +16,8 @@ exports.getAllProducts = (pageOptions) => {
   });
 }
 
+
+
 exports.getProductBySlug = (slug) => {
   return new Promise((resolve, reject) => {
     Product.findOne({ slug: slug })
@@ -71,6 +73,16 @@ exports.updateProductById = async (id, data) => {
       new: true,
     }).populate("categories").exec();
     return product;
+  } catch (err) {
+    throw err;
+  }
+}
+
+exports.createProduct = async (data) => {
+  let product = await product_params(data);
+  try {
+    const new_product = await Product.create(product);
+    return new_product.populate("categories").execPopulate();
   } catch (err) {
     throw err;
   }

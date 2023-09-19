@@ -83,3 +83,14 @@ exports.getListProductsInHomePage = async function (req, res, next) {
     }
 }
 
+
+
+exports.addProduct = async function (req, res, next) {
+    try {
+        let product = await productServices.addProduct(req.body);
+        return serverResponse.sendSuccess(res, SUCCESSFUL, product);
+    }
+    catch (err) {
+        return serverResponse.sendError(res, err);
+    }
+}

@@ -66,7 +66,7 @@ const routes = (app) => {
   router.get("/shopBoats/:id", shopBoatHandlers.getShopBoatById);
   router.get("/shopBoats/:id/products",shopBoatHandlers.getShopBoatProducts);
 
-  router.get("/products",authorization ,productHandlers.getAllProducts);
+  router.get("/products",productHandlers.getAllProducts);
   router.get("/products/top4", productHandlers.getTop4Products);
   router.get("/products/homepage", productHandlers.getListProductsInHomePage);
   router.get("/products/:slug", productHandlers.getProductBySlug);

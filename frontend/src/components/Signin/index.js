@@ -49,12 +49,11 @@ export default function SignIn() {
       const res = await signinService(email, password);
       if (res?.status === 200) {
         successToast("Login successful");
-        const { role } = jwt_decode(cookies.access_token);
-        console.log("cookies", role);
+        const { role } = await jwt_decode(cookies.access_token);
+        //console.log("cookies", role);
         redirectAfterLogin(role);
       }
     } catch (error) {
-      console.log(error);
       if (error?.response?.status === 401) {
         errorToast(error.response.data.message || "Login failed");
       }

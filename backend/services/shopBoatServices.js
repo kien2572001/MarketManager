@@ -54,14 +54,15 @@ exports.getShopBoatById = (id) => {
 //   });
 // }
 
-exports.getShopBoatProducts = async (id, page, limit) => {
+exports.getShopBoatProducts = async (id, page, limit, queryCondition) => {
   try {
     const options = {
       page: page || 1,
       limit: limit || 10, // Số sản phẩm trên mỗi trang
       populate: "categories",
     };
-    const filter = { shopBoat: id };
+    const filter = { shopBoat: id , ...queryCondition};
+    console.log("service", filter);
     const result = await Product.paginate(filter, options);
 
     return result;

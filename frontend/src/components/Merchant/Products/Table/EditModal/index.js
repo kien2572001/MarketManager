@@ -139,8 +139,8 @@ function EditModal({ product, updateData }) {
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await getListCategories();
-      if (response) {
-        let categories = response.data.data.map((category) => {
+      if (response?.status === 200) {
+        let categories = response?.data.data.map((category) => {
           return { value: category.slug, label: category.name };
         });
         setListCategory(categories);
@@ -149,7 +149,7 @@ function EditModal({ product, updateData }) {
 
     const initSelectedCategories = () => {
       let categories = product.categories.map((category) => {
-        return { value: category.slug, label: category.name };
+        return { value: category.id, label: category.name };
       });
       setSelectedCategory(categories);
     };

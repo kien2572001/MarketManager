@@ -8,7 +8,9 @@ import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
 import { navigate } from "react-router-dom";
 import { getShopBoatByOwnerId } from "api/shopBoat";
+import { getListCategories } from "api/category";
 import { useNavigate } from "react-router-dom";
+import ProductSearchForm from "./ProductSearchForm";
 
 const MerchantProducts = () => {
   const [products, setProducts] = useState([]);
@@ -18,27 +20,31 @@ const MerchantProducts = () => {
   const limit = 5;
   const navigate = useNavigate();
   const [shopBoatId, setShopBoatId] = useState(null);
+  const [categories, setCategories] = useState([]);
 
   useLayoutEffect(() => {
-    if (cookies.access_token) {
-      const { id, role } = jwt_decode(cookies.access_token);
-      if (role !== 1) {
+    const checkRole = async () => {
+      if (cookies.access_token) {
+        const { id, role } = await jwt_decode(cookies.access_token);
+        if (role !== 1) {
+          navigate("/signin");
+        }
+        const fetchShopBoat = async (id) => {
+          const response = await getShopBoatByOwnerId(id);
+          if (response) {
+            //console.log(response.data.data._id);
+            const shopBoatId = response.data.data._id;
+            console.log(shopBoatId);
+            setShopBoatId(shopBoatId);
+          }
+        };
+        fetchShopBoat(id);
+      } else {
+        // Nếu không có access_token, chuyển hướng đến trang đăng nhập
         navigate("/signin");
       }
-      const fetchShopBoat = async (id) => {
-        const response = await getShopBoatByOwnerId(id);
-        if (response) {
-          //console.log(response.data.data._id);
-          const shopBoatId = response.data.data._id;
-          console.log(shopBoatId);
-          setShopBoatId(shopBoatId);
-        }
-      };
-      fetchShopBoat(id);
-    } else {
-      // Nếu không có access_token, chuyển hướng đến trang đăng nhập
-      navigate("/signin");
-    }
+    };
+    checkRole();
   }, [cookies.access_token, navigate]);
 
   useEffect(() => {
@@ -48,7 +54,6 @@ const MerchantProducts = () => {
         if (response) {
           setProducts(response.data.data.docs);
           setTotal(response.data.data.totalPages);
-          //console.log(response.data.data);
         }
       }
     };
@@ -56,13 +61,23 @@ const MerchantProducts = () => {
   }, [shopBoatId]);
 
   useEffect(() => {
+    const fetchCategories = async () => {
+      const response = await getListCategories();
+      if (response?.status === 200) {
+        let categories = response.data.data;
+        categories = categories.map((category) => {
+          return { value: category._id, label: category.name };
+        });
+        setCategories(categories);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
     const fetchProducts = async () => {
-      const response = await getShopBoatProducts(
-        "65057590877cec153c23bbb0",
-        page,
-        limit
-      );
-      if (response) {
+      const response = await getShopBoatProducts(shopBoatId, page, limit);
+      if (response?.status === 200) {
         setProducts(response.data.data.docs);
       }
     };
@@ -95,9 +110,28 @@ const MerchantProducts = () => {
     }
   };
 
+  const handleSearch = async (formData) => {
+    try {
+      const response = await getShopBoatProducts(
+        shopBoatId,
+        1,
+        limit,
+        formData
+      );
+      if (response?.status === 200) {
+        setProducts(response.data.data.docs);
+        setTotal(response.data.data.totalPages);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <DashboardLayout role="merchant">
-      <Grid item xs={12}></Grid>
+      <Grid item xs={12} sx={{ mb: 2 }}>
+        <ProductSearchForm onSearch={handleSearch} categories={categories} />
+      </Grid>
       <Grid item xs={12}>
         <ProductsTable
           products={products}

@@ -31,14 +31,16 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (cookies.access_token) {
-      const { role } = jwt_decode(cookies.access_token);
-      console.log("cookies", role);
-      setRole(role);
-    } else {
-      // Nếu không có access_token, chuyển hướng đến trang đăng nhập
-      navigate("/signin");
-    }
+    const checkRole = async () => {
+      if (cookies.access_token) {
+        const { role } = await jwt_decode(cookies.access_token);
+        setRole(role);
+      } else {
+        // Nếu không có access_token, chuyển hướng đến trang đăng nhập
+        navigate("/signin");
+      }
+    };
+    checkRole();
   }, [cookies.access_token, navigate]);
 
   return (
