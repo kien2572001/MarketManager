@@ -13,6 +13,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useLocation } from "react-router-dom";
+import { signupService } from "api/auth";
+import { successToast, errorToast } from "utilities/toast";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -37,13 +40,35 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [isSeller, setIsSeller] = React.useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(firstName, lastName, email, password, isSeller);
+    try {
+      const response = await signupService(
+        firstName,
+        lastName,
+        email,
+        password,
+        isSeller
+      );
+      if (response?.status === 201) {
+        console.log(response);
+        successToast("Sign up successfully, redirecting to sign in page");
+        navigate("/signin");
+      } else {
+        errorToast("Sign up failed");
+      }
+    } catch (error) {
+      console.log(error);
+      errorToast("Sign up failed");
+    }
   };
 
   return (
@@ -80,6 +105,8 @@ export default function SignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -90,6 +117,8 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -100,6 +129,8 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -111,14 +142,16 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
+                  control={<Checkbox value={true} color="primary" />}
+                  label="Do you want to become a seller?"
+                  value={isSeller}
+                  onChange={(e) => setIsSeller(e.target.value)}
                 />
               </Grid>
             </Grid>
@@ -127,6 +160,7 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={handleSubmit}
             >
               Sign Up
             </Button>

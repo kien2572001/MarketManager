@@ -9,7 +9,7 @@ var productHandlers = require("../controllers/productController.js");
 import jwt from "jsonwebtoken";
 import ShopBoat from "../models/shopBoatModel";
 
-const authorization = (req, res, next) => {
+const authorization =  (req, res, next) => {
   console.log("authorization");
   const accessToken = req.cookies["access_token"];
   if (!accessToken) {
@@ -20,14 +20,14 @@ const authorization = (req, res, next) => {
     req.userId = data.id;
     req.userRole = data.role;
     return next();
-  } catch (error){
+  } catch (error){ 
     console.log("catch");
     console.log("Error:", error);
     return serverResponses.sendError(res, messages.UNAUTHORIZED);
   }
 };
 
-const merchantAuthorization = (req, res, next) => {
+const merchantAuthorization = async (req, res, next) => {
   const accessToken = req.cookies["access_token"];
   if (!accessToken) {
     return serverResponses.sendError(res, messages.UNAUTHORIZED);
@@ -40,7 +40,8 @@ const merchantAuthorization = (req, res, next) => {
       return serverResponses.sendError(res, messages.UNAUTHORIZED);
     }
     else {
-      const shopBoat = ShopBoat.findOne({ owner: req.userId });
+      const shopBoat = await ShopBoat.findOne({ owner: req.userId });
+      
       req.shopBoatId = shopBoat._id;
     }
     return next();
@@ -64,7 +65,9 @@ const routes = (app) => {
 
   router.get("/shopBoats", shopBoatHandlers.getAllShopBoats);
   router.get("/shopBoats/:id", shopBoatHandlers.getShopBoatById);
-  router.get("/shopBoats/:id/products",shopBoatHandlers.getShopBoatProducts);
+  router.get("/shopBoats/:id/products", merchantAuthorization, shopBoatHandlers.getShopBoatProducts);
+  router.put("/shopBoats/:id",  shopBoatHandlers.updateShopBoatById);
+  router.put("/shopBoats", merchantAuthorization, shopBoatHandlers.updateShopBoat );
 
   router.get("/products",productHandlers.getAllProducts);
   router.get("/products/top4", productHandlers.getTop4Products);
@@ -72,7 +75,7 @@ const routes = (app) => {
   router.get("/products/:slug", productHandlers.getProductBySlug);
   router.delete("/products/:id", productHandlers.deleteProductById);
   router.put("/products/:id", productHandlers.updateProductById);
-  
+  router.post("/products", merchantAuthorization, productHandlers.createProduct);
 
   router.get("/categories/list", categoryHandlers.getListCategories);
   router.get("/categories", categoryHandlers.getAllCategories);

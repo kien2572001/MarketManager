@@ -20,6 +20,17 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 // Thêm dữ liệu vào MongoDB
 let users = [];
+
+users.push({
+  firstName: "Admin",
+  lastName: "Admin",
+  email: "admin@gmail.com",
+  hash_password: "$2b$10$BHm3/TU0/QuK6JudqCRBzufCN8o.4SIeUVj/3oloENWyUWZi/sb3i",
+  avatar: faker.image.avatar(),
+  role: ROLES.ADMIN,
+});
+
+
 for (let i = 0; i < 10; i++) {
   users.push({
     firstName: faker.person.firstName(),
@@ -27,7 +38,7 @@ for (let i = 0; i < 10; i++) {
     email: faker.internet.email(),
     hash_password: "$2b$10$BHm3/TU0/QuK6JudqCRBzufCN8o.4SIeUVj/3oloENWyUWZi/sb3i",
     avatar: faker.image.avatar(),
-    role: faker.number.int({ min: 0, max: 2 }),
+    role: faker.number.int({ min: 1, max: 2 }),
   })
 }
 
@@ -56,8 +67,9 @@ const insertShopBoat = async () => {
         name: faker.commerce.department(),
         description: faker.lorem.paragraphs({ min: 1, max: 3 }),
         address: faker.location.streetAddress() + ", " + faker.location.city(),
-        avatar: faker.image.avatar(),
+        avatar: "https://s3.nucuoimekong.com/ncmk/wp-content/uploads/dac-san-mien-tay.jpg",
         owner: listUserId[i]._id,
+        isApproved: faker.helpers.arrayElement([true, false]),
       });
     }
     await ShopBoat.insertMany(shopBoats);
@@ -95,23 +107,8 @@ const rootCategories = [
     parent: null,
   },
   {
-    name: "Bánh kẹo",
-    slug: "banh-keo",
-    parent: null,
-  },
-  {
-    name: "Đồ uống",
-    slug: "do-uong",
-    parent: null,
-  },
-  {
     name: "Đồ khô",
     slug: "do-kho",
-    parent: null,
-  },
-  {
-    name: "Đồ gia dụng",
-    slug: "do-gia-dung",
     parent: null,
   },
 ];

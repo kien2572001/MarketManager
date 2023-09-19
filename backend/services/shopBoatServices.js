@@ -83,3 +83,29 @@ exports.getShopBoadByOwnerId = (ownerId) => {
     });
   });
 }
+
+exports.updateShopBoat = (id, data) => {
+  return new Promise((resolve, reject) => {
+    ShopBoat.findByIdAndUpdate(id, data, { new: true }, (err, shopBoat) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(shopBoat);
+      }
+    });
+  });
+}
+
+exports.updateShopBoatById = async (id, data) => {
+  return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
+      ShopBoat.findByIdAndUpdate(id, data, { new: true }, (err, shopBoat) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(shopBoat);
+        }
+      });
+    });
+  });
+}

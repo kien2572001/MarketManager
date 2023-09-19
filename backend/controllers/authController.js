@@ -5,19 +5,47 @@ var mongoose = require("mongoose"),
 
 import generateTokens from "../utils/helpers/generateTokens";
 import Token from "../models/tokenModel";
+import { ROLES } from "../enum/enum";
+import ShopBoat from "../models/shopBoatModel";
 
-exports.register = function (req, res) {
-  var newUser = new User(req.body);
-  newUser.hash_password = bcrypt.hashSync(req.body.password, 10);
-  newUser.save(function (err, user) {
-    if (err) {
-      return res.status(400).send({
-        message: err,
-      });
-    } else {
-      user.hash_password = undefined;
-      return res.json(user);
-    }
+exports.register = async function (req, res) {   
+  console.log(req.body); 
+  let user  = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    role: req.body.isSeller ? ROLES.MERCHANT : ROLES.CUSTOMER,
+  }
+
+  const isEmailExist = await User.findOne({ email: req.body.email });
+  console.log(isEmailExist);
+  if (isEmailExist) {
+    return res.status(400).json({
+      message: "Email already exists 😢 😢",
+    });
+  }
+
+
+  user.hash_password = bcrypt.hashSync(req.body.password, 10);
+  User.create(user, function (err, user) {
+      if (user.role === ROLES.MERCHANT){
+        const shopBoat = {
+          name: "Cua hang cua " + user.firstName + " " + user.lastName,
+          owner: user._id,
+          avatar: "https://s3.nucuoimekong.com/ncmk/wp-content/uploads/dac-san-mien-tay.jpg",
+          description: "Hay viet mot vai dong gioi thieu ve cua hang cua ban nhe",
+          address: "Dia chi cua hang",
+        };
+        ShopBoat.create(shopBoat, function (err, shopBoat) {
+          if (err) {
+            return res.status(400).json({
+              message: "Something went wrong 😢 😢",
+            });
+          }
+          user.hash_password = undefined;
+          return res.status(201).json({ message: "User created successfully 😊 👌" });
+        });
+      }
   });
 };
 
@@ -41,7 +69,7 @@ exports.login = async (req, res) =>{
         .cookie("refresh_token", refreshToken, { httpOnly: true, secure: false })
         .cookie("access_token", accessToken, { httpOnly: false, secure: false })
         .status(200)
-        .json({ message: "Logged in successfully 😊 👌" });
+        .json({ message: "Logged in successfully 😊 👌", accessToken });
     }
   );
 };

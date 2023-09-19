@@ -78,11 +78,12 @@ exports.updateProductById = async (id, data) => {
   }
 }
 
-exports.createProduct = async (data) => {
+exports.createProduct = async (data, shopBoatId) => {
   let product = await product_params(data);
+  product.shopBoat = shopBoatId;
   try {
     const new_product = await Product.create(product);
-    return new_product.populate("categories").execPopulate();
+    return new_product;
   } catch (err) {
     throw err;
   }
@@ -98,7 +99,6 @@ const product_params = async (body) => {
   categories = categories.map((category) => category._id);
   let slug = slugify(body.name, { lower: true });
   let information = JSON.parse(body.information)
-  console.log(information);
   return {
     name: body.name,
     price: body.price,

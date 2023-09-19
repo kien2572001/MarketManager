@@ -30,7 +30,7 @@ exports.getShopBoatById = async function (req, res, next) {
 
 
 exports.getShopBoatProducts = async function (req, res, next) {
-    let shopBoatID = req.params.id;
+    let shopBoatID = req.shopBoatId;
     let page = req.query.page || 1;
     let limit = req.query.limit || 10;
     let queryCondition = {}
@@ -62,8 +62,6 @@ exports.getShopBoatProducts = async function (req, res, next) {
     if (req.query.discount){
         queryCondition.sale = {$gte: Number.parseInt(req.query.discount)}
     }
-    console.log(queryCondition);
-    console.log("query", req.query);
     try {
         let shopBoat = await shopBoatServices.getShopBoatProducts(shopBoatID, page, limit, queryCondition);
         return serverResponse.sendSuccess(res, SUCCESSFUL, shopBoat);
@@ -80,6 +78,31 @@ exports.getShopBoadByOwnerId = async function (req, res, next) {
     try {
         let shopBoat = await shopBoatServices.getShopBoadByOwnerId(ownerID);
         return serverResponse.sendSuccess(res, SUCCESSFUL, shopBoat);
+    }
+    catch (err) {
+        return serverResponse.sendError(res, err);
+    }
+}
+
+exports.updateShopBoat = async function (req, res, next) {
+    let shopBoatID = req.shopBoatId;
+    let shopBoat = req.body;
+    try {
+        let updatedShopBoat = await shopBoatServices.updateShopBoat(shopBoatID, shopBoat);
+        return serverResponse.sendSuccess(res, SUCCESSFUL, updatedShopBoat);
+    }
+    catch (err) {
+        return serverResponse.sendError(res, err);
+    }
+}
+
+
+exports.updateShopBoatById = async function (req, res, next) {
+    let shopBoatID = req.params.id;
+    let shopBoat = req.body;
+    try {
+        let updatedShopBoat = await shopBoatServices.updateShopBoatById(shopBoatID, shopBoat);
+        return serverResponse.sendSuccess(res, SUCCESSFUL, updatedShopBoat);
     }
     catch (err) {
         return serverResponse.sendError(res, err);

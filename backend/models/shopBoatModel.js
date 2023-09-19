@@ -37,6 +37,10 @@ const ShopBoatSchema = new Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Product",
         }],
+        isApproved: {
+            type: Boolean,
+            default: false,
+        },
     },
     { timestamps: true }
 );

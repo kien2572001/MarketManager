@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { v4 as uuidv4 } from "uuid";
+import AddModal from "../AddModal";
 
-const ProductSearchForm = ({ onSearch, categories }) => {
+const ProductSearchForm = ({
+  onSearch,
+  categories,
+  updateData,
+  addProduct,
+}) => {
   const [formData, setFormData] = useState({
     name: "",
     priceMin: "",
@@ -130,9 +136,10 @@ const ProductSearchForm = ({ onSearch, categories }) => {
           <Button variant="secondary" className="ms-2" onClick={clearForm}>
             Xóa bộ lọc
           </Button>
-          <Button variant="success" className="ms-2">
+          {/* <Button variant="success" className="ms-2">
             Thêm sản phẩm
-          </Button>
+          </Button> */}
+          <AddModal updateData={updateData} addProduct={addProduct} />
         </Col>
       </Row>
     </Form>

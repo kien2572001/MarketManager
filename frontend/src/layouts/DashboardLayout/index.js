@@ -31,6 +31,13 @@ import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
+import StoreIcon from "@mui/icons-material/Store";
+
+import { logoutService } from "api/auth";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import jwt_decode from "jwt-decode";
 
 function Copyright(props) {
   return (
@@ -99,7 +106,7 @@ const Drawer = styled(MuiDrawer, {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-const AdminListItems = () => {
+const AdminListItems = ({ handleLogout }) => {
   return (
     <React.Fragment>
       <ListItemButton component={RouterLink} to="/admin">
@@ -107,6 +114,12 @@ const AdminListItems = () => {
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
+      </ListItemButton>
+      <ListItemButton component={RouterLink} to="/admin/shops">
+        <ListItemIcon>
+          <StoreIcon />
+        </ListItemIcon>
+        <ListItemText primary="Shops" />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
@@ -126,7 +139,7 @@ const AdminListItems = () => {
         </ListItemIcon>
         <ListItemText primary="Reports" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton onClick={handleLogout}>
         <ListItemIcon>
           <ExitToAppIcon />
         </ListItemIcon>
@@ -136,7 +149,7 @@ const AdminListItems = () => {
   );
 };
 
-const MerchantListItems = () => {
+const MerchantListItems = ({ handleLogout }) => {
   return (
     <React.Fragment>
       <ListItemButton component={RouterLink} to="/merchant">
@@ -163,7 +176,7 @@ const MerchantListItems = () => {
         </ListItemIcon>
         <ListItemText primary="Reports" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton onClick={handleLogout}>
         <ListItemIcon>
           <ExitToAppIcon />
         </ListItemIcon>
@@ -174,16 +187,40 @@ const MerchantListItems = () => {
 };
 
 export default function DashboardLayout({ children, role }) {
+  const navigate = useNavigate();
+  const [cookies] = useCookies(["access_token"]);
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  if (role === "merchant") {
-    console.log("merchant");
-  } else if (role === "admin") {
-    console.log("admin");
-  }
+  useEffect(() => {
+    const checkRole = async () => {
+      if (cookies.access_token) {
+        const { role } = await jwt_decode(cookies.access_token);
+        if (role === "admin") {
+          navigate("/admin");
+        }
+        if (role === "merchant") {
+          navigate("/merchant");
+        }
+      } else {
+        // Nếu không có access_token, chuyển hướng đến trang đăng nhập
+        navigate("/signin");
+      }
+    };
+    checkRole();
+  }, [cookies.access_token, navigate]);
+  const handleLogout = async () => {
+    try {
+      const response = await logoutService();
+      if (response?.status === 200) {
+        navigate("/signin");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -238,7 +275,11 @@ export default function DashboardLayout({ children, role }) {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {role === "admin" ? <AdminListItems /> : <MerchantListItems />}
+            {role === "admin" ? (
+              <AdminListItems handleLogout={handleLogout} />
+            ) : (
+              <MerchantListItems handleLogout={handleLogout} />
+            )}
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
           </List>

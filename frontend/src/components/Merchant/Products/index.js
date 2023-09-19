@@ -79,6 +79,7 @@ const MerchantProducts = () => {
       const response = await getShopBoatProducts(shopBoatId, page, limit);
       if (response?.status === 200) {
         setProducts(response.data.data.docs);
+        setTotal(response.data.data.totalPages);
       }
     };
     fetchProducts();
@@ -127,10 +128,20 @@ const MerchantProducts = () => {
     }
   };
 
+  const addProduct = (product) => {
+    let newProducts = [product, ...products];
+    setProducts(newProducts);
+  };
+
   return (
     <DashboardLayout role="merchant">
       <Grid item xs={12} sx={{ mb: 2 }}>
-        <ProductSearchForm onSearch={handleSearch} categories={categories} />
+        <ProductSearchForm
+          onSearch={handleSearch}
+          categories={categories}
+          updateData={updateData}
+          addProduct={addProduct}
+        />
       </Grid>
       <Grid item xs={12}>
         <ProductsTable

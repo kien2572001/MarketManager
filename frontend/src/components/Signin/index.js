@@ -16,7 +16,6 @@ import { successToast, errorToast, warningToast } from "utilities/toast";
 import { ROLES } from "../../enum";
 import { signinService } from "api/auth";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
 function Copyright(props) {
   return (
@@ -42,15 +41,14 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const [cookies] = useCookies(["access_token"]);
 
   const handleLogin = async (email, password) => {
     try {
       const res = await signinService(email, password);
       if (res?.status === 200) {
         successToast("Login successful");
-        const { role } = await jwt_decode(cookies.access_token);
-        //console.log("cookies", role);
+        console.log("res", res);
+        const { role } = await jwt_decode(res.data.accessToken);
         redirectAfterLogin(role);
       }
     } catch (error) {
@@ -82,7 +80,7 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     const email = data.get("email");
     const password = data.get("password");
-    handleLogin(email, password);
+    await handleLogin(email, password);
   };
 
   return (

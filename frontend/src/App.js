@@ -10,12 +10,15 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import AdminDashboard from "components/Admin/AdminDashboard";
 import SignIn from "components/Signin";
 import SignUp from "components/Signup";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
+
+//Admin
+import AdminDashboard from "components/Admin/AdminDashboard";
+import Shops from "components/Admin/Shops";
 
 //Marketplace
 import Homepage from "components/Market/Homepage";
@@ -30,23 +33,11 @@ function App() {
   const [role, setRole] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkRole = async () => {
-      if (cookies.access_token) {
-        const { role } = await jwt_decode(cookies.access_token);
-        setRole(role);
-      } else {
-        // Nếu không có access_token, chuyển hướng đến trang đăng nhập
-        navigate("/signin");
-      }
-    };
-    checkRole();
-  }, [cookies.access_token, navigate]);
-
   return (
     <div className="App">
       <Routes>
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/shops" element={<Shops />} />
         <Route path="/merchant" element={<MerchantDashbroad />} />
         <Route path="/merchant/products" element={<MerchantProducts />} />
         <Route path="/marketplace" element={<Homepage />} />

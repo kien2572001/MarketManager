@@ -46,9 +46,50 @@ const deleteProduct = async (id) => {
   }
 };
 
+const createProduct = async (data) => {
+  try {
+    const response = await instance.post(`products`, data);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const getShopBoatByOwnerId = async (id) => {
   try {
     const response = await instance.get("/users/" + id + "/shopBoat");
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const updateShopBoat = async (data) => {
+  try {
+    const response = await instance.put("/shopBoats", data);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getAllShopBoats = async (page = 1, limit = 10) => {
+  try {
+    const response = await instance.get("/shopBoats", {
+      params: {
+        page: page,
+        limit: limit,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const updateShopBoatById = async (id, data) => {
+  try {
+    const response = await instance.put(`/shopBoats/${id}`, data);
     return response;
   } catch (error) {
     console.log(error);
@@ -60,4 +101,8 @@ export {
   updateProduct,
   deleteProduct,
   getShopBoatByOwnerId,
+  createProduct,
+  updateShopBoat,
+  getAllShopBoats,
+  updateShopBoatById,
 };
