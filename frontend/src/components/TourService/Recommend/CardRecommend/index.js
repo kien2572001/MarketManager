@@ -4,6 +4,7 @@ import Card from '@mui/joy/Card';
 import CardCover from '@mui/joy/CardCover';
 import CardContent from '@mui/joy/CardContent';
 import Typography from '@mui/joy/Typography';
+import './style.scss'
 
 export default function CardRecommend(props) {
     const { itemRecommend } = props
@@ -11,14 +12,23 @@ export default function CardRecommend(props) {
         <Box
             component="ul"
             sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', p: 0, m: 0 }}
+            className="card-recommend "
         >
-            <Card component="li" sx={{ minWidth: 200, flexGrow: 1 }} >
-                <CardCover>
+            <Card
+                component="li"
+                sx={{ minWidth: 200, flexGrow: 1, }}
+                className='card-recommend-item '
+            >
+                <CardCover className='img-recommend'>
                     <img
                         src={itemRecommend.img}
                         loading="lazy"
                         alt=""
                     />
+
+                    {/* <div className='bg-image hover-zoom'>
+                        <img src='https://mdbootstrap.com/img/new/standard/city/053.webp'  />
+                    </div> */}
                 </CardCover>
                 <CardContent>
                     <Typography

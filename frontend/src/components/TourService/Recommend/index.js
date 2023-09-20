@@ -57,8 +57,8 @@ const Recommend = () => {
                             listRecommend.map((item, index) => {
                                 console.log(index)
                                 return (
-                                    <Grid item xs>
-                                        <Item className='auiui'>
+                                    <Grid item xs >
+                                        <Item className='auiui '>
                                             <CardRecommend itemRecommend={listRecommend[index]} />
                                         </Item>
                                     </Grid>
