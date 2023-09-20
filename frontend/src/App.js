@@ -14,6 +14,8 @@ import Homepage from "components/Market/Homepage";
 //Merchant
 import MerchantProducts from "components/Merchant/Products";
 import DetailProduct from "components/Market/DetailProduct";
+import TourLayout from "layouts/CustomerLayout/TourLayout";
+import TourService from "components/TourService";
 
 function App() {
   return (
@@ -24,6 +26,7 @@ function App() {
           <Route path="/merchant" element={<AdminDashboard />} />
           <Route path="/merchant/products" element={<MerchantProducts />} />
           <Route path="/marketplace" element={<Homepage />} />
+          <Route path="/touronline" element={<TourService />} />
 
           <Route
             path="/marketplace/product/:slug"

@@ -91,10 +91,7 @@ function ResponsiveAppBar() {
                 <Button
                   key={page}
                   //check index
-                  onClick={handleCloseNavMenu}
-                  onMouseEnter={
-                    index === 0 ? handleOpenUserMenu : ""
-                  }
+                  onMouseEnter={index === 0 ? handleOpenUserMenu : undefined}
                   sx={{ py: 2, color: "white", display: "block" }}
                   style={{
                     color: "#E1EDDA",
