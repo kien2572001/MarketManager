@@ -27,6 +27,7 @@ import DetailProduct from "components/Market/DetailProduct";
 //Merchant
 import MerchantProducts from "components/Merchant/Products";
 import MerchantDashbroad from "components/Merchant/MerchantDashbroad";
+import Orders from "components/Merchant/Orders";
 
 function App() {
   const [cookies] = useCookies(["access_token"]);
@@ -36,13 +37,21 @@ function App() {
   return (
     <div className="App">
       <Routes>
+        {/* Admin */}
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/shops" element={<Shops />} />
+
+        {/* Merchant */}
         <Route path="/merchant" element={<MerchantDashbroad />} />
         <Route path="/merchant/products" element={<MerchantProducts />} />
+        <Route path="/merchant/orders" element={<Orders />} />
+
+        {/* Marketplace */}
         <Route path="/marketplace" element={<Homepage />} />
 
         <Route path="/marketplace/product/:slug" element={<DetailProduct />} />
+
+        {/* Auth */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>

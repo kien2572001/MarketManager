@@ -164,7 +164,7 @@ const MerchantListItems = ({ handleLogout }) => {
         </ListItemIcon>
         <ListItemText primary="Products" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton component={RouterLink} to="/merchant/orders">
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>

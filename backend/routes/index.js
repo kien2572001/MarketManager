@@ -6,6 +6,7 @@ var userHandlers = require("../controllers/userController.js");
 var shopBoatHandlers = require("../controllers/shopBoatController.js");
 var categoryHandlers = require("../controllers/categoryController.js");
 var productHandlers = require("../controllers/productController.js");
+var productOrderHandlers = require("../controllers/productOrderController.js");
 import jwt from "jsonwebtoken";
 import ShopBoat from "../models/shopBoatModel";
 
@@ -68,6 +69,9 @@ const routes = (app) => {
   router.get("/shopBoats/:id/products", merchantAuthorization, shopBoatHandlers.getShopBoatProducts);
   router.put("/shopBoats/:id",  shopBoatHandlers.updateShopBoatById);
   router.put("/shopBoats", merchantAuthorization, shopBoatHandlers.updateShopBoat );
+  router.get("/shopBoats/:id/orders", productOrderHandlers.getAllOrdersOfShop);
+
+  router.patch("/orders/:id", productOrderHandlers.updateOrderStatus);
 
   router.get("/products",productHandlers.getAllProducts);
   router.get("/products/top4", productHandlers.getTop4Products);

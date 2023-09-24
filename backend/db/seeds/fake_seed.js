@@ -31,16 +31,30 @@ users.push({
 });
 
 
-for (let i = 0; i < 10; i++) {
+for (let i = 1; i <= 3; i++) {
   users.push({
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
-    email: faker.internet.email(),
+    email: "merchant" + i + "@gmail.com",
     hash_password: "$2b$10$BHm3/TU0/QuK6JudqCRBzufCN8o.4SIeUVj/3oloENWyUWZi/sb3i",
     avatar: faker.image.avatar(),
-    role: faker.number.int({ min: 1, max: 2 }),
+    role: ROLES.MERCHANT,
   })
 }
+
+for (let i = 1; i <= 10; i++) {
+  users.push({
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),  
+    email: "customer" + i + "@gmail.com",
+    hash_password: "$2b$10$BHm3/TU0/QuK6JudqCRBzufCN8o.4SIeUVj/3oloENWyUWZi/sb3i",
+    avatar: faker.image.avatar(),
+    role: ROLES.CUSTOMER,
+    phone: faker.phone.number(),
+    address: faker.address.streetAddress(),
+  })
+}
+
 
 
 const deleteAllData = async () => {
@@ -49,6 +63,12 @@ const deleteAllData = async () => {
     await Product.deleteMany({});
     await ShopBoat.deleteMany({});
     await Category.deleteMany({});
+    await FeedBack.deleteMany({});
+    await Tour.deleteMany({});
+    await MarketFee.deleteMany({});
+    await ProductOrder.deleteMany({});
+    await TourOrder.deleteMany({});
+
     console.log("Users are deleted");
     console.log("ShopBoats are deleted");
     console.log("Categories are deleted");
@@ -283,22 +303,23 @@ const insertProductOrder = async () => {
     let listShopBoatId = await ShopBoat.find({}).select('_id');
     let listProductId = await Product.find({}).select('_id');
     let listUserId = await User.find({ role: ROLES.CUSTOMER }).select('_id');
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 20; i++) {
       let orderItems = [];
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < 3; j++) {
         orderItems.push({
           product: faker.helpers.arrayElement(listProductId),
           quantity: faker.number.int({ min: 1, max: 10 }),
           price: faker.commerce.price(),
-          sale: faker.number.int({ min: 0, max: 100 }),
+          sale: faker.number.int({ min: 0, max: 10 }),
         });
       }
       productOrders.push({
-        status: faker.helpers.arrayElement(["pending", "completed"]),
+        status: faker.helpers.arrayElement(["pending", "accepted", "cancelled"]), // "pending", "accepted", "cancelled
         paymentMethod: faker.helpers.arrayElement(["paypal", "stripe"]),
         total: faker.commerce.price(),
         shopBoatId: faker.helpers.arrayElement(listShopBoatId),
         orderItems: orderItems,
+        customer: faker.helpers.arrayElement(listUserId),
       });
     }
     await ProductOrder.insertMany(productOrders);

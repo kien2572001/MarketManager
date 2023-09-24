@@ -5,6 +5,7 @@ import { getShopBoatByOwnerId } from "api/shopBoat";
 import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
 import EditModal from "./EditModal";
+import Badge from "react-bootstrap/Badge";
 
 const MerchantDashbroad = () => {
   const [cookies] = useCookies(["access_token"]);
@@ -28,19 +29,6 @@ const MerchantDashbroad = () => {
     };
     fetchShopBoat();
   }, []);
-
-  // useEffect(() => {
-  //   const fetchShopBoat = async () => {
-  //     try {
-  //       const { id } = await jwt_decode(cookies.access_token);
-  //       const response = await getShopBoatByOwnerId(id);
-  //       setShopBoat(response.data.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchShopBoat();
-  // }, []);
 
   return (
     <DashboardLayout role="merchant">
@@ -77,9 +65,11 @@ const MerchantDashbroad = () => {
                     </Card.Text>
                     <Card.Text>
                       <span className="font-semibold mt-2">Trạng thái:</span>{" "}
-                      {shopBoat?.isApproved
-                        ? "Đã được cấp phép"
-                        : "Chưa được cấp phép"}
+                      {shopBoat?.isApproved ? (
+                        <Badge variant="success">Đã được cấp phép</Badge>
+                      ) : (
+                        <Badge variant="danger">Chưa được cấp phép</Badge>
+                      )}
                     </Card.Text>
                   </Card.Body>
                 </Col>
