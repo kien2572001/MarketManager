@@ -1,7 +1,7 @@
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const successToast = (message, duration = 3000) => {
-  toast.success('Login successfull', {
+  toast.success(message, {
     position: "top-center",
     autoClose: duration,
     hideProgressBar: false,
@@ -10,8 +10,8 @@ const successToast = (message, duration = 3000) => {
     draggable: true,
     progress: undefined,
     theme: "light",
-    });
-}
+  });
+};
 
 const errorToast = (message, duration = 3000) => {
   toast.error(message, {
@@ -23,8 +23,8 @@ const errorToast = (message, duration = 3000) => {
     draggable: true,
     progress: undefined,
     theme: "light",
-    });
-}
+  });
+};
 
 const infoToast = (message, duration = 3000) => {
   toast.info(message, {
@@ -36,8 +36,8 @@ const infoToast = (message, duration = 3000) => {
     draggable: true,
     progress: undefined,
     theme: "light",
-    });
-}
+  });
+};
 
 const warningToast = (message, duration = 3000) => {
   toast.warning(message, {
@@ -49,8 +49,7 @@ const warningToast = (message, duration = 3000) => {
     draggable: true,
     progress: undefined,
     theme: "light",
-    });
-}
+  });
+};
 
 export { successToast, errorToast, infoToast, warningToast };
-

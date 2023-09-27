@@ -31,7 +31,7 @@ const MerchantDashbroad = () => {
   }, []);
 
   return (
-    <DashboardLayout role="merchant">
+    <DashboardLayout layoutRole={1}>
       <Container>
         <Row>
           <Col>

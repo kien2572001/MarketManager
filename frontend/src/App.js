@@ -19,6 +19,7 @@ import jwt_decode from "jwt-decode";
 //Admin
 import AdminDashboard from "components/Admin/AdminDashboard";
 import Shops from "components/Admin/Shops";
+import Tours from "components/Admin/Tours";
 
 //Marketplace
 import Homepage from "components/Market/Homepage";
@@ -40,6 +41,7 @@ function App() {
         {/* Admin */}
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/shops" element={<Shops />} />
+        <Route path="/admin/tours" element={<Tours />} />
 
         {/* Merchant */}
         <Route path="/merchant" element={<MerchantDashbroad />} />

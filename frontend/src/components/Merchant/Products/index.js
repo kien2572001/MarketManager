@@ -134,7 +134,7 @@ const MerchantProducts = () => {
   };
 
   return (
-    <DashboardLayout role="merchant">
+    <DashboardLayout layoutRole={1}>
       <Grid item xs={12} sx={{ mb: 2 }}>
         <ProductSearchForm
           onSearch={handleSearch}

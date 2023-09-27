@@ -32,12 +32,14 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import StoreIcon from "@mui/icons-material/Store";
+import TourIcon from "@mui/icons-material/Tour";
 
 import { logoutService } from "api/auth";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
+import { getShopBoatByOwnerId } from "api/shopBoat";
 
 function Copyright(props) {
   return (
@@ -127,11 +129,11 @@ const AdminListItems = ({ handleLogout }) => {
         </ListItemIcon>
         <ListItemText primary="Orders" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton component={RouterLink} to="/admin/tours">
         <ListItemIcon>
-          <PeopleIcon />
+          <TourIcon />
         </ListItemIcon>
-        <ListItemText primary="Customers" />
+        <ListItemText primary="Tour" />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
@@ -186,7 +188,7 @@ const MerchantListItems = ({ handleLogout }) => {
   );
 };
 
-export default function DashboardLayout({ children, role }) {
+export default function DashboardLayout({ children, layoutRole }) {
   const navigate = useNavigate();
   const [cookies] = useCookies(["access_token"]);
   const [open, setOpen] = React.useState(true);
@@ -194,23 +196,31 @@ export default function DashboardLayout({ children, role }) {
     setOpen(!open);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const checkRole = async () => {
       if (cookies.access_token) {
-        const { role } = await jwt_decode(cookies.access_token);
-        if (role === "admin") {
-          navigate("/admin");
+        const { id, role } = jwt_decode(cookies.access_token);
+        if (
+          (role === 0 && layoutRole === 1) ||
+          (role === 1 && layoutRole === 0)
+        ) {
+          navigate(role === 0 ? "/merchant" : "/admin");
+        } else if (role === 2) {
+          navigate("/marketplace");
         }
-        if (role === "merchant") {
-          navigate("/merchant");
+        if (role === 1) {
+          const response = await getShopBoatByOwnerId(id);
+          if (response) {
+            localStorage.setItem("shopBoatId", response.data.data._id);
+          }
         }
       } else {
-        // Nếu không có access_token, chuyển hướng đến trang đăng nhập
         navigate("/signin");
       }
     };
     checkRole();
   }, [cookies.access_token, navigate]);
+
   const handleLogout = async () => {
     try {
       const response = await logoutService();
@@ -275,7 +285,7 @@ export default function DashboardLayout({ children, role }) {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {role === "admin" ? (
+            {layoutRole === 0 ? (
               <AdminListItems handleLogout={handleLogout} />
             ) : (
               <MerchantListItems handleLogout={handleLogout} />

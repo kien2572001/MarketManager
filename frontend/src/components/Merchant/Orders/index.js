@@ -92,7 +92,7 @@ const Orders = () => {
   };
 
   return (
-    <DashboardLayout role="merchant">
+    <DashboardLayout layoutRole={1}>
       <Grid item xs={12}>
         <SearchForm onSearch={handleSearch} />
       </Grid>

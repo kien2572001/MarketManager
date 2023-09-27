@@ -248,14 +248,15 @@ const insertTour = async () => {
       }
       tours.push({
         name: "Tour " + faker.location.city(),
+        image: "https://s3.nucuoimekong.com/ncmk/wp-content/uploads/tour-cho-noi-cai-rang-o-can-tho.jpg",
         slug: slugify("Tour " + faker.location.city(), { lower: true }),
-        startTime: faker.date.future(),
+        startTime: faker.helpers.arrayElement(["7:00 thu 7", "7:00 thu 2", "7:00 thu 4", "7:00 thu 6"]),
         startLocation: faker.location.city(),
-        transportation: faker.lorem.sentence(),
-        description: faker.lorem.paragraphs({ min: 1, max: 3 }),
+        tourDuration: faker.helpers.arrayElement(["2 tieng", "3 tieng","4 tieng" ,"6 tieng", "1 ngay", "2 ngay", "3 ngay"]),
+        transportation: faker.helpers.arrayElement(["Xe may", "Xe dap", "Xe hoi", "Tau thuy"]),
         price: faker.commerce.price(),
         images: [faker.image.url(),faker.image.url(),faker.image.url(),faker.image.url(),faker.image.url()],
-        information: informations,
+        tourInformation: informations,
       });
     }
     await Tour.insertMany(tours);

@@ -7,6 +7,7 @@ var shopBoatHandlers = require("../controllers/shopBoatController.js");
 var categoryHandlers = require("../controllers/categoryController.js");
 var productHandlers = require("../controllers/productController.js");
 var productOrderHandlers = require("../controllers/productOrderController.js");
+var tourHandlers = require("../controllers/tourController.js");
 import jwt from "jsonwebtoken";
 import ShopBoat from "../models/shopBoatModel";
 
@@ -86,6 +87,9 @@ const routes = (app) => {
   router.get("/categories/:slug", categoryHandlers.getCategoryBySlug);
   router.post("/categories", categoryHandlers.createCategory);
 
+  router.get("/tours", tourHandlers.getAllTours);
+  router.patch("/tours/:id", tourHandlers.updateTour);
+  router.delete("/tours/:id", tourHandlers.deleteTour);
 
   //it"s a prefix before api it is useful when you have many modules and you want to
   //differentiate b/w each module you can use this technique

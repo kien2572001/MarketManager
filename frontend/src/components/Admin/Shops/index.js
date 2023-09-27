@@ -48,7 +48,7 @@ const Shops = () => {
   };
 
   return (
-    <DashboardLayout role="admin">
+    <DashboardLayout layoutRole={0}>
       <h1>Shops</h1>
       <Grid item xs={12}>
         <ShopsTable shopBoats={shopBoats} updateData={updateData} />
