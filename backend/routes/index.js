@@ -88,8 +88,10 @@ const routes = (app) => {
   router.post("/categories", categoryHandlers.createCategory);
 
   router.get("/tours", tourHandlers.getAllTours);
+  router.post("/tours", tourHandlers.addTour);
   router.patch("/tours/:id", tourHandlers.updateTour);
   router.delete("/tours/:id", tourHandlers.deleteTour);
+
 
   //it"s a prefix before api it is useful when you have many modules and you want to
   //differentiate b/w each module you can use this technique

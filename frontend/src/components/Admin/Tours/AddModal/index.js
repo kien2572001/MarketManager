@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import { uploadImage, deleteImage } from "api/image";
 import TourInformation from "./TourInformation";
-import { updateTour } from "api/tour";
+import { addTour } from "api/tour";
 import { successToast, errorToast } from "utilities/toast";
 
 const style = {
@@ -20,19 +20,20 @@ const style = {
   p: 4,
 };
 
-const EditModal = ({ tour, setTours }) => {
+const AddModal = ({ setTours }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [tourData, setTourData] = useState({
-    name: tour.name || "",
-    image: tour.image || "",
-    startTime: tour.startTime || "",
-    tourDuration: tour.tourDuration || "",
-    startLocation: tour.startLocation || "",
-    transportation: tour.transportation || "",
-    price: tour.price || 0,
-    tourInformation: tour.tourInformation || [],
+    name: "",
+    image:
+      "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg",
+    startTime: "",
+    tourDuration: "",
+    startLocation: "",
+    transportation: "",
+    price: 0,
+    tourInformation: [],
   });
 
   const handleInputChange = (event) => {
@@ -45,15 +46,12 @@ const EditModal = ({ tour, setTours }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    //console.log("Dữ liệu tour:", tourData);
 
     try {
-      const res = await updateTour(tour._id, tourData);
+      const res = await addTour(tourData);
       if (res?.code === 200) {
-        successToast("Cập nhật tour thành công");
-        setTours((prev) =>
-          prev.map((item) => (item._id === tour._id ? res.data : item))
-        );
+        successToast("Thêm tour thành công");
+        setTours((prev) => [...prev, res.data]);
         handleClose();
         resetForm(res.data);
       }
@@ -94,7 +92,9 @@ const EditModal = ({ tour, setTours }) => {
   const resetForm = (data = {}) => {
     setTourData({
       name: data?.name || "",
-      image: data?.image || "",
+      image:
+        data?.image ||
+        "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg",
       startTime: data?.startTime || "",
       tourTime: data?.tourTime || "",
       startLocation: data?.startLocation || "",
@@ -107,8 +107,8 @@ const EditModal = ({ tour, setTours }) => {
 
   return (
     <div>
-      <Button variant="primary" onClick={handleOpen}>
-        Edit
+      <Button variant="success" className="ms-2" onClick={handleOpen}>
+        Thêm mới
       </Button>
       <Modal
         open={open}
@@ -120,7 +120,7 @@ const EditModal = ({ tour, setTours }) => {
           <div>
             <div className="relative">
               <h2 className="text-center font-bold text-2xl mb-4 border-b-2 pb-2">
-                Edit Tour
+                Thêm Tour
               </h2>
               <div className="flex absolute right-0 bottom-2">
                 <Button variant="success mr-2" onClick={handleSubmit}>
@@ -129,7 +129,7 @@ const EditModal = ({ tour, setTours }) => {
                 <Button
                   variant="danger"
                   onClick={() => {
-                    resetForm(tour);
+                    resetForm();
                     handleClose();
                   }}
                 >
@@ -226,4 +226,4 @@ const EditModal = ({ tour, setTours }) => {
   );
 };
 
-export default EditModal;
+export default AddModal;

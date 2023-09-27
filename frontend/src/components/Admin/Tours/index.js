@@ -4,6 +4,8 @@ import { Grid, Paper } from "@mui/material";
 import { useEffect, useState } from "react";
 import ToursTable from "./Table";
 import { getAllTours } from "api/tour";
+import SearchForm from "./SearchForm";
+import { min } from "moment";
 const Tours = () => {
   const [tours, setTours] = useState([]);
   const [page, setPage] = useState(1);
@@ -27,11 +29,36 @@ const Tours = () => {
     setPage(value);
   };
 
+  const handleSearch = (name, minPrice, maxPrice) => {
+    let queryCondition = {};
+    if (name) {
+      queryCondition.name = name;
+    }
+    if (minPrice) {
+      queryCondition.minPrice = minPrice;
+    }
+    if (maxPrice) {
+      queryCondition.maxPrice = maxPrice;
+    }
+    const fetchTours = async () => {
+      try {
+        const response = await getAllTours(page, limit, queryCondition);
+        console.log(response);
+        setTours(response.data.docs);
+        setTotal(response.data.totalPages);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchTours();
+  };
+
   return (
     <DashboardLayout layoutRole={0}>
-      <h1>Tours</h1>
+      <h1>Quản lí Tour du lịch</h1>
       <Grid item xs={12}>
         <Paper sx={{ p: 2 }}>
+          <SearchForm onSearch={handleSearch} setTours={setTours} />
           <ToursTable tours={tours} setTours={setTours} />
         </Paper>
       </Grid>

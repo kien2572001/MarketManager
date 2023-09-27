@@ -1,4 +1,5 @@
 import Tour from '../models/tourModel.js';
+import slugify from 'slugify';
 
 exports.getAllTours = async (pageOptions, queryCondition = {}) => {
   try {
@@ -6,13 +7,29 @@ exports.getAllTours = async (pageOptions, queryCondition = {}) => {
       page: pageOptions.page || 1,
       limit: pageOptions.limit || 10,
       sort: { createdAt: -1 },
-      ...queryCondition,
     };
-    const tours = await Tour.paginate({}, options);
+
+    const filter = { ...queryCondition };
+    const tours = await Tour.paginate(filter, options);
     return tours;
   } catch (err) {
     throw err;
   }
+}
+
+exports.addTour = async (data) => {
+  if (data.name){
+    data.slug = slugify(data.name, { lower: true });
+  }
+  return new Promise((resolve, reject) => {
+    Tour.create(data, (err, tour) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(tour);
+      }
+    });
+  });
 }
 
 exports.updateTour = async (id, data) => {

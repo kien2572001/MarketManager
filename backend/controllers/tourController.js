@@ -8,13 +8,34 @@ exports.getAllTours = async function (req, res, next) {
             page: parseInt(req.query.page) || 1,
             limit: parseInt(req.query.limit) || 10
         }
-        let tours = await tourServices.getAllTours(pageOptions);
+        let queryCondition = {};
+        if (req.query.name) {
+            queryCondition.name = { $regex: req.query.name, $options: 'i'}
+        }
+        if (req.query.minPrice) {
+            queryCondition.price = { $gte: req.query.minPrice}
+        }
+        if (req.query.maxPrice) {
+            queryCondition.price = { $lte: req.query.maxPrice}
+        }
+        let tours = await tourServices.getAllTours(pageOptions, queryCondition);
         return serverResponse.sendSuccess(res, SUCCESSFUL, tours);
     }
     catch (err) {
         return serverResponse.sendError(res, err);
     }
 }
+
+exports.addTour = async function (req, res, next) {
+    try {
+        let tour = await tourServices.addTour(req.body);
+        return serverResponse.sendSuccess(res, SUCCESSFUL, tour);
+    }
+    catch (err) {
+        return serverResponse.sendError(res, err);
+    }
+}
+
 
 exports.updateTour = async function (req, res, next) {
     try {
