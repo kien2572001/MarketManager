@@ -71,7 +71,7 @@ const routes = (app) => {
   router.put("/shopBoats/:id",  shopBoatHandlers.updateShopBoatById);
   router.put("/shopBoats", merchantAuthorization, shopBoatHandlers.updateShopBoat );
   router.get("/shopBoats/:id/orders", productOrderHandlers.getAllOrdersOfShop);
-
+  router.get("/shopBoats/:id/categories",  shopBoatHandlers.getListCategoriesOfShop);
   router.patch("/orders/:id", productOrderHandlers.updateOrderStatus);
 
   router.get("/products",productHandlers.getAllProducts);

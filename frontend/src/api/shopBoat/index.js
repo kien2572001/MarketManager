@@ -96,6 +96,15 @@ const updateShopBoatById = async (id, data) => {
   }
 };
 
+const getListCategoriesOfShop = async (id) => {
+  try {
+    const response = await instance.get(`/shopBoats/${id}/categories`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
   getShopBoatProducts,
   updateProduct,
@@ -105,4 +114,5 @@ export {
   updateShopBoat,
   getAllShopBoats,
   updateShopBoatById,
+  getListCategoriesOfShop,
 };

@@ -31,12 +31,13 @@ users.push({
 });
 
 
-for (let i = 1; i <= 3; i++) {
+for (let i = 1; i <= 10; i++) {
   users.push({
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
     email: "merchant" + i + "@gmail.com",
     hash_password: "$2b$10$BHm3/TU0/QuK6JudqCRBzufCN8o.4SIeUVj/3oloENWyUWZi/sb3i",
+    address: faker.location.streetAddress(),
     avatar: faker.image.avatar(),
     role: ROLES.MERCHANT,
   })
@@ -51,7 +52,7 @@ for (let i = 1; i <= 10; i++) {
     avatar: faker.image.avatar(),
     role: ROLES.CUSTOMER,
     phone: faker.phone.number(),
-    address: faker.address.streetAddress(),
+    address: faker.location.streetAddress(),
   })
 }
 
@@ -81,15 +82,26 @@ const deleteAllData = async () => {
 const insertShopBoat = async () => {
   try {
     let listUserId = await User.find({ role: ROLES.MERCHANT }).select('_id'); 
+    console.log(listUserId);
     let shopBoats = [];
+    let id = 1;
+    const numberTo4DigitSring = (number) => {
+      let s = number.toString();
+      while (s.length < 4) {
+        s = "0" + s;
+      }
+      return s;
+    }
+      
     for (let i = 0; i < listUserId.length; i++) {
       shopBoats.push({
         name: faker.commerce.department(),
         description: faker.lorem.paragraphs({ min: 1, max: 3 }),
-        address: faker.location.streetAddress() + ", " + faker.location.city(),
         avatar: "https://s3.nucuoimekong.com/ncmk/wp-content/uploads/dac-san-mien-tay.jpg",
         owner: listUserId[i]._id,
-        isApproved: faker.helpers.arrayElement([true, false]),
+        type: faker.helpers.arrayElement(["Thuyền Lớn", "Thuyền Nhỏ", "Thuyền Trung", "Thuyền Cao Tốc", "Thuyền Cá Nhân", "Thuyền Mái Bạt "]),
+        // code: "CR-" + numberTo4DigitSring(id++),
+        isApproved: faker.helpers.arrayElement([ false]),
       });
     }
     await ShopBoat.insertMany(shopBoats);

@@ -22,11 +22,16 @@ const ShopBoatSchema = new Schema(
             required: true,
             maxlength: 2000,
         },
-        address: {
+        type: {
+            type: String,
+            required: true,
+            maxlength: 100,
+            enum: ["Thuyền Lớn", "Thuyền Nhỏ", "Thuyền Trung", "Thuyền Cao Tốc", "Thuyền Cá Nhân", "Thuyền Mái Bạt "] // enum means string objects
+        },
+        code: {
             type: String,
             trim: true,
-            required: true,
-            maxlength: 2000,
+            maxlength: 100,
         },
         avatar: {
             type: String,
@@ -46,6 +51,15 @@ const ShopBoatSchema = new Schema(
 );
 
 ShopBoatSchema.plugin(mongoosePaginate);
+
+// Tạo trường ảo "address" dựa trên thông tin của "owner"
+ShopBoatSchema.virtual("address").get(function() {
+    // Lấy địa chỉ từ thông tin owner (user)
+    if (this.owner && this.owner.address) {
+        return this.owner.address;
+    }
+    return ""; // Trả về chuỗi rỗng nếu không có địa chỉ
+});
 
 const ShopBoat = mongoose.model("ShopBoat", ShopBoatSchema);
 

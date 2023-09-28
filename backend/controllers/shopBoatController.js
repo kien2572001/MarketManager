@@ -108,3 +108,16 @@ exports.updateShopBoatById = async function (req, res, next) {
         return serverResponse.sendError(res, err);
     }
 }
+
+
+exports.getListCategoriesOfShop = async function (req, res, next) {
+    let shopBoatID = req.params.id;
+    try {
+        let categories = await shopBoatServices.getListCategoriesOfShop(shopBoatID);
+        return serverResponse.sendSuccess(res, SUCCESSFUL, categories);
+    }
+    catch (err) {
+        return serverResponse.sendError(res, err);
+    }
+
+}

@@ -10,6 +10,7 @@ import Paper from "@mui/material/Paper";
 import Badge from "react-bootstrap/Badge";
 import { updateShopBoatById } from "api/shopBoat";
 import { Button } from "react-bootstrap";
+const DetailModal = React.lazy(() => import("./DetailModal"));
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -38,7 +39,6 @@ export default function ShopsTable({ shopBoats, updateData }) {
       console.log(response);
       console.log(updateData);
       if (response?.status === 200) {
-        console.log(response.data.data);
         updateData(response.data.data);
       }
     } catch (error) {
@@ -57,13 +57,25 @@ export default function ShopsTable({ shopBoats, updateData }) {
               <span className="font-bold">Name</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Description</span>
+              <span className="font-bold">Code</span>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <span className="font-bold">Owner</span>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <span className="font-bold">Phone</span>
             </StyledTableCell>
             <StyledTableCell align="center">
               <span className="font-bold">Address</span>
             </StyledTableCell>
             <StyledTableCell align="center">
+              <span className="font-bold">Type</span>
+            </StyledTableCell>
+            <StyledTableCell align="center">
               <span className="font-bold">Status</span>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <span className="font-bold">Detail</span>
             </StyledTableCell>
             <StyledTableCell align="center">
               <span className="font-bold">Actions</span>
@@ -72,21 +84,33 @@ export default function ShopsTable({ shopBoats, updateData }) {
         </TableHead>
         <TableBody>
           {shopBoats.map((row) => (
-            <StyledTableRow key={row.name}>
+            <StyledTableRow key={row._id}>
               <StyledTableCell component="th" scope="row">
                 <img src={row.avatar} alt={row.name} width="100" />
               </StyledTableCell>
               <StyledTableCell align="center">{row.name}</StyledTableCell>
               <StyledTableCell align="center">
-                {row.description}
+                {row.code || "Chưa có"}
               </StyledTableCell>
-              <StyledTableCell align="center">{row.address}</StyledTableCell>
+              <StyledTableCell align="center">
+                {row.owner?.firstName} {row.owner?.lastName}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                {row.owner?.phone || "Chưa có"}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                {row.owner?.address}
+              </StyledTableCell>
+              <StyledTableCell align="center">{row.type}</StyledTableCell>
               <StyledTableCell align="center">
                 {row.isApproved ? (
                   <Badge bg="success">Approved</Badge>
                 ) : (
                   <Badge bg="danger">Pending</Badge>
                 )}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <DetailModal shopBoat={row} />
               </StyledTableCell>
               <StyledTableCell align="center">
                 {row.isApproved ? (
