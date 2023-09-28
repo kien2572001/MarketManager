@@ -15,8 +15,9 @@ import Homepage from "components/Market/Homepage";
 import MerchantProducts from "components/Merchant/Products";
 import DetailProduct from "components/Market/DetailProduct";
 import TourLayout from "layouts/CustomerLayout/TourLayout";
-import TourService from "components/TourService";
 import Searchpage from "components/Market/Searchpage";
+import TourService from "components/TourService/Homepage";
+import TourDetail from "components/TourService/TourDetail";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/marketplace" element={<Homepage />} />
           <Route path="/marketplace/search" element={<Searchpage />} />
           <Route path="/touronline" element={<TourService />} />
+          <Route path="/touronline/tourdetail" element={<TourDetail />} />
 
           <Route
             path="/marketplace/product/:slug"
