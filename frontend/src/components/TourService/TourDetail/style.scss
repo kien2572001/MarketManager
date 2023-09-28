@@ -35,5 +35,30 @@
                 gap: 15px;
             }
         }
+
+        .recommend-tour {
+            // background-color: white;
+
+            .title-recommend {
+
+                padding-top: 10px;
+
+                h3 {
+                    padding: 10px;
+                    font-size: 1.3em;
+                    color: #67A448;
+                }
+
+                .Divider {
+                    height: 3px;
+                    max-width: 98%;
+                    margin-left: auto;
+                    margin-right: auto;
+                    background-color: #67A448;
+                }
+            }
+
+
+        }
     }
 }

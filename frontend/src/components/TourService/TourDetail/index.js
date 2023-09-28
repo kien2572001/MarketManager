@@ -7,6 +7,7 @@ import InforContact from "./InforContact"
 import WhyTable from "./WhyTable"
 import { MDBBtn, MDBIcon } from 'mdb-react-ui-kit';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
+import RecommendTour from "./RecommenrTour"
 
 
 
@@ -126,7 +127,15 @@ const TourDetail = () => {
                                 <WhyTable />
                             </div>
                         </div>
-                        <div className="recommend-tour"></div>
+                        <div className="recommend-tour">
+                            <div className="title-recommend">
+                                <h3>Có thể bạn quan tâm</h3>
+                                <div className="Divider "></div>
+                            </div>
+                            <div className="grid-tour">
+                                <RecommendTour />
+                            </div>
+                        </div>
                     </div>
 
                 </div>
