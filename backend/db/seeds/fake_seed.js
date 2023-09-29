@@ -101,7 +101,7 @@ const insertShopBoat = async () => {
         owner: listUserId[i]._id,
         type: faker.helpers.arrayElement(["Thuyền Lớn", "Thuyền Nhỏ", "Thuyền Trung", "Thuyền Cao Tốc", "Thuyền Cá Nhân", "Thuyền Mái Bạt "]),
         // code: "CR-" + numberTo4DigitSring(id++),
-        isApproved: faker.helpers.arrayElement([ false]),
+        status: faker.helpers.arrayElement([ "inactive", "banned"]),
       });
     }
     await ShopBoat.insertMany(shopBoats);

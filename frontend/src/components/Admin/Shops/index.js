@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import ShopsTable from "./ShopsTable";
 import { Grid } from "@mui/material";
+import SearchForm from "./SearchForm";
 
 const Shops = () => {
   const [shopBoats, setShopBoats] = useState([]);
@@ -47,9 +48,22 @@ const Shops = () => {
     setShopBoats(newData);
   };
 
+  const onSearch = async (data) => {
+    try {
+      const response = await getAllShopBoats(1, limit, data);
+      setShopBoats(response.data.data.docs);
+      setTotal(response.data.data.totalPages);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <DashboardLayout layoutRole={0}>
-      <h1>Shops</h1>
+      <h1>Quản lí các thuyền buôn</h1>
+      <Grid item xs={12}>
+        <SearchForm onSearch={onSearch} />
+      </Grid>
       <Grid item xs={12}>
         <ShopsTable shopBoats={shopBoats} updateData={updateData} />
       </Grid>

@@ -73,14 +73,26 @@ const updateShopBoat = async (data) => {
   }
 };
 
-const getAllShopBoats = async (page = 1, limit = 10) => {
+const getAllShopBoats = async (page = 1, limit = 10, formData = {}) => {
+  let url = `/shopBoats?page=${page}&limit=${limit}`;
+  if (formData.name) {
+    url += `&name=${formData.name}`;
+  }
+  if (formData.status) {
+    url += `&status=${formData.status}`;
+  }
+  if (formData.code) {
+    url += `&code=${formData.code}`;
+  }
+  if (formData.phone) {
+    url += `&phone=${formData.phone}`;
+  }
+  if (formData.type) {
+    url += `&type=${formData.type}`;
+  }
+
   try {
-    const response = await instance.get("/shopBoats", {
-      params: {
-        page: page,
-        limit: limit,
-      },
-    });
+    const response = await instance.get(url);
     return response;
   } catch (error) {
     console.log(error);

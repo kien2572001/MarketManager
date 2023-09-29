@@ -30,11 +30,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function ShopsTable({ shopBoats, updateData }) {
-  const handleApprove = async (id, isApproved, data) => {
+  const handleChangeStatus = async (id, status, data) => {
     try {
       const response = await updateShopBoatById(id, {
         ...data,
-        isApproved: !isApproved,
+        status: status,
       });
       console.log(response);
       console.log(updateData);
@@ -103,29 +103,38 @@ export default function ShopsTable({ shopBoats, updateData }) {
               </StyledTableCell>
               <StyledTableCell align="center">{row.type}</StyledTableCell>
               <StyledTableCell align="center">
-                {row.isApproved ? (
-                  <Badge bg="success">Approved</Badge>
+                {row?.status === "active" ? (
+                  <Badge bg="success">Active</Badge>
+                ) : row?.status === "inactive" ? (
+                  <Badge bg="warning">Inactive</Badge>
                 ) : (
-                  <Badge bg="danger">Pending</Badge>
+                  <Badge bg="danger">Banned</Badge>
                 )}
               </StyledTableCell>
               <StyledTableCell align="center">
                 <DetailModal shopBoat={row} />
               </StyledTableCell>
               <StyledTableCell align="center">
-                {row.isApproved ? (
+                {row?.status === "active" ? (
                   <Button
                     variant="danger"
-                    onClick={() => handleApprove(row._id, row.isApproved, row)}
+                    onClick={() => handleChangeStatus(row._id, "banned", row)}
                   >
-                    Unapprove
+                    Ban
+                  </Button>
+                ) : row?.status === "inactive" ? (
+                  <Button
+                    variant="success"
+                    onClick={() => handleChangeStatus(row._id, "active", row)}
+                  >
+                    Active
                   </Button>
                 ) : (
                   <Button
-                    variant="success"
-                    onClick={() => handleApprove(row._id, row.isApproved, row)}
+                    variant="warning"
+                    onClick={() => handleChangeStatus(row._id, "active", row)}
                   >
-                    Approve
+                    Unban
                   </Button>
                 )}
               </StyledTableCell>

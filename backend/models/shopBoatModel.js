@@ -42,9 +42,10 @@ const ShopBoatSchema = new Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Product",
         }],
-        isApproved: {
-            type: Boolean,
-            default: false,
+        status: {
+            type: String,
+            default: "Đang hoạt động",
+            enum: ["active", "inactive", "banned"],
         },
     },
     { timestamps: true }

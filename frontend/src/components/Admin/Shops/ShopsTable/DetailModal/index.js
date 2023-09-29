@@ -84,10 +84,12 @@ export default function DetailModal({ shopBoat }) {
                     <strong>Trạng thái</strong>
                   </td>
                   <td>
-                    {shopBoat.isApproved ? (
-                      <Badge bg="success">Approved</Badge>
+                    {shopBoat?.status === "active" ? (
+                      <Badge bg="success">Active</Badge>
+                    ) : shopBoat?.status === "inactive" ? (
+                      <Badge bg="warning">Inactive</Badge>
                     ) : (
-                      <Badge bg="danger">Pending</Badge>
+                      <Badge bg="danger">Banned</Badge>
                     )}
                   </td>
                 </tr>

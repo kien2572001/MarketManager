@@ -8,8 +8,27 @@ exports.getAllShopBoats = async function (req, res, next) {
             page: parseInt(req.query.page) || 1,
             limit: parseInt(req.query.limit) || 10
         }
+        let queryCondition = {}
+        if (req.query.name){
+            const regex = new RegExp(req.query.name, 'i');
+            queryCondition.name = {$regex : regex}
+        }
+        if (req.query.code){
+            const regex = new RegExp(req.query.code, 'i');
+            queryCondition.code = {$regex : regex}
+        }
+        if (req.query.phone){
+            const regex = new RegExp(req.query.phone, 'i');
+            queryCondition.phone = {$regex : regex}
+        }
+        if (req.query.type){
+            queryCondition.type = req.query.type
+        }
+        if (req.query.status && req.query.status !== 'all'){
+            queryCondition.status = req.query.status
+        }
         let includeProducts = req.query.includeProducts || false;
-        let shopBoats = await shopBoatServices.getAllShopBoats(pageOptions, includeProducts);
+        let shopBoats = await shopBoatServices.getAllShopBoats(pageOptions, includeProducts, queryCondition);
         return serverResponse.sendSuccess(res, SUCCESSFUL, shopBoats);
     }
     catch (err) {

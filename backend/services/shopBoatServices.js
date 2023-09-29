@@ -2,7 +2,7 @@ import ShopBoat from "../models/shopBoatModel";
 import Product from "../models/productModel";
 import Category from "../models/categoryModel";
 
-exports.getAllShopBoats = (pageOptions, includeProducts = false) => {
+exports.getAllShopBoats = (pageOptions, includeProducts = false, queryCondition = {}) => {
   let options = pageOptions;
   if (includeProducts) {
     options.populate = "products";
@@ -11,7 +11,7 @@ exports.getAllShopBoats = (pageOptions, includeProducts = false) => {
   options.sort = { createdAt: -1 };
     
   return new Promise((resolve, reject) => {
-    ShopBoat.paginate({}, options, (err, shopBoats) => {
+    ShopBoat.paginate(queryCondition, options, (err, shopBoats) => {
       if (err) {
         reject(err);
       } else {
@@ -135,7 +135,7 @@ const numberTo4DigitString = (number) => {
 exports.updateShopBoatById = async (id, data) => {
   try {
     // If the code field is not provided in the update data
-    if (!data.code) {
+    if (!data.code && data.status === 'active') {
       const currentCount = await ShopBoat.countDocuments({ code: { $exists: true } });
       data.code = "CR-" + numberTo4DigitString(currentCount + 1);
     }
