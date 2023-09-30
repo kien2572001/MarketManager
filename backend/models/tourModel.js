@@ -43,8 +43,13 @@ const TourSchema = new Schema(
             index: true,
         },
         startTime: {
+            type: Schema.Types.Mixed,
+            required: true,
+        },
+        scheduleType: {
             type: String,
             required: true,
+            enum: ["daily", "weekly", "monthly"],
         },
         tourDuration: {
             type: String,

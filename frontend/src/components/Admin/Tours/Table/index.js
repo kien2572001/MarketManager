@@ -13,6 +13,7 @@ import EditModal from "./EditModal";
 import Tooltip from "@mui/material/Tooltip";
 import { deleteTour } from "api/tour";
 import { successToast, errorToast } from "utilities/toast";
+import { tourTimeParser } from "utilities/tourTime";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -70,7 +71,9 @@ export default function ToursTable({ tours, setTours }) {
                 </Tooltip>
               </StyledTableCell>
 
-              <StyledTableCell align="center">{tour.startTime}</StyledTableCell>
+              <StyledTableCell align="center">
+                {tourTimeParser(tour.startTime, tour.scheduleType)}
+              </StyledTableCell>
               <StyledTableCell align="center">
                 {tour.tourDuration}
               </StyledTableCell>

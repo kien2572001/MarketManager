@@ -258,11 +258,23 @@ const insertTour = async () => {
           value: faker.lorem.paragraphs({ min: 1, max: 3 }),
         });
       }
+
+      let scheduleType = faker.helpers.arrayElement(["daily", "weekly"]);
+      let startTime;
+      if (scheduleType === "daily") {
+        startTime = faker.helpers.arrayElement(["7:00 t7", "13:00 t2", "14:00 t4", "7:00 t6"]);
+      }
+      else {
+        startTime = faker.helpers.arrayElements(["t2", "t3", "t4", "t5", "t6", "t7", "cn"]);
+        startTime.sort();
+      }
+
       tours.push({
         name: "Tour " + faker.location.city(),
         image: "https://s3.nucuoimekong.com/ncmk/wp-content/uploads/tour-cho-noi-cai-rang-o-can-tho.jpg",
         slug: slugify("Tour " + faker.location.city(), { lower: true }),
-        startTime: faker.helpers.arrayElement(["7:00 thu 7", "7:00 thu 2", "7:00 thu 4", "7:00 thu 6"]),
+        startTime: startTime,
+        scheduleType: scheduleType,
         startLocation: faker.location.city(),
         tourDuration: faker.helpers.arrayElement(["2 tieng", "3 tieng","4 tieng" ,"6 tieng", "1 ngay", "2 ngay", "3 ngay"]),
         transportation: faker.helpers.arrayElement(["Xe may", "Xe dap", "Xe hoi", "Tau thuy"]),

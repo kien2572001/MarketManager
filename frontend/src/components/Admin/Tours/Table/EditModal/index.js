@@ -7,10 +7,11 @@ import { uploadImage, deleteImage } from "api/image";
 import TourInformation from "./TourInformation";
 import { updateTour } from "api/tour";
 import { successToast, errorToast } from "utilities/toast";
+import StartTimePicker from "./StatTimePicker";
 
 const style = {
   position: "absolute",
-  top: "50%",
+  top: "60%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 900,
@@ -23,11 +24,15 @@ const style = {
 const EditModal = ({ tour, setTours }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    resetForm(tour);
+  };
   const [tourData, setTourData] = useState({
     name: tour.name || "",
     image: tour.image || "",
     startTime: tour.startTime || "",
+    scheduleType: tour.scheduleType || "daily",
     tourDuration: tour.tourDuration || "",
     startLocation: tour.startLocation || "",
     transportation: tour.transportation || "",
@@ -96,6 +101,7 @@ const EditModal = ({ tour, setTours }) => {
       name: data?.name || "",
       image: data?.image || "",
       startTime: data?.startTime || "",
+      scheduleType: data?.scheduleType || "daily",
       tourTime: data?.tourTime || "",
       startLocation: data?.startLocation || "",
       transportation: data?.transportation || "",
@@ -155,7 +161,7 @@ const EditModal = ({ tour, setTours }) => {
                       required
                     />
                   </Form.Group>
-                  <Form.Group controlId="startTime" className="mb-3">
+                  {/* <Form.Group controlId="startTime" className="mb-3">
                     <Form.Label>Thời Gian Bắt Đầu</Form.Label>
                     <Form.Control
                       type="text"
@@ -164,7 +170,16 @@ const EditModal = ({ tour, setTours }) => {
                       onChange={handleInputChange}
                       required
                     />
-                  </Form.Group>
+                  </Form.Group> */}
+                  <StartTimePicker
+                    tourData={tourData}
+                    setTourData={setTourData}
+                  />
+                </Col>
+              </Row>
+
+              <Row className="mb-3">
+                <Col>
                   <Form.Group controlId="image" className="mb-3">
                     <Form.Label>Anh</Form.Label>
                     <Form.Control
@@ -175,7 +190,20 @@ const EditModal = ({ tour, setTours }) => {
                     />
                   </Form.Group>
                 </Col>
+                <Col>
+                  <Form.Group controlId="price">
+                    <Form.Label>Giá</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="price"
+                      value={tourData.price}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </Form.Group>
+                </Col>
               </Row>
+
               <Row className="mb-3">
                 <Col>
                   <Form.Group controlId="tourDuration">

@@ -79,6 +79,8 @@ app.post('/api/upload', (req, res) => {
   });
 });
 
+
+
 const imageDir = path.join(__dirname, 'public', 'images');
 
 // Endpoint để xóa ảnh dựa trên URL trong body
