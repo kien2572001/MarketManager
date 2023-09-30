@@ -7,10 +7,11 @@ import { uploadImage, deleteImage } from "api/image";
 import TourInformation from "./TourInformation";
 import { addTour } from "api/tour";
 import { successToast, errorToast } from "utilities/toast";
+import StatTimePicker from "../Table/EditModal/StatTimePicker";
 
 const style = {
   position: "absolute",
-  top: "50%",
+  top: "60%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 900,
@@ -23,12 +24,16 @@ const style = {
 const AddModal = ({ setTours }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    resetForm();
+  };
   const [tourData, setTourData] = useState({
     name: "",
     image:
       "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg",
-    startTime: "",
+    startTime: "7:00 t2",
+    scheduleType: "daily",
     tourDuration: "",
     startLocation: "",
     transportation: "",
@@ -51,9 +56,9 @@ const AddModal = ({ setTours }) => {
       const res = await addTour(tourData);
       if (res?.code === 200) {
         successToast("Thêm tour thành công");
-        setTours((prev) => [...prev, res.data]);
+        setTours((prev) => [res.data, ...prev]);
         handleClose();
-        resetForm(res.data);
+        resetForm();
       }
     } catch (error) {
       errorToast("Cập nhật tour thất bại");
@@ -95,7 +100,8 @@ const AddModal = ({ setTours }) => {
       image:
         data?.image ||
         "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg",
-      startTime: data?.startTime || "",
+      startTime: data?.startTime || "7:00 t2",
+      scheduleType: data?.scheduleType || "daily",
       tourTime: data?.tourTime || "",
       startLocation: data?.startLocation || "",
       transportation: data?.transportation || "",
@@ -157,14 +163,15 @@ const AddModal = ({ setTours }) => {
                   </Form.Group>
                   <Form.Group controlId="startTime" className="mb-3">
                     <Form.Label>Thời Gian Bắt Đầu</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="startTime"
-                      value={tourData.startTime}
-                      onChange={handleInputChange}
-                      required
+                    <StatTimePicker
+                      tourData={tourData}
+                      setTourData={setTourData}
                     />
                   </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
                   <Form.Group controlId="image" className="mb-3">
                     <Form.Label>Anh</Form.Label>
                     <Form.Control
@@ -172,6 +179,18 @@ const AddModal = ({ setTours }) => {
                       placeholder="Enter image URL"
                       accept=".png, .jpg, .jpeg"
                       onChange={handleImageUpload}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group controlId="price">
+                    <Form.Label>Giá</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="price"
+                      value={tourData.price}
+                      onChange={handleInputChange}
+                      required
                     />
                   </Form.Group>
                 </Col>
