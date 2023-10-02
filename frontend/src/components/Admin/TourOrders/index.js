@@ -4,6 +4,7 @@ import { Grid, Paper } from "@mui/material";
 import TourOrdersTable from "./Table";
 import { getAllTourOrders } from "api/tourOrder";
 import { useEffect, useState } from "react";
+import SearchForm from "./SearchForm";
 const TourOrders = () => {
   const [tourOrders, setTourOrders] = useState([]); // [1]
   const [page, setPage] = useState(1);
@@ -28,12 +29,16 @@ const TourOrders = () => {
     setPage(value);
   };
 
+  const handleSearch = async (queryCondition) => {
+    await fetchTourOrders(queryCondition);
+  };
+
   return (
     <DashboardLayout layoutRole={0}>
       <h1>Quản lí đặt Tour du lịch</h1>
       <Grid item xs={12}>
         <Paper sx={{ p: 2 }}>
-          {/* <SearchForm onSearch={handleSearch} setTours={setTours} /> */}
+          <SearchForm onSearch={handleSearch} />
           <TourOrdersTable
             tourOrders={tourOrders}
             setTourOrders={setTourOrders}

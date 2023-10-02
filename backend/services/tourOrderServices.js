@@ -1,15 +1,15 @@
 import TourOrder from "../models/tourOrderModel";
 
 
-exports.getTourOrders = async (pageOptions, queryCondition = {}) => {
+exports.getTourOrders = async (pageOptions, queryCondition = {}, userIdQuery = {}, tourIdQuery = {}) => {
     try {
         const options = {
             page: pageOptions.page || 1,
             limit: pageOptions.limit || 10,
             sort: { createdAt: -1 },
             populate: [
-                { path: "tourId", select: "name price image startTime scheduleType tourDuration startLocation transportation" },
-                { path: "userId", select: "firstName lastName email phone address avatar" },
+                { path: "tourId", select: "name price image startTime scheduleType tourDuration startLocation transportation", match: tourIdQuery },
+                { path: "userId", select: "firstName lastName email phone address avatar", match: userIdQuery },
             ],
         };
 
