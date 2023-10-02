@@ -49,7 +49,6 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(firstName, lastName, email, password, isSeller);
     try {
       const response = await signupService(
         firstName,
@@ -59,7 +58,6 @@ export default function SignUp() {
         isSeller
       );
       if (response?.status === 201) {
-        console.log(response);
         successToast("Sign up successfully, redirecting to sign in page");
         navigate("/signin");
       } else {

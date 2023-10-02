@@ -47,7 +47,6 @@ export default function SignIn() {
       const res = await signinService(email, password);
       if (res?.status === 200) {
         successToast("Login successful");
-        console.log("res", res);
         const { role } = await jwt_decode(res.data.accessToken);
         redirectAfterLogin(role);
       }

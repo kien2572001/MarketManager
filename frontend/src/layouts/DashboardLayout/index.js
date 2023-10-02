@@ -123,11 +123,11 @@ const AdminListItems = ({ handleLogout }) => {
         </ListItemIcon>
         <ListItemText primary="Shops" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton component={RouterLink} to="/admin/tour-orders">
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>
-        <ListItemText primary="Orders" />
+        <ListItemText primary="Tour Orders" />
       </ListItemButton>
       <ListItemButton component={RouterLink} to="/admin/tours">
         <ListItemIcon>

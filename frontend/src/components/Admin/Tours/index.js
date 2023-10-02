@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import ToursTable from "./Table";
 import { getAllTours } from "api/tour";
 import SearchForm from "./SearchForm";
-import { min } from "moment";
 const Tours = () => {
   const [tours, setTours] = useState([]);
   const [page, setPage] = useState(1);

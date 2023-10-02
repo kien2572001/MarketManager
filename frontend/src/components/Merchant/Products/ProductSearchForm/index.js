@@ -30,7 +30,6 @@ const ProductSearchForm = ({
     event.preventDefault();
     // Gửi các giá trị tìm kiếm đến hàm xử lý tìm kiếm
     onSearch(formData);
-    console.log("formData", formData);
   };
 
   const clearForm = () => {

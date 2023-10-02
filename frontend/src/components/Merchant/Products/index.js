@@ -32,9 +32,7 @@ const MerchantProducts = () => {
         const fetchShopBoat = async (id) => {
           const response = await getShopBoatByOwnerId(id);
           if (response) {
-            //console.log(response.data.data._id);
             const shopBoatId = response.data.data._id;
-            console.log(shopBoatId);
             setShopBoatId(shopBoatId);
           }
         };

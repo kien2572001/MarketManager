@@ -8,6 +8,7 @@ var categoryHandlers = require("../controllers/categoryController.js");
 var productHandlers = require("../controllers/productController.js");
 var productOrderHandlers = require("../controllers/productOrderController.js");
 var tourHandlers = require("../controllers/tourController.js");
+var tourOrderHandlers = require("../controllers/tourOrderController.js");
 import jwt from "jsonwebtoken";
 import ShopBoat from "../models/shopBoatModel";
 
@@ -91,6 +92,12 @@ const routes = (app) => {
   router.post("/tours", tourHandlers.addTour);
   router.patch("/tours/:id", tourHandlers.updateTour);
   router.delete("/tours/:id", tourHandlers.deleteTour);
+
+  router.get("/tour-orders", tourOrderHandlers.getTourOrders);
+  router.patch("/tour-orders/:id", tourOrderHandlers.updateTourOrder);
+  router.patch("/tour-orders/:id/status", tourOrderHandlers.changeStatus);
+
+
 
 
   //it"s a prefix before api it is useful when you have many modules and you want to

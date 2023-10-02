@@ -29,9 +29,7 @@ const Orders = () => {
         const fetchShopBoat = async (id) => {
           const response = await getShopBoatByOwnerId(id);
           if (response) {
-            //console.log(response.data.data._id);
             const shopBoatId = response.data.data._id;
-            console.log(shopBoatId);
             setShopBoatId(shopBoatId);
           }
         };
@@ -50,7 +48,6 @@ const Orders = () => {
         try {
           const response = await getOrdersOfShop(shopBoatId, page, limit);
           if (response?.status === 200) {
-            //console.log(response.data.data.docs);
             setOrders(response.data.data.docs);
             setTotal(response.data.data.totalPages);
           }

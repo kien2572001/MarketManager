@@ -73,6 +73,13 @@ const deleteAllData = async () => {
     console.log("Users are deleted");
     console.log("ShopBoats are deleted");
     console.log("Categories are deleted");
+    console.log("Products are deleted");
+    console.log("FeedBacks are deleted");
+    console.log("Tours are deleted");
+    console.log("MarketFees are deleted");
+    console.log("ProductOrders are deleted");
+    console.log("TourOrders are deleted");
+
   }
   catch (err) {
     console.log(err);
@@ -82,7 +89,6 @@ const deleteAllData = async () => {
 const insertShopBoat = async () => {
   try {
     let listUserId = await User.find({ role: ROLES.MERCHANT }).select('_id'); 
-    console.log(listUserId);
     let shopBoats = [];
     let id = 1;
     const numberTo4DigitSring = (number) => {
@@ -362,11 +368,16 @@ const insertTourOrder = async () => {
     let listTourId = await Tour.find({}).select('_id');
     let listUserId = await User.find({ role: ROLES.CUSTOMER }).select('_id');
     for (let i = 0; i < 50; i++) {
+      let tourPrice = faker.commerce.price();   
+      let quantity = faker.number.int({ min: 1, max: 8 });
+      let total = tourPrice * quantity;
       tourOrders.push({
         status: faker.helpers.arrayElement(["pending", "accepted", "cancelled"]),
         paymentMethod: faker.helpers.arrayElement(["paypal", "stripe"]),
-        total: faker.commerce.price(),
-        quantity: faker.number.int({ min: 1, max: 10 }),
+        tourTime: faker.date.anytime(),
+        tourPrice: tourPrice,
+        quantity: quantity,
+        total: total,
         tourId: faker.helpers.arrayElement(listTourId),
         userId: faker.helpers.arrayElement(listUserId),
       });
