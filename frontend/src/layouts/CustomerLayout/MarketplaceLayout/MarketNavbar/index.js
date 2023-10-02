@@ -75,7 +75,7 @@ const MarketNavbar = () => {
         </div>
       </div>
       <div className="menu-header">
-        <div className="ResponsiveAppBar">{/* <ResponsiveAppBar /> */}</div>
+        <div className="ResponsiveAppBar"><ResponsiveAppBar /></div>
       </div>
     </div>
   );

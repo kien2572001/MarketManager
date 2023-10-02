@@ -21,7 +21,7 @@ const fs = require('fs');
 
 //connection from db here
 db.connect(app);
-//seeder.seedData();
+// seeder.seedData();
 
 require("./models/userModel");
 
@@ -96,7 +96,7 @@ app.delete('/api/upload', (req, res) => {
   const imageUrlParts = imageUrlFromBody.split('/');
   const imageFileName = imageUrlParts[imageUrlParts.length - 1];
   const imageModelName = imageUrlParts[imageUrlParts.length - 2];
-  
+
   // Xây dựng đường dẫn đầy đủ đến tệp hình ảnh
   const imagePath = path.join(imageDir, imageModelName, imageFileName);
 

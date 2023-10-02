@@ -26,6 +26,10 @@ import TourOrders from "components/Admin/TourOrders";
 import Homepage from "components/Market/Homepage";
 import DetailProduct from "components/Market/DetailProduct";
 
+//TourOnline
+import TourLayout from "layouts/CustomerLayout/TourLayout";
+import TourService from "components/TourService";
+
 //Merchant
 import MerchantProducts from "components/Merchant/Products";
 import MerchantDashbroad from "components/Merchant/MerchantDashbroad";
@@ -49,6 +53,9 @@ function App() {
         <Route path="/merchant" element={<MerchantDashbroad />} />
         <Route path="/merchant/products" element={<MerchantProducts />} />
         <Route path="/merchant/orders" element={<Orders />} />
+
+        {/* TourOnline */}
+        <Route path="/tour" element={<TourService />} />
 
         {/* Marketplace */}
         <Route path="/marketplace" element={<Homepage />} />
