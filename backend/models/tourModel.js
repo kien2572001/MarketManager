@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { ROLES } from "../enum/enum";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const { Schema } = mongoose;
 
@@ -27,6 +28,12 @@ const TourSchema = new Schema(
             required: true,
             maxlength: 100,
         },
+        image: {
+            type: String,
+            trim: true,
+            required: true,
+            maxlength: 100,
+        },
         slug: {
             type: String,
             trim: true,
@@ -36,7 +43,16 @@ const TourSchema = new Schema(
             index: true,
         },
         startTime: {
-            type: Date,
+            type: Schema.Types.Mixed,
+            required: true,
+        },
+        scheduleType: {
+            type: String,
+            required: true,
+            enum: ["daily", "weekly", "monthly"],
+        },
+        tourDuration: {
+            type: String,
             required: true,
         },
         startLocation: {
@@ -50,12 +66,6 @@ const TourSchema = new Schema(
             trim: true,
             required: true,
             maxlength: 100,
-        },
-        description: {
-            type: String,
-            trim: true,
-            required: true,
-            maxlength: 2000,
         },
         price: {
             type: Number,
@@ -73,6 +83,8 @@ const TourSchema = new Schema(
     },
     { timestamps: true }
 );
+
+TourSchema.plugin(mongoosePaginate);
 
 const Tour = mongoose.model("Tour", TourSchema);
 

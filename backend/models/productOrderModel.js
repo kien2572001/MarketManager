@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { ROLES } from "../enum/enum";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const { Schema } = mongoose;
 
@@ -26,12 +27,13 @@ const OrderItemSchema = new Schema(
     { timestamps: true }
 );  
 
+
 const ProductOrderSchema = new Schema(
     {
         status: {
             type: String,
             required: true,
-            enum: ["pending", "completed"],
+            enum: ["pending", "accepted", "cancelled"],
             default: "pending",
         },
         paymentMethod: {
@@ -48,11 +50,24 @@ const ProductOrderSchema = new Schema(
             ref: "ShopBoat",
             required: true,
         },
+        customer: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
         orderItems: [OrderItemSchema],
       },
     { timestamps: true }
 );
 
+ProductOrderSchema.plugin(mongoosePaginate);
+
+ProductOrderSchema.virtual("customerName").get(function () {
+    return this.customer.firstName + " " + this.customer.lastName;
+}
+);
+
+ProductOrderSchema.set('toJSON', { virtuals: true });
 
 const ProductOrder = mongoose.model("ProductOrder", ProductOrderSchema);
 

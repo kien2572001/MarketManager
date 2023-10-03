@@ -36,6 +36,14 @@ const UserSchema = new Schema(
       type: String,
       default: "https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg",
     },
+    phone: {
+      type: String,
+      trim: true,
+    },
+    address: {
+      type: String,
+      trim: true,
+    },
     role: {
       type: Number,
       enum: Object.values(ROLES),

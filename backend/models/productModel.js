@@ -62,7 +62,6 @@ const ProductSchema = new Schema(
       unit: {
             type: String,
             required: true,
-            enum: ["kg", "g", "l", "ml", "unit"],
             default: "unit",
         },
       categories: [

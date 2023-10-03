@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { ROLES } from "../enum/enum";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const { Schema } = mongoose;
 
@@ -16,11 +17,19 @@ const TourOrderSchema = new Schema(
             required: true,
             enum: ["paypal", "stripe"],
         },
-        total: {
+        tourTime: {
+            type: Date,
+            required: true,
+        },
+        tourPrice: {
             type: Number,
             required: true,
         },
         quantity: {
+            type: Number,
+            required: true,
+        },
+        total: {
             type: Number,
             required: true,
         },
@@ -37,6 +46,8 @@ const TourOrderSchema = new Schema(
     },
     { timestamps: true }
 );
+
+TourOrderSchema.plugin(mongoosePaginate);
 
 const TourOrder = mongoose.model("TourOrder", TourOrderSchema);
 

@@ -16,6 +16,8 @@ exports.getAllProducts = (pageOptions) => {
   });
 }
 
+
+
 exports.getProductBySlug = (slug) => {
   return new Promise((resolve, reject) => {
     Product.findOne({ slug: slug })
@@ -31,6 +33,23 @@ exports.getProductBySlug = (slug) => {
         }
       });
       
+  });
+}
+
+exports.getProductById = (id) => {
+  return new Promise((resolve, reject) => {
+    Product.findById(id)
+      .populate('shopBoat', '-products') // Chọn các trường bạn muốn hiển thị từ bảng User
+      .populate('categories')
+      .exec((err, product) => {
+        if (err) {
+          // Xử lý lỗi nếu có
+          reject(err);
+        } else {
+          // Khi truy vấn thành công, bạn có thể truy cập thông tin owner thông qua product.owner
+          resolve(product);
+        }
+      });
   });
 }
 
@@ -59,6 +78,17 @@ exports.updateProductById = async (id, data) => {
   }
 }
 
+exports.createProduct = async (data, shopBoatId) => {
+  let product = await product_params(data);
+  product.shopBoat = shopBoatId;
+  try {
+    const new_product = await Product.create(product);
+    return new_product;
+  } catch (err) {
+    throw err;
+  }
+}
+
 const product_params = async (body) => {
   let categories_slug = body.categories.split(",");
   let categories = categories_slug.map((slug) => {
@@ -69,7 +99,6 @@ const product_params = async (body) => {
   categories = categories.map((category) => category._id);
   let slug = slugify(body.name, { lower: true });
   let information = JSON.parse(body.information)
-  console.log(information);
   return {
     name: body.name,
     price: body.price,

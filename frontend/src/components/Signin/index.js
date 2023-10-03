@@ -16,7 +16,6 @@ import { successToast, errorToast, warningToast } from "utilities/toast";
 import { ROLES } from "../../enum";
 import { signinService } from "api/auth";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
 function Copyright(props) {
   return (
@@ -42,18 +41,16 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const [cookies] = useCookies(["access_token"]);
 
   const handleLogin = async (email, password) => {
     try {
       const res = await signinService(email, password);
-      if (res.status === 200) {
+      if (res?.status === 200) {
         successToast("Login successful");
-        const { role } = jwt_decode(cookies.access_token);
+        const { role } = await jwt_decode(res.data.accessToken);
         redirectAfterLogin(role);
       }
     } catch (error) {
-      console.log(error);
       if (error?.response?.status === 401) {
         errorToast(error.response.data.message || "Login failed");
       }
@@ -63,10 +60,10 @@ export default function SignIn() {
   const redirectAfterLogin = (role) => {
     switch (role) {
       case ROLES.ADMIN:
-        navigate("/admin/dashboard"); // Sử dụng history.push để điều hướng
+        navigate("/admin"); // Sử dụng history.push để điều hướng
         break;
       case ROLES.MERCHANT:
-        navigate("/merchant/dashboard"); // Sử dụng history.push để điều hướng
+        navigate("/merchant"); // Sử dụng history.push để điều hướng
         break;
       case ROLES.CUSTOMER:
         navigate("/marketplace"); // Sử dụng history.push để điều hướng
@@ -82,7 +79,7 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     const email = data.get("email");
     const password = data.get("password");
-    handleLogin(email, password);
+    await handleLogin(email, password);
   };
 
   return (

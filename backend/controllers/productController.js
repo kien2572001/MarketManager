@@ -49,7 +49,6 @@ exports.deleteProductById = async function (req, res, next) {
 
 exports.updateProductById = async function (req, res, next) {
     let productID = req.params.id;
-    console.log(req.body);
     try {
         let product = await productServices.getProductById(productID);
         if (!product) {
@@ -83,3 +82,13 @@ exports.getListProductsInHomePage = async function (req, res, next) {
     }
 }
 
+exports.createProduct = async function (req, res, next) {
+    let shopBoatId = req.shopBoatId;
+    try {
+        let product = await productServices.createProduct(req.body, shopBoatId);
+        return serverResponse.sendSuccess(res, SUCCESSFUL, product);
+    }
+    catch (err) {
+        return serverResponse.sendError(res, err);
+    }
+}
