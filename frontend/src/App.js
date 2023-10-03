@@ -29,6 +29,7 @@ import DetailProduct from "components/Market/DetailProduct";
 //TourOnline
 import TourLayout from "layouts/CustomerLayout/TourLayout";
 import TourService from "components/TourService";
+import Searchpage from "components/Market/Searchpage";
 
 //Merchant
 import MerchantProducts from "components/Merchant/Products";
