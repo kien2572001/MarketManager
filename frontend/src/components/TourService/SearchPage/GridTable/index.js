@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
-import CardProduct from 'components/Market/Homepage/ListProduct/SliderProduct/CardProduct';
+import CardTour from 'components/TourService/Homepage/TopTour/CardTuor';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -24,11 +24,11 @@ export default function GridTable() {
     }
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} columns={12}>
                 {
                     Array.from(new Array(5)).map((items, index) => (
-                        <Grid key={index} xs={6} md={3}>
-                            <CardProduct item={item} />
+                        <Grid key={index} xs={4} >
+                            <CardTour />
                         </Grid>
                     ))
                 }
