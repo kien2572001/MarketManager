@@ -31,11 +31,14 @@ import TourLayout from "layouts/CustomerLayout/TourLayout";
 import TourService from "components/TourService";
 import Searchpage from "components/Market/Searchpage";
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 //Merchant
 import MerchantProducts from "components/Merchant/Products";
 import MerchantDashbroad from "components/Merchant/MerchantDashbroad";
 import Orders from "components/Merchant/Orders";
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -46,6 +49,7 @@ function App() {
 
   return (
     <div className="App">
+<<<<<<< Updated upstream
       <Routes>
         {/* Admin */}
         <Route path="/admin" element={<AdminDashboard />} />
@@ -70,6 +74,25 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>
+=======
+      <Router>
+        <Routes>
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/merchant" element={<AdminDashboard />} />
+          <Route path="/merchant/products" element={<MerchantProducts />} />
+          <Route path="/marketplace" element={<Homepage />} />
+          <Route path="/marketplace/search" element={<Searchpage />} />
+          <Route path="/touronline" element={<TourService />} />
+
+          <Route
+            path="/marketplace/product/:slug"
+            element={<DetailProduct />}
+          />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      </Router>
+>>>>>>> Stashed changes
       <ToastContainer />
     </div>
   );
