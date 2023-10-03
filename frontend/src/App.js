@@ -30,11 +30,14 @@ import DetailProduct from "components/Market/DetailProduct";
 import TourLayout from "layouts/CustomerLayout/TourLayout";
 import TourService from "components/TourService";
 import Searchpage from "components/Market/Searchpage";
+<<<<<<< Updated upstream
 
 //Merchant
 import MerchantProducts from "components/Merchant/Products";
 import MerchantDashbroad from "components/Merchant/MerchantDashbroad";
 import Orders from "components/Merchant/Orders";
+=======
+>>>>>>> Stashed changes
 
 function App() {
   const [cookies] = useCookies(["access_token"]);
