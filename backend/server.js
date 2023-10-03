@@ -21,7 +21,7 @@ const fs = require('fs');
 
 //connection from db here
 db.connect(app);
-//seeder.seedData();
+// seeder.seedData();
 
 require("./models/userModel");
 

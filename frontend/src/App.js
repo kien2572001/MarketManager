@@ -25,11 +25,13 @@ import TourOrders from "components/Admin/TourOrders";
 //Marketplace
 import Homepage from "components/Market/Homepage";
 import DetailProduct from "components/Market/DetailProduct";
+import MarketSearchpage from "components/Market/Searchpage";
 
 //TourOnline
 import TourLayout from "layouts/CustomerLayout/TourLayout";
-import TourService from "components/TourService";
-
+import TourService from "components/TourService/Homepage";
+import TourDetail from "components/TourService/TourDetail";
+import TourSearchPage from "components/TourService/SearchPage";
 //Merchant
 import MerchantProducts from "components/Merchant/Products";
 import MerchantDashbroad from "components/Merchant/MerchantDashbroad";
@@ -56,10 +58,12 @@ function App() {
 
         {/* TourOnline */}
         <Route path="/tour" element={<TourService />} />
+        <Route path="/tour/tourdetail" element={<TourDetail />} />
+        <Route path="/tour/search" element={<TourSearchPage />} />
 
         {/* Marketplace */}
         <Route path="/marketplace" element={<Homepage />} />
-
+        <Route path="/marketplace/search" element={<MarketSearchpage />} />
         <Route path="/marketplace/product/:slug" element={<DetailProduct />} />
 
         {/* Auth */}
