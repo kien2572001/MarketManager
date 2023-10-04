@@ -14,6 +14,9 @@ import Tooltip from "@mui/material/Tooltip";
 import { deleteTour } from "api/tour";
 import { successToast, errorToast } from "utilities/toast";
 import { tourTimeParser } from "utilities/tourTime";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -53,13 +56,15 @@ export default function ToursTable({ tours, setTours }) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell align="center">Start Time</StyledTableCell>
-            <StyledTableCell align="center">Tour Duration</StyledTableCell>
-            <StyledTableCell align="center">Start Location</StyledTableCell>
-            <StyledTableCell align="center">Transportation</StyledTableCell>
-            <StyledTableCell align="center">Price</StyledTableCell>
-            <StyledTableCell align="center">Action</StyledTableCell>
+            <StyledTableCell>Tên</StyledTableCell>
+            <StyledTableCell align="center">
+              Thời gian khởi hành
+            </StyledTableCell>
+            <StyledTableCell align="center">Thời gian tour</StyledTableCell>
+            <StyledTableCell align="center">Địa điểm khởi hành</StyledTableCell>
+            <StyledTableCell align="center">Phương tiện</StyledTableCell>
+            <StyledTableCell align="center">Giá</StyledTableCell>
+            <StyledTableCell align="center">Thao tác</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -85,10 +90,18 @@ export default function ToursTable({ tours, setTours }) {
               </StyledTableCell>
               <StyledTableCell align="center">{tour.price}</StyledTableCell>
               <StyledTableCell align="center">
-                <EditModal tour={tour} setTours={setTours} />
-                <Button variant="danger" onClick={() => handleDelete(tour._id)}>
-                  Delete
-                </Button>
+                <div className="flex justify-center">
+                  <EditModal tour={tour} setTours={setTours} />
+                  <Tooltip title="Xóa" placement="top">
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => handleDelete(tour._id)}
+                      color="error"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                </div>
               </StyledTableCell>
             </StyledTableRow>
           ))}

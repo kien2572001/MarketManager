@@ -12,6 +12,10 @@ import { v4 as uuidv4 } from "uuid";
 import { Badge, Button } from "react-bootstrap";
 import DetailModal from "./DetailModal";
 import { changeStatus } from "api/tourOrder";
+import IconButton from "@mui/material/IconButton";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+import Tooltip from "@mui/material/Tooltip";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -99,20 +103,38 @@ export default function TourOrdersTable({ tourOrders, setTourOrders }) {
               </StyledTableCell>
               <StyledTableCell align="center">
                 {row?.status === "pending" ? (
-                  <>
-                    <Button
+                  <div className="d-flex justify-content-center">
+                    {/* <Button
                       variant="success"
                       onClick={() => handleChangeStatus(row?._id, "accepted")}
                     >
                       Xác nhận
-                    </Button>
-                    <Button
+                    </Button> */}
+                    {/* <Button
                       variant="danger"
                       onClick={() => handleChangeStatus(row?._id, "cancelled")}
                     >
                       Hủy
-                    </Button>
-                  </>
+                    </Button> */}
+                    <Tooltip title="Xác nhận" arrow>
+                      <IconButton
+                        onClick={() => handleChangeStatus(row?._id, "accepted")}
+                        color="success"
+                      >
+                        <CheckCircleIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Hủy" arrow>
+                      <IconButton
+                        onClick={() =>
+                          handleChangeStatus(row?._id, "cancelled")
+                        }
+                        color="error"
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </div>
                 ) : row?.status === "accepted" ? (
                   <></>
                 ) : (

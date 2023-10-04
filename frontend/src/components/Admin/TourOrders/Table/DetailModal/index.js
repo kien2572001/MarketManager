@@ -5,6 +5,9 @@ import Modal from "@mui/material/Modal";
 import { Table } from "react-bootstrap";
 import Badge from "react-bootstrap/Badge";
 import moment from "moment";
+import IconButton from "@mui/material/IconButton";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import Tooltip from "@mui/material/Tooltip";
 
 const style = {
   position: "absolute",
@@ -27,9 +30,11 @@ export default function DetailModal({ tourOrder }) {
 
   return (
     <div>
-      <Button variant="primary" onClick={handleOpen}>
-        Detail
-      </Button>
+      <Tooltip title="Chi tiết">
+        <IconButton onClick={handleOpen} color="primary">
+          <VisibilityIcon />
+        </IconButton>
+      </Tooltip>
       <Modal
         open={open}
         onClose={handleClose}

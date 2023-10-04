@@ -10,6 +10,10 @@ import Paper from "@mui/material/Paper";
 import Badge from "react-bootstrap/Badge";
 import { updateShopBoatById } from "api/shopBoat";
 import { Button } from "react-bootstrap";
+import IconButton from "@mui/material/IconButton";
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import Tooltip from "@mui/material/Tooltip";
 const DetailModal = React.lazy(() => import("./DetailModal"));
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -51,34 +55,34 @@ export default function ShopsTable({ shopBoats, updateData }) {
         <TableHead>
           <TableRow>
             <StyledTableCell>
-              <span className="font-bold">Image</span>
+              <span className="font-bold">Ảnh</span>
             </StyledTableCell>
             <StyledTableCell>
-              <span className="font-bold">Name</span>
+              <span className="font-bold">Tên</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Code</span>
+              <span className="font-bold">Mã số</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Owner</span>
+              <span className="font-bold">Chủ thuyền</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Phone</span>
+              <span className="font-bold">Số điện thoại</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Address</span>
+              <span className="font-bold">Địa chỉ</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Type</span>
+              <span className="font-bold">Loại</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Status</span>
+              <span className="font-bold">Trạng thái</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Detail</span>
+              <span className="font-bold">Chi tiết</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Actions</span>
+              <span className="font-bold">Thao tác</span>
             </StyledTableCell>
           </TableRow>
         </TableHead>
@@ -104,11 +108,11 @@ export default function ShopsTable({ shopBoats, updateData }) {
               <StyledTableCell align="center">{row.type}</StyledTableCell>
               <StyledTableCell align="center">
                 {row?.status === "active" ? (
-                  <Badge bg="success">Active</Badge>
+                  <Badge bg="success">Hoạt động</Badge>
                 ) : row?.status === "inactive" ? (
-                  <Badge bg="warning">Inactive</Badge>
+                  <Badge bg="warning">Chưa hoạt động</Badge>
                 ) : (
-                  <Badge bg="danger">Banned</Badge>
+                  <Badge bg="danger">Bị khóa</Badge>
                 )}
               </StyledTableCell>
               <StyledTableCell align="center">
@@ -116,26 +120,35 @@ export default function ShopsTable({ shopBoats, updateData }) {
               </StyledTableCell>
               <StyledTableCell align="center">
                 {row?.status === "active" ? (
-                  <Button
-                    variant="danger"
-                    onClick={() => handleChangeStatus(row._id, "banned", row)}
-                  >
-                    Ban
-                  </Button>
+                  <Tooltip title="Khóa">
+                    <IconButton
+                      aria-label="Khóa"
+                      color="error"
+                      onClick={() => handleChangeStatus(row._id, "banned", row)}
+                    >
+                      <LockIcon />
+                    </IconButton>
+                  </Tooltip>
                 ) : row?.status === "inactive" ? (
-                  <Button
-                    variant="success"
-                    onClick={() => handleChangeStatus(row._id, "active", row)}
-                  >
-                    Active
-                  </Button>
+                  <Tooltip title="Kích hoạt">
+                    <IconButton
+                      aria-label="Kích hoạt"
+                      color="success"
+                      onClick={() => handleChangeStatus(row._id, "active", row)}
+                    >
+                      <LockOpenIcon />
+                    </IconButton>
+                  </Tooltip>
                 ) : (
-                  <Button
-                    variant="warning"
-                    onClick={() => handleChangeStatus(row._id, "active", row)}
-                  >
-                    Unban
-                  </Button>
+                  <Tooltip title="Mở khóa">
+                    <IconButton
+                      aria-label="Mở khóa"
+                      color="success"
+                      onClick={() => handleChangeStatus(row._id, "active", row)}
+                    >
+                      <LockOpenIcon />
+                    </IconButton>
+                  </Tooltip>
                 )}
               </StyledTableCell>
             </StyledTableRow>

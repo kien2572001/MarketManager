@@ -11,6 +11,7 @@ import TourOrder from "../../models/tourOrderModel.js";
 import {ROLES} from "../../enum/enum.js"
 const { faker } = require('@faker-js/faker');
 import slugify from "slugify";
+import insertShopBoat from "./shopBoat_seeder.js";
 
 // Kết nối tới MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
@@ -31,7 +32,7 @@ users.push({
 });
 
 
-for (let i = 1; i <= 10; i++) {
+for (let i = 1; i <= 4; i++) {
   users.push({
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
@@ -86,30 +87,30 @@ const deleteAllData = async () => {
   }
 }
 
-const insertShopBoat = async () => {
-  try {
-    let listUserId = await User.find({ role: ROLES.MERCHANT }).select('_id'); 
-    let shopBoats = [];
-    let id = 1;
+// const insertShopBoat = async () => {
+//   try {
+//     let listUserId = await User.find({ role: ROLES.MERCHANT }).select('_id'); 
+//     let shopBoats = [];
+//     let id = 1;
       
-    for (let i = 0; i < listUserId.length; i++) {
-      shopBoats.push({
-        name: faker.commerce.department(),
-        description: faker.lorem.paragraphs({ min: 1, max: 3 }),
-        avatar: "https://s3.nucuoimekong.com/ncmk/wp-content/uploads/dac-san-mien-tay.jpg",
-        owner: listUserId[i]._id,
-        type: faker.helpers.arrayElement(["Thuyền Lớn", "Thuyền Nhỏ", "Thuyền Trung", "Thuyền Cao Tốc", "Thuyền Cá Nhân", "Thuyền Mái Bạt "]),
-        // code: "CR-" + numberTo4DigitSring(id++),
-        status: faker.helpers.arrayElement([ "inactive", "banned"]),
-      });
-    }
-    await ShopBoat.insertMany(shopBoats);
-    console.log("ShopBoats are inserted");
-  }
-  catch (err) {
-    console.log(err);
-  }
-}
+//     for (let i = 0; i < listUserId.length; i++) {
+//       shopBoats.push({
+//         name: faker.commerce.department(),
+//         description: faker.lorem.paragraphs({ min: 1, max: 3 }),
+//         avatar: "https://s3.nucuoimekong.com/ncmk/wp-content/uploads/dac-san-mien-tay.jpg",
+//         owner: listUserId[i]._id,
+//         type: faker.helpers.arrayElement(["Thuyền Lớn", "Thuyền Nhỏ", "Thuyền Trung", "Thuyền Cao Tốc", "Thuyền Cá Nhân", "Thuyền Mái Bạt "]),
+//         // code: "CR-" + numberTo4DigitSring(id++),
+//         status: faker.helpers.arrayElement([ "inactive", "banned"]),
+//       });
+//     }
+//     await ShopBoat.insertMany(shopBoats);
+//     console.log("ShopBoats are inserted");
+//   }
+//   catch (err) {
+//     console.log(err);
+//   }
+// }
 
 const rootCategories = [
   {

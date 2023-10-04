@@ -8,7 +8,9 @@ import TourInformation from "./TourInformation";
 import { updateTour } from "api/tour";
 import { successToast, errorToast } from "utilities/toast";
 import StartTimePicker from "./StatTimePicker";
-
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import Tooltip from "@mui/material/Tooltip";
 const style = {
   position: "absolute",
   top: "60%",
@@ -113,9 +115,11 @@ const EditModal = ({ tour, setTours }) => {
 
   return (
     <div>
-      <Button variant="primary" onClick={handleOpen}>
-        Edit
-      </Button>
+      <Tooltip title="Sửa" placement="top">
+        <IconButton aria-label="edit" onClick={handleOpen} color="primary">
+          <EditIcon />
+        </IconButton>
+      </Tooltip>
       <Modal
         open={open}
         onClose={handleClose}

@@ -12,12 +12,12 @@ const db = require("./db");
 const swaggerJsdoc = require("swagger-jsdoc"),
   swaggerUi = require("swagger-ui-express");
 const app = express();
-//const seeder = require('./db/seeds/fake_seed')
+const seeder = require('./db/seeds/fake_seed')
 const fileUpload = require('express-fileupload');
 
 const fs = require('fs');
 
-const seeder = require("./db/seeds/real_seed");
+//const seeder = require("./db/seeds/real_seed");
 
 //connection from db here
 db.connect(app);

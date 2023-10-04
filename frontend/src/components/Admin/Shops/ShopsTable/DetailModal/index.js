@@ -6,6 +6,9 @@ import { Table } from "react-bootstrap";
 import Badge from "react-bootstrap/Badge";
 import { getListCategoriesOfShop } from "api/shopBoat";
 import { v4 as uuidv4 } from "uuid";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const style = {
   position: "absolute",
@@ -41,9 +44,11 @@ export default function DetailModal({ shopBoat }) {
 
   return (
     <div>
-      <Button variant="primary" onClick={handleOpen}>
-        Detail
-      </Button>
+      <Tooltip title="Chi tiết">
+        <IconButton onClick={handleOpen} aria-label="detail" color="primary">
+          <VisibilityIcon />
+        </IconButton>
+      </Tooltip>
       <Modal
         open={open}
         onClose={handleClose}
