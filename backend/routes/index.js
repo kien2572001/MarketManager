@@ -93,6 +93,12 @@ const routes = (app) => {
   router.patch("/tours/:id", tourHandlers.updateTour);
   router.delete("/tours/:id", tourHandlers.deleteTour);
 
+  //customer
+  router.get("/customer/tours", tourHandlers.getToursInHomePage);
+  router.get("/customer/tours/search", tourHandlers.searchTour);
+  router.get("/customer/tours/:slug", tourHandlers.getTourBySlug);
+  
+
   router.get("/tour-orders", tourOrderHandlers.getTourOrders);
   router.patch("/tour-orders/:id", tourOrderHandlers.updateTourOrder);
   router.patch("/tour-orders/:id/status", tourOrderHandlers.changeStatus);

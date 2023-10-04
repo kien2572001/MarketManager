@@ -26,6 +26,7 @@ const ShopBoatSchema = new Schema(
             type: String,
             required: true,
             maxlength: 100,
+            default: "Thuyền Lớn",
             enum: ["Thuyền Lớn", "Thuyền Nhỏ", "Thuyền Trung", "Thuyền Cao Tốc", "Thuyền Cá Nhân", "Thuyền Mái Bạt "] // enum means string objects
         },
         code: {
@@ -44,7 +45,7 @@ const ShopBoatSchema = new Schema(
         }],
         status: {
             type: String,
-            default: "Đang hoạt động",
+            default: "inactive",
             enum: ["active", "inactive", "banned"],
         },
     },

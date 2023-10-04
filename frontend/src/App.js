@@ -58,7 +58,8 @@ function App() {
 
         {/* TourOnline */}
         <Route path="/tour" element={<TourService />} />
-        <Route path="/tour/tourdetail" element={<TourDetail />} />
+        <Route path="/tour/detail/:slug" element={<TourDetail />} />
+        <Route path="/tour/search/:name" element={<TourSearchPage />} />
         <Route path="/tour/search" element={<TourSearchPage />} />
 
         {/* Marketplace */}

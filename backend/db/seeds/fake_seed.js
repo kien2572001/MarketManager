@@ -91,13 +91,6 @@ const insertShopBoat = async () => {
     let listUserId = await User.find({ role: ROLES.MERCHANT }).select('_id'); 
     let shopBoats = [];
     let id = 1;
-    const numberTo4DigitSring = (number) => {
-      let s = number.toString();
-      while (s.length < 4) {
-        s = "0" + s;
-      }
-      return s;
-    }
       
     for (let i = 0; i < listUserId.length; i++) {
       shopBoats.push({
@@ -255,7 +248,7 @@ const insertFeedBack = async () => {
 const insertTour = async () => {
   try {
     let tours = [];
-    const keyList = ["Summary", "Shecdule", "What's included", "What's excluded", "What to bring", "Cancellation policy"];
+    const keyList = ["Tổng quan", "Lịch trình", "Dịch vụ bao gồm", "Dịch vụ không bao gồm", "Quy định cho trẻ em", "Quy định hủy tour"];
     for (let i = 0; i < 10; i++) {
       let informations = [];
       for (let j = 0; j< keyList.length; j++) {
@@ -274,17 +267,17 @@ const insertTour = async () => {
         startTime = faker.helpers.arrayElements(["t2", "t3", "t4", "t5", "t6", "t7", "cn"]);
         startTime.sort();
       }
-
+      let tourName = "Tour chợ nổi Cái Răng Cần Thơ " + i;
       tours.push({
-        name: "Tour " + faker.location.city(),
+        name: tourName,
         image: "https://s3.nucuoimekong.com/ncmk/wp-content/uploads/tour-cho-noi-cai-rang-o-can-tho.jpg",
-        slug: slugify("Tour " + faker.location.city(), { lower: true }),
+        slug: slugify(tourName, { lower: true }),
         startTime: startTime,
         scheduleType: scheduleType,
         startLocation: faker.location.city(),
-        tourDuration: faker.helpers.arrayElement(["2 tieng", "3 tieng","4 tieng" ,"6 tieng", "1 ngay", "2 ngay", "3 ngay"]),
-        transportation: faker.helpers.arrayElement(["Xe may", "Xe dap", "Xe hoi", "Tau thuy"]),
-        price: faker.commerce.price(),
+        tourDuration: faker.helpers.arrayElement(["2 tiếng", "3 tiếng","4 tiếng" ,"6 tiếng", "1 ngày", "2 ngày 1 đêm", "3 ngày 2 đêm"]),
+        transportation: faker.helpers.arrayElement(["Xe máy", "Ghe nhỏ", "Xe ô tô", "Xe khách, tàu thuyền"]),
+        price: faker.number.int({ min: 10, max: 100 } ) * 10000,
         images: [faker.image.url(),faker.image.url(),faker.image.url(),faker.image.url(),faker.image.url()],
         tourInformation: informations,
       });
