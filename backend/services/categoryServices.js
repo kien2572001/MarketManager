@@ -62,3 +62,16 @@ exports.checkCategoryExists = (slug) => {
       });
   });
 }
+
+exports.getCategoryById = (id) => {
+  return new Promise((resolve, reject) => {
+    Category.findById(id)
+      .exec((err, category) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(category);
+        }
+      });
+  });
+}

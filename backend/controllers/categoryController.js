@@ -57,3 +57,13 @@ exports.createCategory = async function (req, res, next) {
     }
 }
 
+exports.getCategoryById = async function (req, res, next) {
+    let id = req.params.id;
+    try {
+        let category = await categoryServices.getCategoryById(id);
+        return serverResponse.sendSuccess(res, SUCCESSFUL, category);
+    }
+    catch (err) {
+        return serverResponse.sendError(res, err);
+    }
+}

@@ -5,9 +5,8 @@ import { useState } from "react";
 import { FaPhoneAlt } from "react-icons/fa";
 import { BsCart4 } from "react-icons/bs";
 import ResponsiveAppBar from "./MarketHeader";
-import { useNavigate } from "react-router-dom";
 import "react-slideshow-image/dist/styles.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const MarketNavbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,34 +21,44 @@ const MarketNavbar = () => {
     navigate("/signin");
   };
 
+  const handleSearch = () => {
+    navigate(`/marketplace/search/${searchTerm}`);
+  };
+
   return (
     <div className="container-nav">
       <div className="content-nav">
-        <Link className="logo" to="/marketplace">
+        <Link
+          className="logo"
+          to="/marketplace"
+          style={{ cursor: "pointer", marginRight: "50px" }}
+        >
           <img
             src="https://chonoicairang.net/wp-content/uploads/2020/04/chonoicairang.net_.png"
             alt="logo"
           />
         </Link>
         <div className="search-bar">
-          <Container maxWidth="md" sx={{ mt: 20 }} className="fix-margintop">
-            <TextField
-              id="search"
-              type="search"
-              label="Tìm mọi thứ"
+          <div className="flex items-center h-[35px]">
+            <input
+              type="text"
+              placeholder="Tìm mọi thứ"
               value={searchTerm}
               onChange={handleChange}
-              style={{ boxShadow: "0px 5px 15px ", borderRadius: "10px" }}
-              sx={{ width: 300 }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
+              className="py-1 px-[0.75rem] border border-[#FFC048] rounded-l-md w-full h-full outline-none transition duration-300 ease-in-out"
+              onKeyPress={(event) => {
+                if (event.key === "Enter") {
+                  handleSearch();
+                }
               }}
             />
-          </Container>
+            <div
+              className="search-icon bg-[#FFC048] flex items-center justify-center h-full min-w-[35px] cursor-pointer hover:bg-[#D26E43]"
+              onClick={() => handleSearch()}
+            >
+              <SearchIcon style={{ color: "#fff" }} />
+            </div>
+          </div>
           <div className="phone-number">
             <FaPhoneAlt size={15} />
             <span className="tracking-tight text-red-500"> 0939.39.39.39</span>
@@ -75,7 +84,9 @@ const MarketNavbar = () => {
         </div>
       </div>
       <div className="menu-header">
-        <div className="ResponsiveAppBar"><ResponsiveAppBar /></div>
+        <div className="ResponsiveAppBar">
+          <ResponsiveAppBar />
+        </div>
       </div>
     </div>
   );

@@ -9,4 +9,22 @@ const getListCategories = async () => {
   }
 };
 
-export { getListCategories };
+const getCategoryById = async (id) => {
+  try {
+    const response = await instance.get(`/categories/id/${id}`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getCategoryBySlug = async (slug) => {
+  try {
+    const response = await instance.get(`/categories/${slug}`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { getListCategories, getCategoryById, getCategoryBySlug };

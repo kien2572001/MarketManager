@@ -102,7 +102,9 @@ exports.getShopBoatProducts = async (id, page, limit, queryCondition) => {
 
 exports.getShopBoadByOwnerId = (ownerId) => {
   return new Promise((resolve, reject) => {
-    ShopBoat.findOne({ owner: ownerId }, (err, shopBoat) => {
+    ShopBoat.findOne({ owner: ownerId })
+    .populate('owner')
+    .exec((err, shopBoat) => {
       if (err) {
         reject(err);
       } else {

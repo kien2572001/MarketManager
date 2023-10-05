@@ -34,7 +34,7 @@ const CardProduct = ({ item }) => {
                 <p className="font-bold text-black">{price}đ</p>
               )}
             </div>
-            <div className="add-to-cart">
+            <div className="add-to-cart py-1">
               <button>THÊM VÀO GIỎ HÀNG</button>
             </div>
           </div>

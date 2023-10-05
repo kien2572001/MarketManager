@@ -7,11 +7,12 @@ import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { Link } from "react-router-dom";
 
 const pages = [
-  "VỀ CHÚNG TÔI",
+  "DU LỊCH",
   "BLOG",
   "KHUYẾN MÃI",
   "HƯỚNG DẪN ĐẶT HÀNG",
@@ -64,7 +65,7 @@ function ResponsiveAppBar() {
               aria-label="menu"
               sx={{ mx: 1 }}
             >
-              <MenuIcon />
+              <MenuIcon style={{ color: "#fff" }} size="small" />
             </IconButton>
             <Typography
               variant="h6"
@@ -73,7 +74,7 @@ function ResponsiveAppBar() {
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
+                fontFamily: "Arial",
                 fontWeight: 700,
                 fontSize: "1.1rem",
                 color: "#fff",
@@ -87,7 +88,7 @@ function ResponsiveAppBar() {
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page, index) => (
-              <>
+              <div key={page}>
                 <Button
                   key={page}
                   //check index
@@ -95,13 +96,23 @@ function ResponsiveAppBar() {
                   sx={{ py: 2, color: "white", display: "block" }}
                   style={{
                     color: "#E1EDDA",
-                    fontSize: "1.1rem",
+                    fontSize: "1rem",
                     fontWeight: "bold",
+                    padding: "0 1rem",
                   }}
                 >
-                  <span className="tracking-normal	">{page}</span>
+                  {index === 0 ? (
+                    <Link
+                      to="/tour"
+                      style={{ textDecoration: "none", color: "#E1EDDA" }}
+                    >
+                      <span className="tracking-normal	">{page}</span>
+                    </Link>
+                  ) : (
+                    <span className="tracking-normal	">{page}</span>
+                  )}
                 </Button>
-                <Menu
+                {/* <Menu
                   sx={{ mt: "45px" }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
@@ -122,8 +133,8 @@ function ResponsiveAppBar() {
                       <Typography textAlign="center">{setting}</Typography>
                     </MenuItem>
                   ))}
-                </Menu>
-              </>
+                </Menu> */}
+              </div>
             ))}
           </Box>
         </Toolbar>

@@ -2,6 +2,9 @@ import "./style.scss";
 import React from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import Badge from "react-bootstrap/Badge";
+import { getCategoryById } from "api/category";
+import { Link } from "react-router-dom";
 
 const ProductMain = (props) => {
   const { product } = props;

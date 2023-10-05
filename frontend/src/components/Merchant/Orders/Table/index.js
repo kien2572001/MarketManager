@@ -13,6 +13,10 @@ import Button from "react-bootstrap/Button";
 import moment from "moment";
 import { updateOrderStatus } from "api/productOrder";
 import DetailModal from "./DetailModal";
+import IconButton from "@mui/material/IconButton";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import Tooltip from "@mui/material/Tooltip";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,21 +36,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-// ProductsTable.propTypes = {
-//   products: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       name: PropTypes.string.isRequired,
-//       image: PropTypes.string.isRequired,
-//       price: PropTypes.number.isRequired,
-//       sale: PropTypes.number.isRequired,
-//       unit: PropTypes.string.isRequired,
-//       countInStock: PropTypes.number.isRequired,
-//     })
-//   ),
-//   updateData: PropTypes.func.isRequired,
-//   handleDeleteProduct: PropTypes.func.isRequired,
-// };
-
 export default function OrdersTable({ orders, updateData }) {
   const handleChaneStatus = async (orderId, status) => {
     try {
@@ -65,28 +54,28 @@ export default function OrdersTable({ orders, updateData }) {
         <TableHead>
           <TableRow>
             <StyledTableCell>
-              <span className="font-bold">Time</span>
+              <span className="font-bold">Thời gian đặt hàng</span>
             </StyledTableCell>
             <StyledTableCell>
-              <span className="font-bold">Customer</span>
+              <span className="font-bold">Tên khách hàng</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Phone</span>
+              <span className="font-bold">Điện thoại</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Address</span>
+              <span className="font-bold">Địa chỉ</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Total</span>
+              <span className="font-bold">Tổng hóa đơn</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Status</span>
+              <span className="font-bold">Trạng thái</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Detail</span>
+              <span className="font-bold">Chi tiết</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Actions</span>
+              <span className="font-bold">Thao tác</span>
             </StyledTableCell>
           </TableRow>
         </TableHead>
@@ -111,15 +100,15 @@ export default function OrdersTable({ orders, updateData }) {
               <StyledTableCell align="center">
                 {order.status === "pending" ? (
                   <Badge pill bg="warning">
-                    Pending
+                    Chờ xác nhận
                   </Badge>
                 ) : order.status === "accepted" ? (
                   <Badge pill bg="success">
-                    Accepted
+                    Đã xác nhận
                   </Badge>
                 ) : (
                   <Badge pill bg="danger">
-                    Cancelled
+                    Đã hủy
                   </Badge>
                 )}
               </StyledTableCell>
@@ -129,20 +118,24 @@ export default function OrdersTable({ orders, updateData }) {
               <StyledTableCell align="center">
                 {order.status === "pending" && (
                   <div className="flex">
-                    <Button
-                      variant="success"
-                      className="me-2"
-                      onClick={() => handleChaneStatus(order._id, "accepted")}
-                    >
-                      Accept
-                    </Button>
-                    <Button
-                      variant="danger"
-                      className="me-2"
-                      onClick={() => handleChaneStatus(order._id, "cancelled")}
-                    >
-                      Cancel
-                    </Button>
+                    <Tooltip title="Xác nhận">
+                      <IconButton
+                        onClick={() => handleChaneStatus(order._id, "accepted")}
+                        color="success"
+                      >
+                        <CheckIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Hủy">
+                      <IconButton
+                        onClick={() =>
+                          handleChaneStatus(order._id, "cancelled")
+                        }
+                        color="error"
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                    </Tooltip>
                   </div>
                 )}
               </StyledTableCell>

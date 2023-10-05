@@ -176,3 +176,33 @@ exports.getListProductsInHomePage = async () => {
     },
   ]
 }
+
+exports.searchProduct = async (pageOptions, queryConditions) => {
+  let options = pageOptions;
+  options.populate = "categories";
+  return new Promise((resolve, reject) => {
+    Product.paginate(queryConditions, options, (err, products) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(products);
+      }
+    });
+  });
+}
+
+exports.getProductByCategory = async (pageOptions, categorySlug) => {
+  let options = pageOptions;
+  let category = await Category.findOne({ slug: categorySlug }).select("_id").exec();
+  console.log("category", category);
+  options.populate = "categories";
+  return new Promise((resolve, reject) => {
+    Product.paginate({ categories: { $in: category._id } }, options, (err, products) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(products);
+      }
+    });
+  });
+}

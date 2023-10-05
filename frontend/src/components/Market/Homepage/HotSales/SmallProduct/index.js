@@ -30,7 +30,7 @@ const SmallProduct = (props) => {
                 {(item.price * (100 - item.sale)) / 100}đ
               </p>
             </div>
-            <div className="add-to-cart">
+            <div className="add-to-cart py-1">
               <button>THÊM VÀO GIỎ HÀNG</button>
             </div>
           </div>

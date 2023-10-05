@@ -8,6 +8,7 @@ import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import MenuImg from "./MenuImg";
+import { Link } from "react-router-dom";
 
 const MenuProduct = () => {
   const [open1, setOpen1] = React.useState(false);
@@ -16,35 +17,107 @@ const MenuProduct = () => {
   const [open4, setOpen4] = React.useState(false);
 
   const [NSS, setNSS] = React.useState([
-    "Sầu Riêng",
-    "Cam",
-    "Dưa lưới",
-    "Măng cụt",
-    "Xoài",
-    "Bưởi",
-    "Dừa",
-    "Gạo",
+    {
+      name: "Sầu Riêng",
+      slug: "sau-rieng",
+    },
+    {
+      name: "Cam",
+      slug: "cam",
+    },
+    {
+      name: "Dưa lưới",
+      slug: "dua-luoi",
+    },
+    {
+      name: "Măng cụt",
+      slug: "mang-cut",
+    },
+    {
+      name: "Xoài",
+      slug: "xoai",
+    },
+    {
+      name: "Bưởi",
+      slug: "buoi",
+    },
+    {
+      name: "Dừa",
+      slug: "dua",
+    },
+    {
+      name: "Gạo",
+      slug: "gao",
+    },
   ]);
+
   const [NSCB, setNSCB] = React.useState([
-    "Socola",
-    "Đường Thốt Nốt",
-    "Mật Hoa Dừa",
-    "Tinh Dầu",
-    "Trái Cây Sấy",
-    "Bánh Pía",
+    {
+      name: "Socola",
+      slug: "socola",
+    },
+    {
+      name: "Đường Thốt Nốt",
+      slug: "duong-thot-not",
+    },
+    {
+      name: "Mật Hoa Dừa",
+      slug: "mat-hoa-dua",
+    },
+    {
+      name: "Tinh Dầu",
+      slug: "tinh-dau",
+    },
+    {
+      name: "Trái Cây Sấy",
+      slug: "trai-cay-say",
+    },
+    {
+      name: "Bánh Pía",
+      slug: "banh-pia",
+    },
   ]);
+
   const [TCMN, setTCMN] = React.useState([
-    "Giỏ Xách",
-    "Đồ Handmade",
-    "Thảm Trang Trí",
-    "Sợi",
-    "Lụa Lãnh Mỹ A",
+    {
+      name: "Giỏ Xách",
+      slug: "gio-xach",
+    },
+    {
+      name: "Đồ Handmade",
+      slug: "do-handmade",
+    },
+    {
+      name: "Thảm Trang Trí",
+      slug: "tham-trang-tri",
+    },
+    {
+      name: "Sợi",
+      slug: "soi",
+    },
+    {
+      name: "Lụa Lãnh Mỹ A",
+      slug: "lua-lanh-my-a",
+    },
   ]);
+
   const [MHKhac, setMHKhac] = React.useState([
-    "Lá Chuối Tươi",
-    "Phân Hữu Cơ",
-    "Ống Hút Hữu Cơ",
-    "Thủy Sản",
+    {
+      name: "Lá Chuối Tươi",
+      slug: "la-chuoi-tuoi",
+    },
+    {
+      name: "Phân Hữu Cơ",
+      slug: "phan-huu-co",
+    },
+    {
+      name: "Ống Hút Hữu Cơ",
+      slug: "ong-hut-huu-co",
+    },
+    {
+      name: "Thủy Sản",
+      slug: "thuy-san",
+    },
   ]);
 
   const handleClick = (tmp) => {
@@ -98,9 +171,17 @@ const MenuProduct = () => {
               <List component="div" disablePadding>
                 {NSS.map((item, index) => {
                   return (
-                    <ListItemButton sx={{ pl: 4 }} key={index}>
-                      <ListItemText primary={item} className="name-product" />
-                    </ListItemButton>
+                    <Link
+                      to={`/marketplace/search/category/${item.slug}`}
+                      className="text-decoration-none text-black"
+                    >
+                      <ListItemButton sx={{ pl: 4 }} key={index}>
+                        <ListItemText
+                          primary={item.name}
+                          className="name-product"
+                        />
+                      </ListItemButton>
+                    </Link>
                   );
                 })}
               </List>
@@ -116,9 +197,17 @@ const MenuProduct = () => {
               <List component="div" disablePadding>
                 {NSCB.map((item, index) => {
                   return (
-                    <ListItemButton sx={{ pl: 4 }} key={index}>
-                      <ListItemText primary={item} className="name-product" />
-                    </ListItemButton>
+                    <Link
+                      to={`/marketplace/search/category/${item.slug}`}
+                      className="text-decoration-none text-black"
+                    >
+                      <ListItemButton sx={{ pl: 4 }} key={index}>
+                        <ListItemText
+                          primary={item.name}
+                          className="name-product"
+                        />
+                      </ListItemButton>
+                    </Link>
                   );
                 })}
               </List>
@@ -134,9 +223,17 @@ const MenuProduct = () => {
               <List component="div" disablePadding>
                 {TCMN.map((item, index) => {
                   return (
-                    <ListItemButton sx={{ pl: 4 }} key={index}>
-                      <ListItemText primary={item} className="name-product" />
-                    </ListItemButton>
+                    <Link
+                      to={`/marketplace/search/category/${item.slug}`}
+                      className="text-decoration-none text-black"
+                    >
+                      <ListItemButton sx={{ pl: 4 }} key={index}>
+                        <ListItemText
+                          primary={item.name}
+                          className="name-product"
+                        />
+                      </ListItemButton>
+                    </Link>
                   );
                 })}
               </List>
@@ -152,9 +249,17 @@ const MenuProduct = () => {
               <List component="div" disablePadding>
                 {MHKhac.map((item, index) => {
                   return (
-                    <ListItemButton sx={{ pl: 4 }} key={index}>
-                      <ListItemText primary={item} className="name-product" />
-                    </ListItemButton>
+                    <Link
+                      to={`/marketplace/search/category/${item.slug}`}
+                      className="text-decoration-none text-black"
+                    >
+                      <ListItemButton sx={{ pl: 4 }} key={index}>
+                        <ListItemText
+                          primary={item.name}
+                          className="name-product"
+                        />
+                      </ListItemButton>
+                    </Link>
                   );
                 })}
               </List>

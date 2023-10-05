@@ -12,6 +12,8 @@ import {ROLES} from "../../enum/enum.js"
 const { faker } = require('@faker-js/faker');
 import slugify from "slugify";
 import insertShopBoat from "./shopBoat_seeder.js";
+import insertCategory from "./category_seeder.js";
+import insertProduct from "./product_seeder.js";
 
 // Kết nối tới MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
@@ -87,133 +89,9 @@ const deleteAllData = async () => {
   }
 }
 
-// const insertShopBoat = async () => {
-//   try {
-//     let listUserId = await User.find({ role: ROLES.MERCHANT }).select('_id'); 
-//     let shopBoats = [];
-//     let id = 1;
-      
-//     for (let i = 0; i < listUserId.length; i++) {
-//       shopBoats.push({
-//         name: faker.commerce.department(),
-//         description: faker.lorem.paragraphs({ min: 1, max: 3 }),
-//         avatar: "https://s3.nucuoimekong.com/ncmk/wp-content/uploads/dac-san-mien-tay.jpg",
-//         owner: listUserId[i]._id,
-//         type: faker.helpers.arrayElement(["Thuyền Lớn", "Thuyền Nhỏ", "Thuyền Trung", "Thuyền Cao Tốc", "Thuyền Cá Nhân", "Thuyền Mái Bạt "]),
-//         // code: "CR-" + numberTo4DigitSring(id++),
-//         status: faker.helpers.arrayElement([ "inactive", "banned"]),
-//       });
-//     }
-//     await ShopBoat.insertMany(shopBoats);
-//     console.log("ShopBoats are inserted");
-//   }
-//   catch (err) {
-//     console.log(err);
-//   }
-// }
 
-const rootCategories = [
-  {
-    name: "Trái cây",
-    slug: "trai-cay",
-    parent: null,
-  },
-  {
-    name: "Rau củ",
-    slug: "rau-cu",
-    parent: null,
-  },
-  {
-    name: "Thịt",
-    slug: "thit",
-    parent: null,
-  },
-  {
-    name: "Cá",
-    slug: "ca",
-    parent: null,
-  },
-  {
-    name: "Gạo",
-    slug: "gao",
-    parent: null,
-  },
-  {
-    name: "Đồ khô",
-    slug: "do-kho",
-    parent: null,
-  },
-];
 
-const insertCategory = async () => {
-  const listCategory = await Category.insertMany(rootCategories);
-  console.log("Categories are inserted");
-}
 
-const randomCategory = (idArray) => {
-  let l = idArray.length;
-  let n = faker.number.int({ min: 0, max: l - 1 });
-  return idArray[n];
-}
-
-const insertProduct = async () => {
-  try {
-    let products = [];
-    let listShopBoatId = await ShopBoat.find({}).select('_id');
-    let listCategory = await Category.find({}).select('_id');
-    for (let i = 0; i < listShopBoatId.length; i++) {
-      for (let j = 0; j < 10; j++) {
-        let name = faker.commerce.productName();
-        let slug = slugify(name, { lower: true });
-        products.push({
-          name: name,
-          slug: slug,
-          description: faker.commerce.productDescription(),
-          price: faker.commerce.price(),
-          image: "https://chonoicairang.net/wp-content/uploads/2020/04/cam-xoan-1.jpg",
-          categories: [randomCategory(listCategory)],
-          shopBoat: listShopBoatId[i]._id,
-          unit: faker.helpers.arrayElement(["kg", "g", "l", "ml", "unit"]),
-          information: [
-            {
-              key: "Xuất xứ",
-              value: faker.location.city(),
-            },
-            {
-              key: "Thương hiệu",
-              value: faker.company.name(),
-            },
-            {
-              key: "Trọng lượng",
-              value: faker.number.int({ min: 1, max: 10 }) + " kg",
-            },
-            {
-              key: "Kích thước",
-              value: faker.number.int({ min: 1, max: 10 }) + " cm",
-            },
-            {
-              key: "Màu sắc",
-              value: faker.color.human(),
-            },
-            {
-              key: "Chất liệu",
-              value: faker.commerce.productMaterial(),
-            }
-          ],
-        });
-      }
-    }
-    await Product.insertMany(products);
-    for (let i = 0; i < listShopBoatId.length; i++) {
-      let listProductId = await Product.find({ shopBoat: listShopBoatId[i]._id }).select('_id');
-      await ShopBoat.findByIdAndUpdate(listShopBoatId[i]._id, { products: listProductId });
-    }
-    console.log("Products are inserted");
-  }
-  catch (err) {
-    console.log(err);
-  }
-}
 
 const insertFeedBack = async () => {
   try {

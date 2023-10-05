@@ -64,7 +64,15 @@ function App() {
 
         {/* Marketplace */}
         <Route path="/marketplace" element={<Homepage />} />
+        <Route
+          path="/marketplace/search/:name"
+          element={<MarketSearchpage />}
+        />
         <Route path="/marketplace/search" element={<MarketSearchpage />} />
+        <Route
+          path="/marketplace/search/category/:categorySlug"
+          element={<MarketSearchpage />}
+        />
         <Route path="/marketplace/product/:slug" element={<DetailProduct />} />
 
         {/* Auth */}

@@ -85,6 +85,7 @@ const routes = (app) => {
 
   router.get("/categories/list", categoryHandlers.getListCategories);
   router.get("/categories", categoryHandlers.getAllCategories);
+  router.get("/categories/id/:id", categoryHandlers.getCategoryById);
   router.get("/categories/:slug", categoryHandlers.getCategoryBySlug);
   router.post("/categories", categoryHandlers.createCategory);
 
@@ -97,6 +98,9 @@ const routes = (app) => {
   router.get("/customer/tours", tourHandlers.getToursInHomePage);
   router.get("/customer/tours/search", tourHandlers.searchTour);
   router.get("/customer/tours/:slug", tourHandlers.getTourBySlug);
+
+  router.get("/customer/products/search", productHandlers.searchProduct);
+  router.get("/customer/products/category/:slug", productHandlers.getProductByCategory);
   
 
   router.get("/tour-orders", tourOrderHandlers.getTourOrders);

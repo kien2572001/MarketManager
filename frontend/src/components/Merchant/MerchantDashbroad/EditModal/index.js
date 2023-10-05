@@ -4,6 +4,9 @@ import Modal from "@mui/material/Modal";
 import { Button, Container, Row, Col } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { updateShopBoat } from "api/shopBoat";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import Tooltip from "@mui/material/Tooltip";
 
 const style = {
   position: "absolute",
@@ -25,15 +28,15 @@ export default function EditModal({ shopBoat, setShopBoat }) {
   const [description, setDescription] = React.useState(
     shopBoat?.description || ""
   );
-  const [address, setAddress] = React.useState(shopBoat?.address || "");
   const [avatar, setAvatar] = React.useState(shopBoat?.avatar || "");
+  const [type, setType] = React.useState(shopBoat?.type || "");
 
   const handleSubmit = async () => {
     const data = {
       name,
       description,
-      address,
       avatar,
+      type,
     };
     try {
       const response = await updateShopBoat(data);
@@ -47,15 +50,17 @@ export default function EditModal({ shopBoat, setShopBoat }) {
   React.useEffect(() => {
     setName(shopBoat?.name || "");
     setDescription(shopBoat?.description || "");
-    setAddress(shopBoat?.address || "");
+    setType(shopBoat?.type || "");
     setAvatar(shopBoat?.avatar || "");
   }, [shopBoat]);
 
   return (
     <div>
-      <Button variant="primary" onClick={handleOpen}>
-        Chỉnh sửa
-      </Button>
+      <Tooltip title="Chỉnh sửa">
+        <IconButton onClick={handleOpen} color="primary">
+          <EditIcon />
+        </IconButton>
+      </Tooltip>
       <Modal
         open={open}
         onClose={handleClose}
@@ -89,12 +94,12 @@ export default function EditModal({ shopBoat, setShopBoat }) {
                 </Form.Group>
 
                 <Form.Group>
-                  <Form.Label>Địa chỉ</Form.Label>
+                  <Form.Label>Loại thuyền</Form.Label>
                   <Form.Control
                     type="text"
-                    name="address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    name="type"
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
                   />
                 </Form.Group>
 
@@ -108,7 +113,11 @@ export default function EditModal({ shopBoat, setShopBoat }) {
                   />
                 </Form.Group>
 
-                <Button variant="primary" onClick={handleSubmit}>
+                <Button
+                  variant="primary"
+                  onClick={handleSubmit}
+                  className="mt-3"
+                >
                   Cập nhật
                 </Button>
               </Col>

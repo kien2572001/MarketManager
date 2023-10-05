@@ -92,3 +92,37 @@ exports.createProduct = async function (req, res, next) {
         return serverResponse.sendError(res, err);
     }
 }
+
+exports.searchProduct = async function (req, res, next) {
+    let queryCondition = {};
+    let pageOptions = {
+        page: parseInt(req.query.page) || 1,
+        limit: parseInt(req.query.limit) || 8
+    }
+    if (req.query.name) {
+        const regex = new RegExp(req.query.name, 'i');
+        queryCondition.name = regex;
+    }
+    try {
+        let products = await productServices.searchProduct(pageOptions, queryCondition);
+        return serverResponse.sendSuccess(res, SUCCESSFUL, products);
+    }
+    catch (err) {
+        return serverResponse.sendError(res, err);
+    }
+}
+
+exports.getProductByCategory = async function (req, res, next) {
+    let categorySlug = req.params.slug;
+    let pageOptions = {
+        page: parseInt(req.query.page) || 1,
+        limit: parseInt(req.query.limit) || 8
+    }
+    try {
+        let products = await productServices.getProductByCategory(pageOptions, categorySlug);
+        return serverResponse.sendSuccess(res, SUCCESSFUL, products);
+    }
+    catch (err) {
+        return serverResponse.sendError(res, err);
+    }
+}

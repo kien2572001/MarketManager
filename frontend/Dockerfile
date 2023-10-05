@@ -14,7 +14,8 @@ COPY package-lock.json /usr/src/app
 RUN npm set progress=false \
    && npm config set depth 0 \
    && npm i --force
-RUN npm ci --force && npm cache clean
+# RUN npm ci --force && npm cache clean
+
 
 # Get all the code needed to run the app
 COPY . /usr/src/app
