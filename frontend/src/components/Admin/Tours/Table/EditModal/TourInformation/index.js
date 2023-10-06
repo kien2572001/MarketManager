@@ -11,6 +11,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import * as React from "react";
 import parse from "html-react-parser";
+import TextEditor from "components/Common/TextEditor";
 
 const style = {
   position: "absolute",
@@ -86,11 +87,11 @@ const AddEditModal = ({ infoData, setTourData, type = "edit" }) => {
         >
           <div className="flex justify-between items-center mb-4 border-b-2 pb-2">
             <h2 className="text-center font-bold text-2xl ">
-              Chinh sua noi dung thong tin tour
+              Chỉnh sửa thông tin tours
             </h2>
             <div className="flex right-0 bottom-2">
               <Button variant="success mr-2" onClick={handleSubmit}>
-                Save
+                Lưu
               </Button>
               <Button
                 variant="danger"
@@ -99,12 +100,12 @@ const AddEditModal = ({ infoData, setTourData, type = "edit" }) => {
                   handleClose();
                 }}
               >
-                Cancel
+                Thoát
               </Button>
             </div>
           </div>
           <Form.Group controlId="key" className="mb-3">
-            <Form.Label>Ten muc</Form.Label>
+            <Form.Label>Tên mục</Form.Label>
             <Form.Control
               type="text"
               name="key"
@@ -114,28 +115,15 @@ const AddEditModal = ({ infoData, setTourData, type = "edit" }) => {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="description">
-            <Form.Label>Description</Form.Label>
-            <CKEditor
-              editor={ClassicEditor}
-              data={info.value}
-              onReady={(editor) => {
-                // You can store the "editor" and use when it is needed.
-                //console.log("Editor is ready to use!", editor);
-              }}
-              onChange={(event, editor) => {
-                const data = editor.getData();
-                //console.log({ event, editor, data });
+            <Form.Label>Nội dung</Form.Label>
+            <TextEditor
+              value={info.value}
+              setValue={(value) =>
                 setInfo((prev) => ({
                   ...prev,
-                  value: data,
-                }));
-              }}
-              onBlur={(event, editor) => {
-                //console.log("Blur.", editor);
-              }}
-              onFocus={(event, editor) => {
-                //console.log("Focus.", editor);
-              }}
+                  value: value,
+                }))
+              }
             />
           </Form.Group>
         </Box>
@@ -162,7 +150,7 @@ const TourInformation = ({ tourInformation, setTourData }) => {
       </h5>
       {tourInformation?.map((item, index) => (
         <div key={uuidv4()} className="mb-3">
-          <div className="font-semibold flex text-xl justify-between">
+          <div className="font-semibold flex text-4xl justify-between underline">
             {item.key}
             <div>
               <AddEditModal infoData={item} setTourData={setTourData} />

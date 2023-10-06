@@ -11,6 +11,7 @@ import RecommendTour from "./RecommenrTour";
 import { getTourBySlug } from "api/tour";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import parse from "html-react-parser";
 const TourDetail = () => {
   const [quantityOder, setQuantityOrder] = useState(0);
   const [tour, setTour] = useState({});
@@ -94,17 +95,17 @@ const TourDetail = () => {
               <div className="Detail-Description-Container">
                 <div className="Detail-Description">
                   <div className="Avt-tour">
-                    <img src="https://s3.nucuoimekong.com/ncmk/wp-content/uploads/tour-cho-noi-cai-rang-o-can-tho.jpg"></img>
+                    <img src={tour?.image} alt="" />
                   </div>
                   <div className="Description-review mt-10">
                     {tour?.tourInformation?.map((item, index) => {
                       return (
-                        <div key={uuidv4()} className="Description-Item">
+                        <div key={uuidv4()} className="Description-Item my-2">
                           <div className="Description-Title">
-                            <h3>{item.key}</h3>
+                            <h3 className="my-2">{item.key}</h3>
                           </div>
                           <div className="Description-Content">
-                            <p>{item.value}</p>
+                            <p>{parse(item.value)}</p>
                           </div>
                         </div>
                       );
