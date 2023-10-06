@@ -130,48 +130,27 @@ exports.getTop4Products = () => {
 }
 
 exports.getListProductsInHomePage = async () => {
-  let top_3_categories = await Category.find({}).limit(3).select("_id name slug").exec();
-  let listId = top_3_categories.map((category) => category._id);
-  //Xu li logic sau
-  let top_1 = {
-    name: top_3_categories[0].name,
-    slug: top_3_categories[0].slug,
-    id: top_3_categories[0]._id,
-  }
-  let top_2 = {
-    name: top_3_categories[1].name,
-    slug: top_3_categories[1].slug,
-    id: top_3_categories[1]._id,
-  }
-  let top_3 = {
-    name: top_3_categories[2].name,
-    slug: top_3_categories[2].slug,
-    id: top_3_categories[2]._id,
-  }
-  let top_1_products = await Product.find({ categories: top_3_categories[0]._id }).limit(10).select("_id name price sale unit countInStock slug image").exec();
-  let top_2_products = await Product.find({ categories: top_3_categories[1]._id }).limit(10).select("_id name price sale unit countInStock slug image").exec();
-  let top_3_products = await Product.find({ categories: top_3_categories[2]._id }).limit(10).select("_id name price sale unit countInStock slug image").exec();
-  let orther_products = await Product.find({ categories: { $nin: listId } }).limit(10).select("_id name price sale unit countInStock slug image").exec();
+  let parentCategories = await Category.find({ parent: null }).select("_id name slug").exec();
+  let top_1_products = await Product.find({ categories: { $in: parentCategories[0]._id } }).limit(10).select("_id name price sale unit countInStock slug image").exec();
+  let top_2_products = await Product.find({ categories: { $in: parentCategories[1]._id } }).limit(10).select("_id name price sale unit countInStock slug image").exec();
+  let top_3_products = await Product.find({ categories: { $in: parentCategories[2]._id } }).limit(10).select("_id name price sale unit countInStock slug image").exec();
+  let orther_products = await Product.find({ categories: { $in: parentCategories[3]._id } }).limit(10).select("_id name price sale unit countInStock slug image").exec();
     
   return [
     {
-      category: top_1,
+      category: parentCategories[0],
       products: top_1_products,
     },
     {
-      category: top_2,
+      category: parentCategories[1],
       products: top_2_products,
     },
     {
-      category: top_3,
+      category: parentCategories[2],
       products: top_3_products,
     },
     {
-      category: {
-        name: "Sản phẩm khác",
-        slug: "san-pham-khac",
-        id: "san-pham-khac",
-      },
+      category: parentCategories[3],
       products: orther_products,
     },
   ]

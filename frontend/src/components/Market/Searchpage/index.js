@@ -17,7 +17,7 @@ import Pagination from "@mui/material/Pagination";
 import { getCategoryBySlug } from "api/category";
 
 const Searchpage = () => {
-  const [cost, setCost] = React.useState([20000, 37000]);
+  const [cost, setCost] = React.useState([20000, 500000]);
   const minDistance = 10000;
   const location = useLocation();
   const { categorySlug, name } = useParams();
@@ -124,7 +124,13 @@ const Searchpage = () => {
       >
         LỌC THEO GIÁ
       </span>
-      <FilterBar cost={cost} setCost={setCost} minDistance={minDistance} />
+      <FilterBar
+        cost={cost}
+        setCost={setCost}
+        minDistance={minDistance}
+        minPrice={10000}
+        maxPrice={500000}
+      />
       {/* btn filter */}
       <Stack spacing={2} direction="row">
         <Button variant="contained" color="success">
@@ -193,7 +199,7 @@ const Searchpage = () => {
             </div>
           </div>
           {products.length > 0 ? (
-            <div className="search-content">
+            <div className="search-content mt-2">
               <GridTable products={products} />
               <div className="flex justify-center mb-3">
                 <Pagination
@@ -204,7 +210,7 @@ const Searchpage = () => {
               </div>
             </div>
           ) : (
-            <span className="my-4 block">
+            <span className="my-4 block mt-2">
               Không có sản phẩm nào phù hợp với tìm kiếm của bạn.
             </span>
           )}

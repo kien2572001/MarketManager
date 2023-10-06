@@ -5,6 +5,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Badge from "react-bootstrap/Badge";
 import { getCategoryById } from "api/category";
 import { Link } from "react-router-dom";
+import Skeleton from "@mui/material/Skeleton";
 
 const ProductMain = (props) => {
   const { product } = props;
@@ -27,10 +28,14 @@ const ProductMain = (props) => {
       <div className="product-main__content">
         <div className="product-main__content__left">
           <div className="product-main__content__left__image">
-            <img
-              src="https://chonoicairang.net/wp-content/uploads/2020/04/cam-xoan-1.jpg"
-              alt=""
-            />
+            {product.image ? (
+              <img src={product.image} alt="" />
+            ) : (
+              <Skeleton
+                variant="rectangular"
+                style={{ width: "100%", height: "100%" }}
+              />
+            )}
           </div>
         </div>
         <div className="product-main__content__right">
@@ -47,7 +52,12 @@ const ProductMain = (props) => {
           <div className="product-main__content__dash"></div>
           <div className="product-main__content__price_product">
             <del>{product.price + "₫"}</del>
-            <ins>{product.price * (1 - product.sale / 100) + "₫"}</ins>
+            <ins>
+              {Number.parseInt(
+                product.price - (product.price * product.sale) / 100
+              )}
+              {" ₫"}
+            </ins>
           </div>
           <div className="product-main__content__order_product">
             <ButtonGroup

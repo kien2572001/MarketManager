@@ -18,7 +18,7 @@ const CardProduct = ({ item }) => {
             className="smallproduct__img"
             to={`/marketplace/product/${slug}`}
           >
-            <img src={image} alt="" />
+            <img src={image} alt="" className="" />
           </Link>
           <div className="smallproduct__content">
             <div className="smallproduct__content--name">
